@@ -43,6 +43,8 @@ app.use("/api/users", usersRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {
+
+
   res.render("index");
 });
 
@@ -76,7 +78,64 @@ app.get("/resource/:resid", (req, res) => {
 
 //POSTS =================================
 
-//For the user to create linke post
+app.post("/" , (req, res) => {
+
+
+  console.log(req.body.username); // I can see the username
+  console.log(req.body); // I can see the password
+
+  //just set user and pass to the request body pieces
+  let enterUser = req.body.username;
+  let enterPass = req.body.password;
+
+  //check to see if password or user blank
+  if(!enterUser || !enterPass){
+    console.log("Please enter a username or password");
+  } else {
+
+    //practice using the seed data in 'users'
+
+    knex('users').where('name', enterUser)
+      .then(rows => rows.forEach(function(person){
+
+  //need to check req with database to see if user is correct
+        if(enterUser === person.name){
+        res.redirect("/home");
+        console.log("you're in!")
+        } else {
+        console.log("user does not exist");
+        }
+      }));
+    }
+
+  //need to check req with database to see if password is correct
+  //if correct then login and render home page
+
+});
+
+//For the User to Register a signup
+
+app.post("/register", (req, res) => {
+
+  let newEmail = req.body.user_email;
+  let newUsername = req.body.new_username;
+  let newPassword = req.body.new_password;
+
+  if(!newEmail || !newUsername){
+    console.log("Invalid Entry");
+  }
+
+
+
+//add the user email to database
+//add the handle (username) to database
+
+//add the password to database
+
+
+})
+
+//For the user to create link post
 app.post("/create", (req, res) => {
 
 });
