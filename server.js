@@ -9,7 +9,9 @@ const bodyParser  = require("body-parser");
 const sass        = require("node-sass-middleware");
 const app         = express();
 
-const knexConfig  = require("./db/knexfile");
+//const knexConfig  = require("./db/knexfile");
+const knexConfig  = require("./knexfile");
+
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
@@ -111,7 +113,7 @@ app.post("/" , (req, res) => {
       .then(rows => rows.forEach(function(person){
 
   //need to check req with database to see if user is correct
-        if(enterUser === person.name){
+        if(enterUser === person.name || enterPass === person.password){
         res.redirect("/home");
         console.log("you're in!")
         } else {
@@ -145,6 +147,7 @@ app.post("/register", (req, res) => {
 
   knex('users')
     .insert([{password: newPassword, email: newEmail, handle: newUsername}])
+    console.log("Login created!");
 
 })
 
