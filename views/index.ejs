@@ -25,10 +25,10 @@
 
       <div class="tabs-content">
         <div id="signup-tab-content" class="active">
-          <form class="signup-form" action="" method="post">
-            <input type="email" class="input" id="user_email" placeholder="Email">
-            <input type="text" class="input" id="user_name" placeholder="Username">
-            <input type="password" class="input" id="user_pass" placeholder="Password">
+          <form class="signup-form" action="/register" method="POST">
+            <input type="email" class="input" name="email" id="user_email" placeholder="Email">
+            <input type="text" class="input" name="newusername id="user_name" placeholder="Username">
+            <input type="password" class="input" name="newpassword" id="user_pass" placeholder="Password">
             <input type="submit" class="button" value="Sign Up">
           </form>
           <!--.login-form-->
@@ -37,9 +37,9 @@
         <!--.signup-tab-content-->
 
         <div id="login-tab-content">
-          <form class="login-form" action="" method="post">
-            <input type="text" class="input" id="user_login" placeholder="Email or Username">
-            <input type="password" class="input" id="user_pass" placeholder="Password">
+          <form class="login-form" action="/" method="POST"> <!-- POST -->
+            <input type="text" class="input" name="username" id="user_login" placeholder="Email or Username">
+            <input type="password" class="input" name="password" id="user_pass" placeholder="Password">
             <input type="submit" class="button" value="Login">
           </form>
           <!--.login-form-->
