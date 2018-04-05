@@ -1,25 +1,31 @@
 
-
+* {
+  font-family:Raleway;
+}
 body {
   font-family: Raleway;
   background-color: #EEE;
 
-  h1 {
-    color: white;
-    text-align:center;
-    font-family: Raleway, bold;
-  }
+
 }
+
+
 
 .jumbotron {
   background: url(https://image.freepik.com/free-vector/abstract-global-technology-background-with-connecting-dots_1048-5940.jpg);
 
   background-size:cover;
   opacity:0.8;
-  margin-left: 30px;
-  margin-right:30px;
+  margin-left: 20px;
+  margin-right:20px;
   height:650px;
 }
+
+.jumbotron  h1 {
+    color: white;
+    text-align:center;
+    weight:bold;
+  }
 
 .jumbotron p {
   text-align: center;
@@ -27,17 +33,14 @@ body {
   color: #f3cba0;
 }
 
-hr {
+.jumbotron hr {
     border: 0;
     height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-nav .navbar-brand {
-  font-family: Indie Flower, cursive;
-  font-size: 50px;
-}
+
 
 
 #loginform {
@@ -171,11 +174,10 @@ body {
 }
 
 .container-subjects img {
-  width: 200px;
+  width: 170px;
 }
 
-  footer {
-    background-color:#484f4f;
-    margin-top:0;
-    height:400px
-  }
+
+
+
+

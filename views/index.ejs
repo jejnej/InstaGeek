@@ -1,75 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-     <% include ./partials/head %>
-    <title>InstaGeek</title>
-  </head>
 
-  <body>
-<header>
-  <% include ./partials/_header %>
-</header>
+<head>
+  <% include ./partials/head %>
+    <title>InstaGeek</title>
+</head>
+
+<body>
+  <header>
+    <% include ./partials/_header %>
+  </header>
 
 
   <div class="jumbotron">
-  <h1 class="display-4">Be Smart Instantly!</h1>
-  <p>Learn Something New. Everyday</p>
-  <hr>
-<div class="form-wrap">
-    <div class="tabs">
-      <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Sign Up</a></h3>
-      <h3 class="login-tab"><a href="#login-tab-content">Login</a></h3>
-    </div><!--.tabs-->
+    <h1 class="display-4">Be Smart Instantly!</h1>
+    <p>Learn something new. Everyday</p>
+    <hr>
+    <div class="form-wrap">
+      <div class="tabs">
+        <h3 class="signup-tab"><a class="active" href="#signup-tab-content">Sign Up</a></h3>
+        <h3 class="login-tab"><a href="#login-tab-content">Login</a></h3>
+      </div>
+      <!--.tabs-->
 
-    <div class="tabs-content">
-      <div id="signup-tab-content" class="active">
-        <form class="signup-form" action="" method="post">
-          <input type="email" class="input" id="user_email"  placeholder="Email">
-          <input type="text" class="input" id="user_name"  placeholder="Username">
-          <input type="password" class="input" id="user_pass"  placeholder="Password">
-          <input type="submit" class="button" value="Sign Up">
-        </form><!--.login-form-->
+      <div class="tabs-content">
+        <div id="signup-tab-content" class="active">
+          <form class="signup-form" action="" method="post">
+            <input type="email" class="input" id="user_email" placeholder="Email">
+            <input type="text" class="input" id="user_name" placeholder="Username">
+            <input type="password" class="input" id="user_pass" placeholder="Password">
+            <input type="submit" class="button" value="Sign Up">
+          </form>
+          <!--.login-form-->
 
-      </div><!--.signup-tab-content-->
+        </div>
+        <!--.signup-tab-content-->
 
-      <div id="login-tab-content">
-        <form class="login-form" action="" method="post">
-          <input type="text" class="input" id="user_login"  placeholder="Email or Username">
-          <input type="password" class="input" id="user_pass" placeholder="Password">
-          <input type="submit" class="button" value="Login">
-        </form><!--.login-form-->
-      </div><!--.login-tab-content-->
-    </div><!--.tabs-content-->
-  </div><!--.form-wrap-->
-
-</div>
-
-<div class="container-subjects">
-  <div class="row">
-    <div class="col-sm">
-      <h3>Physics</h3>
-      <img src="images/atom.png">
+        <div id="login-tab-content">
+          <form class="login-form" action="" method="post">
+            <input type="text" class="input" id="user_login" placeholder="Email or Username">
+            <input type="password" class="input" id="user_pass" placeholder="Password">
+            <input type="submit" class="button" value="Login">
+          </form>
+          <!--.login-form-->
+        </div>
+        <!--.login-tab-content-->
+      </div>
+      <!--.tabs-content-->
     </div>
-    <div class="col-sm">
-      <h3>Chemistry</h3>
-      <img src="images/chemistry.png">
-    </div>
-    <div class="col-sm">
-      <h3>Technology</h3>
-      <img src="images/coding.png">
-    </div>
-    <div class="col-sm">
-      <h3>Economics</h3>
-      <img src="images/business.png">
-    </div>
+    <!--.form-wrap-->
 
   </div>
-</div>
 
-<footer>
-<% include ./partials/_footer %>
-</footer>
-  </body>
+  <div class="container-subjects">
+    <div class="row">
+      <div class="col-sm">
+        <h3>Physics</h3>
+        <img src="images/atom.png">
+      </div>
+      <div class="col-sm">
+        <h3>Chemistry</h3>
+        <img src="images/chemistry.png">
+      </div>
+      <div class="col-sm">
+        <h3>Biology</h3>
+        <img src="images/biology.png">
+      </div>
+      <div class="col-sm">
+        <h3>Math</h3>
+        <img src="images/math.png">
+      </div>
+      <div class="col-sm">
+        <h3>Technology</h3>
+        <img src="images/coding.png">
+      </div>
+      <div class="col-sm">
+        <h3>Economics</h3>
+        <img src="images/business.png">
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <% include ./partials/_footer %>
+  </footer>
+</body>
+
 </html>
 
 
