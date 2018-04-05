@@ -6,9 +6,7 @@ exports.up = function(knex, Promise) {
     table.string('description');
     table.string('image_url');
     table.integer('creator_id');
-    table.foreign('creator_id').references('rusers.id');
     table.integer('subject_id');
-    table.foreign('subject_id').references('subjects.id');
   });
 };
 

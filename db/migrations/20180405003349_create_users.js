@@ -5,7 +5,6 @@ exports.up = function(knex, Promise) {
     table.string('handle');
     table.string('email');
     table.integer('user_info_id');
-    table.foreign('user_info_id').references('user_info.id');
   });
 };
 

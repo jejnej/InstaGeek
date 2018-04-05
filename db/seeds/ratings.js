@@ -1,7 +1,3 @@
-const Chance = require("chance");
-const chance = new Chance();
-
-
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex('ratings').del()

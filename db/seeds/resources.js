@@ -1,6 +1,5 @@
 var ogParser = require("og-parser");
 
-
 seedResourceFromUrl = function (knex, url, creator, subject) {
   return new Promise(function (resolve, reject) {
     ogParser(url, function (error, data) {
