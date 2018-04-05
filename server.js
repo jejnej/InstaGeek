@@ -51,6 +51,7 @@ app.get("/", (req, res) => {
 app.get("/home", (req, res) => {
 
 console.log("welcome home");
+res.render("home");
 
 });
 
