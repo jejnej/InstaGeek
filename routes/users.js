@@ -7,7 +7,7 @@ module.exports = (knex) => {
 
   router.get('/', (req, res) => {
     knex
-      .select('title, description, image_url')
+      .select('url, description, image_url')
       .from('resources')
       .then((results) => {
         res.json(results);
