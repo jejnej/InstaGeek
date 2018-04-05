@@ -4,17 +4,19 @@ const chance = new Chance();
 
 exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return knex('ratings').del()
+  return knex('comments').del()
     .then(function () {
       return Promise.all([
         // Inserts seed entries
-        knex('subjects').insert({ id: '1', name: 'Math' }),
-        knex('subjects').insert({ id: '2', name: 'Physics' }),
-        knex('subjects').insert({ id: '3', name: 'Chemistry' }),
-        knex('subjects').insert({ id: '4', name: 'Biology' }),
-        knex('subjects').insert({ id: '5', name: 'Economics' }),
-        knex('subjects').insert({ id: '6', name: 'Technology' }),
-        knex('subjects').insert({ id: '7', name: 'Arts' })
-      ]);
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 10, user_id: 5}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 3, user_id: 8}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 5, user_id: 2}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 6, user_id: 4}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 6, user_id: 6}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 2}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 4}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 6}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 8, user_id: 8}),
+        knex('comments').insert({comment_text: chance.sentence(), resource_id: 9, user_id: 8}),      ]);
     });
 };
