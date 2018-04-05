@@ -1,7 +1,7 @@
 var ogParser = require("og-parser");
 
 exports.seed = function (knex, Promise) {
-  return knex('users').del()
+  return knex('resources').del()
     .then(function () {
       return Promise.all([
         seedResourceFromUrl('https://www.sciencedaily.com/releases/2018/04/180405093238.htm'),
