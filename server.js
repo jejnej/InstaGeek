@@ -36,6 +36,18 @@ app.use("/styles", sass({
 }));
 app.use(express.static("public"));
 
+// Authentication Middleware
+// const authenticate = (req, res, next) => {
+//   if (users[req.session.users_id]) {
+//     next()
+//   } else {
+//     res.redirect('/')
+//   }
+// }
+
+
+
+
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
@@ -50,7 +62,7 @@ app.get("/", (req, res) => {
 
 
 //Route to the "/home" page to hold "link cards" for the user
-app.get("/home", (req, res) => {
+app.get("/home",  (req, res) => {
 
 console.log("welcome home");
 res.render("home");
@@ -112,6 +124,8 @@ app.post("/" , (req, res) => {
   //if correct then login and render home page
 
 });
+
+
 
 //For the User to Register a signup
 
