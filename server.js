@@ -139,13 +139,12 @@ app.post("/register", (req, res) => {
     console.log("Invalid Entry");
   }
 
-
-
 //add the user email to database
 //add the handle (username) to database
-
 //add the password to database
 
+  knex('users')
+    .insert([{password: newPassword, email: newEmail, handle: newUsername}])
 
 })
 
