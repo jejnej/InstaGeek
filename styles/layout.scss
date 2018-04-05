@@ -1,7 +1,7 @@
 
 
 body {
-  font-family: Indie Flower, cursive;
+  font-family: Raleway;
   background-color: #EEE;
 
   h1 {
@@ -36,7 +36,7 @@ hr {
 
 nav .navbar-brand {
   font-family: Indie Flower, cursive;
-  font-size:35px;
+  font-size: 50px;
 }
 
 
@@ -158,7 +158,7 @@ body {
       font-size: 14px; }
 
 .container-subjects {
-  height:400px;
+  height:350px;
 }
 
 .container-subjects .col-sm {
@@ -170,7 +170,12 @@ body {
 
 }
 
+.container-subjects img {
+  width: 200px;
+}
+
   footer {
     background-color:#484f4f;
     margin-top:0;
+    height:400px
   }
