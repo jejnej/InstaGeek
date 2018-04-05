@@ -11,7 +11,54 @@
     <% include ./partials/_header %>
   </header>
 
+<main class = "container">
 
+  <section class = "modal add-article" id="exampleModal" tabindex="-1" role="dialog">
+
+<form class = "modal-body new-resource">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Resource Title</label>
+    <input type="title" class="form-control" id="exampleFormControlInput1">
+  </div>
+
+  <div class="form-group">
+  <label for="example-url-input">URL</label>
+  <div>
+    <input class="form-control" type="url" value="https://getbootstrap.com" id="example-url-input">
+  </div>
+
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Subject</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>Math</option>
+      <option>Physics</option>
+      <option>Chemistry</option>
+      <option>Biology</option>
+      <option>Technology </option>
+      <option>Economics & Finance </option>
+      <option>Arts</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Description</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  <input type="submit" value="Submit" />
+</form>
+
+  </section>
+
+
+
+  <section class = "resource-container">
+
+  </section>
+
+
+
+
+</main>
 
   <footer>
     <% include ./partials/_footer %>

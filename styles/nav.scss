@@ -9,9 +9,25 @@ nav {
     .brand-logo {
       margin-left:20px;
     }
-
+  button {
+     float:right;
+     border-radius:6px;
+     background-color:#F0FFFF;
+     width:110px;
+     height:50px;
+     font-size:15px;
+     margin-top:10px;
+     color:#00a087;
+     border: 1px solid black;
+     opacity:0.7;
+}
+button:hover {
+     opacity:1;
+     cursor:pointer;
+}
 
 }
+
 
 
 
