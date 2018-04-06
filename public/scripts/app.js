@@ -1,15 +1,3 @@
-$(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for (user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
-});
-
-
 const article = [
 
   {
@@ -185,9 +173,33 @@ jQuery(document).ready(function($) {
     $(tab_content).addClass('active');
   });
 
-  renderArticles(article);
+
+  $.get('/all', articles => {
+    renderArticles(articles);
+  });
+
+  $(".dropdown-item").on("click", function(event) {
+    event.preventDefault();
+    let subject = $(this);
+    let subjectID = subject.attr("data-subjects");
+
+      $.ajax({
+        type: "GET",
+        url: `/subject/${subjectID}`,
+        success: function(articles) {
+          $("#main-board").text(subjectID);
+          $(".article-container").empty();
+          renderArticles(articles);
+        }
+      });
+
+  });
 
 });
+
+
+
+
 
 
 
