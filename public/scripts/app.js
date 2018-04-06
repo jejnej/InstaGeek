@@ -177,7 +177,27 @@ jQuery(document).ready(function($) {
     renderArticles(article);
   });
 
+
+  $(".dropdown-item").on("click", function(event) {
+    event.preventDefault();
+    let subject = $(this);
+    let subjectID = subject.attr("data-subjects");
+
+      $.ajax({
+        type: "GET",
+        url: `/subject/${subjectID}`,
+        success: function(data) {
+          $("#main-board").innerText(subjectID);
+          renderArticles(article);
+        }
+      });
+
+  });
+
 });
+
+
+
 
 
 
