@@ -4,6 +4,8 @@ const USER_ID = 7;
 
 const express = require('express');
 const router = express.Router();
+const cookieParser = require('cookie-parser') //cookie parser added
+router.use(cookieParser()); // cookie parser added
 
 module.exports = (knex) => {
 
@@ -108,16 +110,27 @@ module.exports = (knex) => {
 
 
 router.get("/profile", (req, res) => {
-  let variables = {user: "the user", email: "test@test.com"} //need to get these from database
 
-  res.render("user_profile", variables);
+  let userCookie = req.cookies.handle
+
+  knex('rusers').where('handle', userCookie)
+    .then(rows => rows.forEach(function(person){
+
+
+
+    let variables = {user: userCookie, email: person.email}
+
+    res.render("user_profile", variables);
+    }))
+
+
 });
 
 
 //POSTS =================================
 
-
-  router.post("/", (req, res) => {
+// login page.
+  router.post("/login", (req, res) => {
 
 
     console.log(req.body.username); // I can see the username
@@ -126,6 +139,9 @@ router.get("/profile", (req, res) => {
     //just set user and pass to the request body pieces
     let enterUser = req.body.username;
     let enterPass = req.body.password;
+
+    //set the cookie
+    res.cookie("handle", enterUser);
 
     //check to see if password or user blank
     if (!enterUser || !enterPass) {
@@ -178,7 +194,9 @@ router.get("/profile", (req, res) => {
         password: newPassword,
         email: newEmail,
         handle: newUsername
-      });
+      }).then(function() {
+        res.send('OK')
+      })
   console.log("Login created!");
   }
 })
@@ -196,16 +214,21 @@ router.post("/create", (req, res) => {
   //For the user to like a post
   router.post("/like", (req, res) => {
 
+    //get the post request from the link button
+
   });
 
   //For the user to comment and view comments on a post
   router.post("/comment", (req, res) => {
+
+    //get the post request from comment button
 
   });
 
   //For the user to rate a post ----- need to discuess
   router.post("/rate", (req, res) => {
 
+    //get post request
 
   });
 
@@ -214,6 +237,8 @@ router.post("/create", (req, res) => {
 
   });
 
-  //=================================
+  //PUT =================================
+
+  //router.put() <--- to update the user profile
   return router;
 }
