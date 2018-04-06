@@ -37,7 +37,6 @@ button:hover {
 
  #new-article-modal {
      margin-top:30px;
-
     background-color: rgba(160, 160, 160, 0.95);
      display: block;
      position: absolute;
@@ -97,5 +96,25 @@ margin-bottom:20px;
   }
 }
 
+}
 
+.article-modal-1 {
+  background-color: rgba(255, 255, 255, 0.95);
+    height: 1100px;
+   width: 1700px;
+  left: 20%;
+  margin-top:90px;
+}
+
+.modal-right {
+  float:right;
+}
+
+.modal-image {
+ width:900px;
+ height:100%
+ }
+
+#commentSubmit {
+  width:600px;
 }
