@@ -173,10 +173,10 @@ jQuery(document).ready(function($) {
     $(tab_content).addClass('active');
   });
 
-  $.get('/all', article => {
-    renderArticles(article);
-  });
 
+  $.get('/all', articles => {
+    renderArticles(articles);
+  });
 
   $(".dropdown-item").on("click", function(event) {
     event.preventDefault();
@@ -186,15 +186,17 @@ jQuery(document).ready(function($) {
       $.ajax({
         type: "GET",
         url: `/subject/${subjectID}`,
-        success: function(data) {
-          $("#main-board").innerText(subjectID);
-          renderArticles(article);
+        success: function(articles) {
+          $("#main-board").text(subjectID);
+          $(".article-container").empty();
+          renderArticles(articles);
         }
       });
 
   });
 
 });
+
 
 
 
