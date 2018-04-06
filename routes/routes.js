@@ -93,12 +93,26 @@ module.exports = (knex) => {
 
   });
 
-  //A link to the card on a standalone site to allow people to comment
-  router.get("/resource/:resid", (req, res) => {
+//A link to the card on a standalone site to allow people to comment
+
+router.get("/resource/:resid", (req, res) => {
+
 
   });
 
+
   //POSTS =================================
+
+
+router.get("/profile", (req, res) => {
+  let variables = {user: "the user", email: "test@test.com"} //need to get these from database
+
+  res.render("user_profile", variables);
+});
+
+
+//POSTS =================================
+
 
   router.post("/", (req, res) => {
 
@@ -117,17 +131,18 @@ module.exports = (knex) => {
 
       //practice using the seed data in 'rusers'
 
-      knex('rusers').where('name', enterUser)
-        .then(rows => rows.forEach(function (person) {
+    knex('rusers').where('handle', enterUser)
+      .then(rows => rows.forEach(function(person){
 
-          //need to check req with database to see if user is correct
-          if (enterUser === person.name || enterPass === person.password) {
-            res.redirect("/home");
-            console.log("you're in!")
-          } else {
-            console.log("user does not exist");
-          }
-        }));
+  //need to check req with database to see if user is correct
+        if(enterUser === person.handle || enterPass === person.password){
+        res.redirect("/home");
+        console.log("you're in!")
+        } else {
+        console.log("user does not exist");
+        }
+      }));
+
     }
 
     //need to check req with database to see if password is correct
@@ -141,28 +156,39 @@ module.exports = (knex) => {
 
   router.post("/register", (req, res) => {
 
-    let newEmail = req.body.user_email;
-    let newUsername = req.body.new_username;
-    let newPassword = req.body.new_password;
+  let newEmail = req.body.new_email;
+  let newUsername = req.body.new_username;
+  let newPassword = req.body.new_password;
 
-    if (!newEmail || !newUsername) {
-      console.log("Invalid Entry");
-    }
+  if(!newEmail || !newUsername){
+    console.log("Invalid Entry");
+  }
+  else {
+
 
     //add the user email to database
     //add the handle (username) to database
     //add the password to database
 
     knex('rusers')
-      .insert({ password: newPassword, email: newEmail, handle: newUsername });
-    console.log("Login created!");
+      .insert({
+        password: newPassword,
+        email: newEmail,
+        handle: newUsername
+      });
+  console.log("Login created!");
+  }
+})
 
-  })
 
-  //For the user to create link post
-  router.post("/create", (req, res) => {
+//For the user to create link post
+router.post("/create", (req, res) => {
 
-  });
+ console.log("here");
+
+  console.log(req.body);
+});
+
 
   //For the user to like a post
   router.post("/like", (req, res) => {
