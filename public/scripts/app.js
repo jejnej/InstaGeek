@@ -1,108 +1,3 @@
-const article = [
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1497197952040-45d5388447e9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f88666296af0342fcd67258d6e9531df&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1496935127680-16e7e9e5eba3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a2ece95cddc5ac4a95a1e9b8fbbe6a61&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1496935127680-16e7e9e5eba3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a2ece95cddc5ac4a95a1e9b8fbbe6a61&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1483519173755-be893fab1f46?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b52bb4cb010e2c9442083c0730d6bc49&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1497197952040-45d5388447e9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f88666296af0342fcd67258d6e9531df&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1bceff439c9fc8f529dd70504a29d8a5&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1497197952040-45d5388447e9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=f88666296af0342fcd67258d6e9531df&auto=format&fit=crop&w=800&q=60",
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  },
-
-  {
-    "user": "jody",
-    "title": "Science is Great",
-    "imageUrl": "https://images.unsplash.com/photo-1487640228478-7a32e30a9e40?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=1eb8b6f295d4447b593767c4b14c4e62&auto=format&fit=crop&w=800&q=60",
-
-    "articleUrl": "https://www.sciencedaily.com/releases/2018/04/180404133532.htm",
-    "description": "This article is amazing. It's about absolutely nothing",
-    "likes": 5,
-    "averageRating": 4,
-    "userRating": 4
-
-  }
-
-
-
-
-]
-
 
 
 
@@ -130,7 +25,7 @@ function createArticleElement(article) {
 <div class="icons">
 <i class="fas fa-heart ${heartClasses}" data-heart="${article._id}"></i>
    <div class="rating" ${ratingClass}>
-  <span data-rating = "1">☆</span><span data-rating = "2">☆</span><span> data-rating = "3" ☆</span><span data-rating = "4">☆</span><span data-rating = "5">☆</span>
+  <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
 <p>Rating: ${average}</p>
  </div>
   </div>
@@ -192,33 +87,33 @@ jQuery(document).ready(function($) {
 
   });
 
-   $("body").on("click", ".fa-star", function(event) {
-    var button = $(this);
-    var starID = button.attr("data-rating");
-    $.ajax({
-      type: "PUT",
-      url: `/rating/article:id`,
-      data: starID.serialize(),
-      success: data => {
+  //  $("body").on("click", ".fa-star", function(event) {
+  //   var button = $(this);
+  //   var starID = button.attr("data-rating");
+  //   $.ajax({
+  //     type: "PUT",
+  //     url: `/rating/article:id`,
+  //     data: starID.serialize(),
+  //     success: data => {
 
-      }
-    });
+  //     }
+  //   });
 
-  });
+  // });
 
-     $("body").on("click", ".fa-heart", function(event) {
-    var button = $(this);
-    var articleID = button.attr("data-heart");
-    $.ajax({
-      type: "PUT",
-      url: `/like/article:id`,
-      data:
-      success: data => {
+  //    $("body").on("click", ".fa-heart", function(event) {
+  //   var button = $(this);
+  //   var articleID = button.attr("data-heart");
+  //   $.ajax({
+  //     type: "PUT",
+  //     url: `/like/article:id`,
+  //     data:
+  //     success: data => {
 
-      }
-    });
+  //     }
+  //   });
 
-  });
+  // });
 
 });
 
