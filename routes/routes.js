@@ -1,58 +1,24 @@
-"use strict";
+'use strict';
 
-require('dotenv').config();
+const express = require('express');
+const router  = express.Router();
 
-const PORT        = process.env.PORT || 8080;
-const ENV         = process.env.ENV || "development";
-const express     = require("express");
-const bodyParser  = require("body-parser");
-const sass        = require("node-sass-middleware");
-const app         = express();
+module.exports = (knex) => {
 
+  router.get('/', (req, res) => {
+    let 
+    knex
+      // .column({user: 'handle'}, 'title', {imageUrl: 'image_url'}, {articleUrl: 'url'}, 'description', )
+      .select()
+      .from('resources').leftjoin()
+      .then((results) => {
+        console.log(results);
+    });
+    select handle as user
+  });
 
-const knexConfig  = require("./knexfile");
-
-
-
-const knex        = require("knex")(knexConfig[ENV]);
-const morgan      = require('morgan');
-const knexLogger  = require('knex-logger');
-
-// Separated Routes for each Resource
-const routes = require("./routes/routes");
-
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
-app.use(morgan('dev'));
-
-// Log knex SQL queries to STDOUT as well
-app.use(knexLogger(knex));
-
-app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/styles", sass({
-  src: __dirname + "/styles",
-  dest: __dirname + "/public/styles",
-  debug: true,
-  outputStyle: 'expanded'
-
-}));
-app.use(express.static("public"));
-
-// Authentication Middleware
-// const authenticate = (req, res, next) => {
-//   if (users[req.session.users_id]) {
-//     next()
-//   } else {
-//     res.redirect('/')
-//   }
-// }
-
-
-// Mount all resource routes
-<<<<<<< HEAD
-app.use("/api/users", usersRoutes(knex));
+  return router;
+}
 
 //GETS =================================
 
@@ -108,12 +74,13 @@ app.post("/" , (req, res) => {
     console.log("Please enter a username or password");
   } else {
 
-    //practice using the seed data in 'users'
-    knex('rusers').where('handle', enterUser)
+    //practice using the seed data in 'rusers'
+
+    knex('rusers').where('name', enterUser)
       .then(rows => rows.forEach(function(person){
-        console.log(person.handle, "handle!")
+
   //need to check req with database to see if user is correct
-        if(enterUser === person.handle && enterPass === person.password){
+        if(enterUser === person.name || enterPass === person.password){
         res.redirect("/home");
         console.log("you're in!")
         } else {
@@ -137,16 +104,16 @@ app.post("/register", (req, res) => {
   let newUsername = req.body.new_username;
   let newPassword = req.body.new_password;
 
-  // if(!newEmail || !newUsername){
-  //   console.log("Invalid Entry");
-  // }
+  if(!newEmail || !newUsername){
+    console.log("Invalid Entry");
+  }
 
 //add the user email to database
 //add the handle (username) to database
 //add the password to database
 
   knex('rusers')
-    .insert([{password: newPassword, email: newEmail, handle: newUsername}])
+    .insert({password: newPassword, email: newEmail, handle: newUsername});
     console.log("Login created!");
 
 })
@@ -176,11 +143,5 @@ app.post("/rate", (req, res) => {
 app.post("/userinfo", (req, res) => {
 
 });
-=======
-app.use("/", routes(knex));
->>>>>>> db_access
 
-
-app.listen(PORT, () => {
-  console.log("Example app listening on port " + PORT);
-});
+//=================================
