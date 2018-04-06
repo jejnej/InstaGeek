@@ -53,7 +53,7 @@ function createArticleElement(article) {
         </div>
       </form>
     </section>
-    <div class ="comment-container">
+    <div class ="comments-container">
     </div>
      </div>
    </div>
@@ -90,7 +90,7 @@ function createCommentElement(comment) {
   <div class="card-body">
     <blockquote class="blockquote mb-0">
       <p>${commentBody}</p>
-      <footer class="blockquote-footer">By - `${name}`</footer>
+      <footer class="blockquote-footer">"By - ${name}"</footer>
     </blockquote>
   </div>
 </div>
@@ -99,8 +99,10 @@ function createCommentElement(comment) {
   return commentHTML
 }
 
-function renderComments {
-
+function renderComments(comments) {
+   comments.forEach(function(comment) {
+    $(".comments-container").prepend(createCommentElement(comment));
+  });
 }
 
 
