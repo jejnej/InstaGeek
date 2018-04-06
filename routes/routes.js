@@ -122,7 +122,7 @@ router.post("/register", (req, res) => {
 
 //For the user to create link post
 router.post("/create", (req, res) => {
-
+  console.log(req.body);
 });
 
 //For the user to like a post
