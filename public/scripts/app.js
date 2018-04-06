@@ -138,9 +138,10 @@ function createArticleElement(article) {
     <p class="card-text">${des}</p>
   </div>
  <footer class = "card-footer">
+ <button>Comment</button>
 <div class="icons">
 <i class="fas fa-heart ${heartClasses}"></i>
-   <div class="rating">
+  <div class="rating">
    <i class="far fa-star ${ratingClass}"></i>
    <i class="far fa-star"></i>
    <i class="far fa-star"></i>
@@ -166,9 +167,9 @@ function renderArticles(articles) {
       $(".article-container").prepend(row);
     }
   }
-  if (articles.length % 4 !== 0) {
-    $(".article-container").prepend(row)
-  }
+  // if (articles.length % 4 !== 0) {
+  //   $(".article-container").prepend(row)
+  // }
 }
 
 
