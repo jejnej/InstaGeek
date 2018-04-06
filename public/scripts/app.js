@@ -21,7 +21,16 @@ function createArticleElement(article) {
     <p class="card-text">${des}</p>
   </div>
  <footer class = "card-footer">
-<button>Comment</button>
+<button data-toggle="modal" data-target="#commentModal">Comment</button>
+<section class = "modal add-article" id="commentModal" tabindex="-1" role="dialog">
+
+<form class = "modal-body">
+
+
+
+</form>
+
+  </section>
 <div class="icons">
 <i class="fas fa-heart ${heartClasses}" data-heart="${article._id}"></i>
    <div class="rating" ${ratingClass}>
