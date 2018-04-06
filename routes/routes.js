@@ -74,16 +74,6 @@ module.exports = (knex) => {
   //Collection of the users posts and liked link cards
   router.get("/myresources/:uid", (req, res) => {
     knex.raw(
-      // 'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      // + ', "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      // + `, "userlikes" AS (SELECT * FROM "public"."likes" "likes" WHERE "user_id" = '${req.params.uid}')`
-      // + 'SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
-      // + '"resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "userlikes"."likes" '
-      // + 'FROM "public"."resources" "resources" '
-      // + 'LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
-      // + 'LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
-      // + 'LEFT OUTER JOIN "userlikes" ON "userlikes"."resource_id" = "resources"."id", "public"."rusers" "rusers" '
-      // + 'WHERE "rusers"."id" = "resources"."creator_id" ORDER BY "resources"."id" DESC'
     ).then(results => {
       res.json(results.rows);
     });
@@ -113,7 +103,19 @@ module.exports = (knex) => {
     });
   });
 
+
   //POSTS =================================
+
+
+router.get("/profile", (req, res) => {
+  let variables = {user: "the user", email: "test@test.com"} //need to get these from database
+
+  res.render("user_profile", variables);
+});
+
+
+//POSTS =================================
+
 
   router.post("/", (req, res) => {
 
@@ -132,17 +134,18 @@ module.exports = (knex) => {
 
       //practice using the seed data in 'rusers'
 
-      knex('rusers').where('name', enterUser)
-        .then(rows => rows.forEach(function (person) {
+    knex('rusers').where('handle', enterUser)
+      .then(rows => rows.forEach(function(person){
 
-          //need to check req with database to see if user is correct
-          if (enterUser === person.name || enterPass === person.password) {
-            res.redirect("/home");
-            console.log("you're in!")
-          } else {
-            console.log("user does not exist");
-          }
-        }));
+  //need to check req with database to see if user is correct
+        if(enterUser === person.handle || enterPass === person.password){
+        res.redirect("/home");
+        console.log("you're in!")
+        } else {
+        console.log("user does not exist");
+        }
+      }));
+
     }
 
     //need to check req with database to see if password is correct
@@ -156,28 +159,39 @@ module.exports = (knex) => {
 
   router.post("/register", (req, res) => {
 
-    let newEmail = req.body.user_email;
-    let newUsername = req.body.new_username;
-    let newPassword = req.body.new_password;
+  let newEmail = req.body.new_email;
+  let newUsername = req.body.new_username;
+  let newPassword = req.body.new_password;
 
-    if (!newEmail || !newUsername) {
-      console.log("Invalid Entry");
-    }
+  if(!newEmail || !newUsername){
+    console.log("Invalid Entry");
+  }
+  else {
+
 
     //add the user email to database
     //add the handle (username) to database
     //add the password to database
 
     knex('rusers')
-      .insert({ password: newPassword, email: newEmail, handle: newUsername });
-    console.log("Login created!");
+      .insert({
+        password: newPassword,
+        email: newEmail,
+        handle: newUsername
+      });
+  console.log("Login created!");
+  }
+})
 
-  })
 
-  //For the user to create link post
-  router.post("/create", (req, res) => {
+//For the user to create link post
+router.post("/create", (req, res) => {
 
-  });
+ console.log("here");
+
+  console.log(req.body);
+});
+
 
   //For the user to like a post
   router.post("/like", (req, res) => {
