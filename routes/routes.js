@@ -36,19 +36,56 @@ module.exports = (knex) => {
   });
 
   router.get("/all", (req, res) => {
-    knex.raw('WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id"), "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id"), "user7ratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = 7) SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "user7ratings"."rating_value" "userRating" FROM "public"."resources" "resources"   LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"   LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"   LEFT OUTER JOIN "user7ratings" ON "user7ratings"."user_id" = "resources"."id", "public"."rusers" "rusers"   WHERE "rusers"."id" = "resources"."creator_id" ORDER BY "resources"."id" DESC')
-      .then((results) => {
-        res.json(results.rows);
-      });
+    knex.raw(
+      'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "likes" "likes" RIGHT OUTER JOIN "resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id") '
+      + ' , "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "ratings" "ratings", "resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id") '
+      + ' SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
+      + ' "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating" '
+      + ' FROM "resources" '
+      + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
+      + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
+      + ' , "rusers" '
+      + ' WHERE "rusers"."id" = "resources"."creator_id" ORDER BY "resources"."id" DESC'
+    ).then((results) => {
+      res.json(results.rows);
+    });
   });
 
   //topic filter page
-  router.get("/topic/:topicname", (req, res) => {
-
+  router.get("/subject/:subjectname", (req, res) => {
+    console.log ('subject param', req.params)
+    knex.raw(
+      'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "likes" "likes" RIGHT OUTER JOIN "resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id") '
+      + ' , "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "ratings" "ratings", "resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id") '
+      + ' SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
+      + ' "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating" '
+      + ' FROM "resources" '
+      + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
+      + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
+      + ' LEFT OUTER JOIN "subjects" ON "resources"."subject_id" = "subjects"."id" '
+      + ' , "rusers" '
+      + ` WHERE "rusers"."id" = "resources"."creator_id" AND "subjects"."name" = '${req.params.subjectname}' ORDER BY "resources"."id" DESC`
+    ).then((results) => {
+      res.json(results.rows);
+    });
   });
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
-
+    /*    knex.raw(
+          'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+          + ', "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+          + ', "user7ratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = 7)'
+          + 'SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
+          + '"resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "user7ratings"."rating_value" "userRating" '
+          + 'FROM "public"."resources" "resources" '
+          + 'LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
+          + 'LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
+          + 'LEFT OUTER JOIN "user7ratings" ON "user7ratings"."resource_id" = "resources"."id", "public"."rusers" "rusers" '
+          + 'WHERE "rusers"."id" = "resources"."creator_id" ORDER BY "resources"."id" DESC)'
+            .then((results) => {
+              res.json(results.rows);
+            });
+    */
   });
 
   //Gives the user a list of their posts with the option to delete
