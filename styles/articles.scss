@@ -4,7 +4,7 @@
 }
 
 
-  button {
+button {
 
      border-radius:6px;
      background-color:#4682B4;
@@ -69,12 +69,33 @@ margin-bottom:20px;
   footer{
   height:130px;
 
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+}
 
+.fa-heart.liked {
+     color: red;
+}
+
+.fa-star.rated {
+     color: yellow;
+}
   .icons {
     float:right;
 
   }
-  }
+}
 
 
 }

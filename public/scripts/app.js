@@ -126,14 +126,11 @@ function createArticleElement(article) {
     <p class="card-text">${des}</p>
   </div>
  <footer class = "card-footer">
+<button>Comment</button>
 <div class="icons">
-<i class="fas fa-heart ${heartClasses}"></i>
-   <div class="rating">
-   <i class="far fa-star ${ratingClass}"></i>
-   <i class="far fa-star"></i>
-   <i class="far fa-star"></i>
-   <i class="far fa-star"></i>
-   <i class="far fa-star"></i>
+<i class="fas fa-heart ${heartClasses}" data-heart="${article._id}"></i>
+   <div class="rating" ${ratingClass}>
+  <span data-rating = "1">☆</span><span data-rating = "2">☆</span><span> data-rating = "3" ☆</span><span data-rating = "4">☆</span><span data-rating = "5">☆</span>
 <p>Rating: ${average}</p>
  </div>
   </div>
@@ -192,6 +189,34 @@ jQuery(document).ready(function($) {
           renderArticles(articles);
         }
       });
+
+  });
+
+   $("body").on("click", ".fa-star", function(event) {
+    var button = $(this);
+    var starID = button.attr("data-rating");
+    $.ajax({
+      type: "PUT",
+      url: `/rating/article:id`,
+      data: starID.serialize(),
+      success: data => {
+
+      }
+    });
+
+  });
+
+     $("body").on("click", ".fa-heart", function(event) {
+    var button = $(this);
+    var articleID = button.attr("data-heart");
+    $.ajax({
+      type: "PUT",
+      url: `/like/article:id`,
+      data:
+      success: data => {
+
+      }
+    });
 
   });
 
