@@ -5,6 +5,7 @@ const router  = express.Router();
 
 module.exports = (knex) => {
 
+  /*
   router.get('/', (req, res) => {
     let 
     knex
@@ -16,14 +17,12 @@ module.exports = (knex) => {
     });
     select handle as user
   });
-
-  return router;
-}
+*/
 
 //GETS =================================
 
 // Home page
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
 
 
   res.render("index");
@@ -31,35 +30,38 @@ app.get("/", (req, res) => {
 
 
 //Route to the "/home" page to hold "link cards" for the user
-app.get("/home",  (req, res) => {
+router.get("/home",  (req, res) => {
 
-console.log("welcome home");
-res.render("home");
-
+  knex.raw('WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id"), "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id"), "user7ratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = 7) SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "user7ratings"."rating_value" "userRating" FROM "public"."resources" "resources"   LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"   LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"   LEFT OUTER JOIN "user7ratings" ON "user7ratings"."user_id" = "resources"."id", "public"."rusers" "rusers"   WHERE "rusers"."id" = "resources"."creator_id" ORDER BY "resources"."id" DESC')
+  .then((results) => {
+    res.json(results.rows);
+  });
+// console.log("welcome home");
+// res.render("home");
 });
 
 //topic filter page
-app.get("/topic/:topicname", (req, res) => {
+router.get("/topic/:topicname", (req, res) => {
 
 });
 //Collection of the users posts and liked link cards
-app.get("/myresources", (req, res) => {
+router.get("/myresources", (req, res) => {
 
 });
 
 //Gives the user a list of their posts with the option to delete
-app.get("/myposts", (req, res) => {
+router.get("/myposts", (req, res) => {
 
 });
 
 //A link to the card on a standalone site to allow people to comment
-app.get("/resource/:resid", (req, res) => {
+router.get("/resource/:resid", (req, res) => {
 
 });
 
 //POSTS =================================
 
-app.post("/" , (req, res) => {
+router.post("/" , (req, res) => {
 
 
   console.log(req.body.username); // I can see the username
@@ -98,7 +100,7 @@ app.post("/" , (req, res) => {
 
 //For the User to Register a signup
 
-app.post("/register", (req, res) => {
+router.post("/register", (req, res) => {
 
   let newEmail = req.body.user_email;
   let newUsername = req.body.new_username;
@@ -119,29 +121,31 @@ app.post("/register", (req, res) => {
 })
 
 //For the user to create link post
-app.post("/create", (req, res) => {
+router.post("/create", (req, res) => {
 
 });
 
 //For the user to like a post
-app.post("/like", (req , res) => {
+router.post("/like", (req , res) => {
 
 });
 
 //For the user to comment and view comments on a post
-app.post("/comment", (req, res) => {
+router.post("/comment", (req, res) => {
 
 });
 
 //For the user to rate a post ----- need to discuess
-app.post("/rate", (req, res) => {
+router.post("/rate", (req, res) => {
 
 
 });
 
 //For the user to view user info --- need to update as well... should be PUT
-app.post("/userinfo", (req, res) => {
+router.post("/userinfo", (req, res) => {
 
 });
 
 //=================================
+return router;
+}

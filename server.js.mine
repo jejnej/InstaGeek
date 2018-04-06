@@ -10,13 +10,12 @@ const sass        = require("node-sass-middleware");
 const app         = express();
 
 const knexConfig  = require("./knexfile");
-
 const knex        = require("knex")(knexConfig[ENV]);
 const morgan      = require('morgan');
 const knexLogger  = require('knex-logger');
 
-// Separated Routes for each Resource
-const routes = require("./routes/routes");
+// Seperated Routes for each Resource
+const usersRoutes = require("./routes/users");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -47,8 +46,9 @@ app.use(express.static("public"));
 // }
 
 
+
+
 // Mount all resource routes
-<<<<<<< HEAD
 app.use("/api/users", usersRoutes(knex));
 
 //GETS =================================
@@ -106,11 +106,12 @@ app.post("/" , (req, res) => {
   } else {
 
     //practice using the seed data in 'users'
-    knex('rusers').where('handle', enterUser)
+
+    knex('users').where('name', enterUser)
       .then(rows => rows.forEach(function(person){
-        console.log(person.handle, "handle!")
+
   //need to check req with database to see if user is correct
-        if(enterUser === person.handle && enterPass === person.password){
+        if(enterUser === person.name){
         res.redirect("/home");
         console.log("you're in!")
         } else {
@@ -134,17 +135,17 @@ app.post("/register", (req, res) => {
   let newUsername = req.body.new_username;
   let newPassword = req.body.new_password;
 
-  // if(!newEmail || !newUsername){
-  //   console.log("Invalid Entry");
-  // }
+  if(!newEmail || !newUsername){
+    console.log("Invalid Entry");
+  }
+
+
 
 //add the user email to database
 //add the handle (username) to database
+
 //add the password to database
 
-  knex('rusers')
-    .insert([{password: newPassword, email: newEmail, handle: newUsername}])
-    console.log("Login created!");
 
 })
 
@@ -173,10 +174,8 @@ app.post("/rate", (req, res) => {
 app.post("/userinfo", (req, res) => {
 
 });
-=======
-app.use("/", routes(knex));
->>>>>>> db_access
 
+//=================================
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
