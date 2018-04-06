@@ -34,16 +34,16 @@ function createArticleElement(article) {
  </footer>
 </div>
 
-<section class = "modal" id="articleModal_${article.id}" tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
+<section class = "modal" id="articleModal_${article.id}" data-article="${article.id}" tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
    <div class="row modal-body article-modal-1">
     <div class="col-sm">
     <a href="${url}"><img class="modal-image" src="${image}"> </a>
     </div>
     <div class="col-sm">
-     <h3 class = "modal-title">${title}</h3>
+     <h2 class = "modal-title">${title}</h2>
      <p class="modal-description">${des}</p>
 
-        <section class="comments">
+     <section class="new-comment">
       <h2>Comment Section</h2>
       <hr>
       <form>
@@ -53,6 +53,8 @@ function createArticleElement(article) {
         </div>
       </form>
     </section>
+    <div class ="comment-container">
+    </div>
      </div>
    </div>
 </section>
@@ -75,6 +77,30 @@ function renderArticles(articles) {
   if (articles.length % 4 !== 0) {
     $(".article-container").append(row)
   }
+}
+
+
+function createCommentElement(comment) {
+  let name = comment.handle;
+  let commentBody = comment.comment_text;
+  const commentHTML =
+
+  `
+  <div class="card">
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>${commentBody}</p>
+      <footer class="blockquote-footer">By - `${name}`</footer>
+    </blockquote>
+  </div>
+</div>
+
+  `
+  return commentHTML
+}
+
+function renderComments {
+
 }
 
 
