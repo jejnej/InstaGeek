@@ -185,7 +185,9 @@ jQuery(document).ready(function($) {
     $(tab_content).addClass('active');
   });
 
-  renderArticles(article);
+  $.get('/all', article => {
+    renderArticles(article);
+  });
 
 });
 
