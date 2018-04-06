@@ -7,7 +7,7 @@ module.exports = (knex) => {
 
   /*
   router.get('/', (req, res) => {
-    let 
+    let
     knex
       // .column({user: 'handle'}, 'title', {imageUrl: 'image_url'}, {articleUrl: 'url'}, 'description', )
       .select()
@@ -36,8 +36,8 @@ router.get("/home",  (req, res) => {
   .then((results) => {
     res.json(results.rows);
   });
-// console.log("welcome home");
-// res.render("home");
+
+res.render("home");
 });
 
 //topic filter page
