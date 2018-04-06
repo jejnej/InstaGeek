@@ -7,7 +7,7 @@ module.exports = (knex) => {
 
   /*
   router.get('/', (req, res) => {
-    let 
+    let
     knex
       // .column({user: 'handle'}, 'title', {imageUrl: 'image_url'}, {articleUrl: 'url'}, 'description', )
       .select()

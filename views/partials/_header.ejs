@@ -15,12 +15,23 @@
     <a href="#"><img  class= "brand-logo" src="images/engineer.png"></a>
 
     <a class="navbar-brand" href="#">InstaGeek</a>
-
-
-     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="form-inline my-2 my-lg-0" >
+      <input id = "main-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
+    <div class="dropdown">
+  <button id = "subjects-button" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Subjects
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">Physics</a>
+    <a class="dropdown-item" href="#">Chemistry</a>
+    <a class="dropdown-item" href="#">Biology</a>
+    <a class="dropdown-item" href="#">Math</a>
+    <a class="dropdown-item" href="#">Technology</a>
+    <a class="dropdown-item" href="#">Economics</a>
+    <a class="dropdown-item" href="#">Arts</a>
   </div>
-  <button id="add-article" data-toggle="modal" data-target="#exampleModal"> <i class="fas fa-edit"></i>Add Article</button>
+</div>
+  </div>
 </nav>

@@ -9,30 +9,14 @@ nav {
     .brand-logo {
       margin-left:20px;
     }
-  button {
-     float:right;
-     border-radius:6px;
-     background-color:#4682B4;
-     width:110px;
-     height:50px;
-     font-size:15px;
-     margin-top:10px;
-     color:#00a087;
-     opacity:0.9;
-     color:white;
-}
-button:hover {
-     opacity:1;
-     cursor:pointer;
+
+#main-search {
+  width:500px;
 }
 
-#add-article {
-  float:right;
-  margin-right:120px;
-  width:130px;
-  height:80px;
+form {
+  margin-left:130px;
 }
-
 
 
 }
