@@ -110,12 +110,11 @@ app.post("/" , (req, res) => {
   } else {
 
     //practice using the seed data in 'users'
-
-    knex('users').where('name', enterUser)
+    knex('rusers').where('handle', enterUser)
       .then(rows => rows.forEach(function(person){
-
+        console.log(person.handle, "handle!")
   //need to check req with database to see if user is correct
-        if(enterUser === person.name || enterPass === person.password){
+        if(enterUser === person.handle && enterPass === person.password){
         res.redirect("/home");
         console.log("you're in!")
         } else {
@@ -139,15 +138,15 @@ app.post("/register", (req, res) => {
   let newUsername = req.body.new_username;
   let newPassword = req.body.new_password;
 
-  if(!newEmail || !newUsername){
-    console.log("Invalid Entry");
-  }
+  // if(!newEmail || !newUsername){
+  //   console.log("Invalid Entry");
+  // }
 
 //add the user email to database
 //add the handle (username) to database
 //add the password to database
 
-  knex('users')
+  knex('rusers')
     .insert([{password: newPassword, email: newEmail, handle: newUsername}])
     console.log("Login created!");
 
