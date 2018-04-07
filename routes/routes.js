@@ -210,7 +210,6 @@ module.exports = (knex) => {
 
 
 
-  //For the user to create link post
   router.post("/resoure/create", (req, res) => {
 
     let newSubject = req.body.new_subject;
@@ -249,6 +248,7 @@ console.log("DDDDDDDD")
       })
     }
 
+
     seedResourceFromUrl(knex, newURL, userID, newSubject);
 
     //res.redirect("/home");
@@ -256,30 +256,33 @@ console.log("DDDDDDDD")
 
 
   //For the user to like a post
-  router.post("/like", (req, res) => { //OR PUTS?
-
+  router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
+ if (err) {
+        res.status(500).json({
+          error: err.message
+        });
+      } else {
+        res.status(201).send();
+      }
     //get the post request from the link button
 
   });
 
   //For the user to comment and view comments on a post
-  router.post("/comment", (req, res) => { //OR PUTS???
+  router.put("/resource/:resid/comment", (req, res) => { //OR PUTS???
 
     //get the post request from comment button
 
   });
 
   //For the user to rate a post ----- need to discuess
-  router.post("/rate", (req, res) => { //OR PUTS??
+  router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
 
     //get post request
 
   });
 
-  //For the user to view user info --- need to update as well... should be PUT
-  router.post("/userinfo", (req, res) => {
 
-  });
 
   //PUT =================================
 

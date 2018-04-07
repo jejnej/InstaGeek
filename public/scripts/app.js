@@ -1,4 +1,6 @@
 
+// Creates article cards which have their own modal pop up when clicked
+
 function createArticleElement(article) {
   let user = article.user;
   let title = article.title;
@@ -6,7 +8,7 @@ function createArticleElement(article) {
   let image = article.imageUrl;
   let des = article.description;
   let heartClasses = article.likes;
-  let average = article.averageRating;
+  let average = article.rating_value;
   let ratingClass = article.userRating;
 
 
@@ -24,7 +26,7 @@ function createArticleElement(article) {
 
   <div class="icons">
       <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
-    <div class="rating" ${ratingClass}>
+    <div class="rating" ${ratingClass} >
         <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
     <p>Rating: ${average}</p>
  </div>
@@ -32,7 +34,7 @@ function createArticleElement(article) {
  </footer>
 </div>
 
-<section class = "modal" id="articleModal_${article.id}" data-article="${article.id}" tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
+<section class = "modal" id="articleModal_${article.id}"  tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
    <div class="row modal-body article-modal-1">
     <div class="col-sm">
     <a href="${url}"><img class="modal-image" src="${image}"> </a>
@@ -61,6 +63,10 @@ function createArticleElement(article) {
   return articleHTML;
 }
 
+// Renders articles depending on how many articles in the row
+// appends a new row when 4 articles reached
+// appends articles to the article container
+
 function renderArticles(articles) {
   var row = "";
   for (var i = 0; i < articles.length; i++) {
@@ -75,51 +81,34 @@ function renderArticles(articles) {
   if (articles.length % 4 !== 0) {
     $(".article-container").append(row)
   }
+
+  addClickHandlersForComments();
 }
 
-
+// Creates comment card for comments
 function createCommentElement(comment) {
   let name = comment.user;
   let commentBody = comment.comment_text;
   const commentHTML =
-
     `
   <div class = "posted-comment">
-      <div class="posted-comment-body">
-      <p>${commentBody}</p>
+      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${commentBody}</span>
       <hr>
-      </div>
-     <p>"Posted by: ${name}"</p>
  </div>
 
   `
   return commentHTML
 }
 
-
-
+// Function that appends comments to the comment container
 function renderComments(comments) {
   comments.forEach(function(comment) {
     $(".comments-container").prepend(createCommentElement(comment));
   });
 }
 
-
-jQuery(document).ready(function($) {
-  tab = $('.tabs h3 a');
-
-  tab.on('click', function(event) {
-    event.preventDefault();
-    tab.removeClass('active');
-    $(this).addClass('active');
-
-    tab_content = $(this).attr('href');
-    $('div[id$="tab-content"]').removeClass('active');
-    $(tab_content).addClass('active');
-  });
-
-
-  $(".commentModal").on("click", function(event) {
+function addClickHandlersForComments() {
+    $(".commentModal").on("click", function(event) {
     event.preventDefault();
     let comment = $(this);
     let commentID = comment.data("article")
@@ -133,10 +122,39 @@ jQuery(document).ready(function($) {
 
     });
   });
+}
 
-  // $.get('/all', articles => {
-  //   renderArticles(articles);
-  // });
+
+
+
+jQuery(document).ready(function($) {
+  tab = $('.tabs h3 a');
+
+// Tabbing between login/signup form
+  tab.on('click', function(event) {
+    event.preventDefault();
+    tab.removeClass('active');
+    $(this).addClass('active');
+    tab_content = $(this).attr('href');
+    $('div[id$="tab-content"]').removeClass('active');
+    $(tab_content).addClass('active');
+  });
+
+
+  $("#article-submit-button").on("submit", function(event) {
+    event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: "/resource/create",
+        data: $("article-submit-button").serialize(),
+        success: function(data) {
+       renderArticles();
+        }
+      });
+ });
+
+
+// Event listener on click for drop down subjects
 
   $(".dropdown-item").on("click", function(event) {
     event.preventDefault();
@@ -150,39 +168,107 @@ jQuery(document).ready(function($) {
         $("#board-heading").text(subjectID);
         $(".article-container").empty();
         renderArticles(articles);
+        // renderComments(comments);
+      }
+    });
+  });
+
+    $("#dropdown-all").on("click", function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      type: "GET",
+      url: `/all`,
+      success: function(articles) {
+        $("#board-heading").text("Main Board");
+        $(".article-container").empty();
+        renderArticles(articles);
+        // we can add click handlers
+        // addClickHandlersToCards()
+
+      }
+    });
+  });
+
+
+   $("body").on("click", ".fa-star", function(event) {
+    var icon = $(this);
+    var starID = icon.attr("rating");
+    $.ajax({
+      type: "POST",
+      url: `/resource/`,
+      data: starID.serialize(),
+      success: data => {
+
       }
     });
 
   });
 
 
-  //  $("body").on("click", ".fa-star", function(event) {
-  //   var button = $(this);
-  //   var starID = button.attr("data-rating");
-  //   $.ajax({
-  //     type: "PUT",
-  //     url: `/rating/article:id`,
-  //     data: starID.serialize(),
-  //     success: data => {
+    $("body").on("click", ".fa-heart", function(event) {
+     event.preventDefault();
+    var icon = $(this);
+    var articleID = icon.data("heart");
+    $.ajax({
+      type: "POST",
+      url: `/resource/${articleID}/like`,
+       success: data => {
+        icon.css('color','red');
+      }
+    });
+  });
 
-  //     }
-  //   });
+// Returns articles created by user or liked by user
 
-  // });
+  $("#my-board").on("click", function(event) {
+     event.preventDefault();
+     let board = $(this);
+       let boardID = board.data("");
+      $.ajax({
+      type: "GET",
+      url: `/user/saved`,
+      success: function(articles) {
+        $("#board-heading").text("My board");
+        $(".article-container").empty();
+        renderArticles(articles);
+      }
+    });
+  });
 
-  //    $("body").on("click", ".fa-heart", function(event) {
-  //   var button = $(this);
-  //   var articleID = button.attr("data-heart");
-  //   $.ajax({
-  //     type: "PUT",
-  //     url: `/like/article:id`,
-  //     data:
-  //     success: data => {
 
-  //     }
-  //   });
+// On click of navbar search button. Return results on same page
 
-  // });
+ $("#main-search-board").on("submit", function(event) {
+     event.preventDefault();
+     let query = $(this);
+
+      $.ajax({
+      type: "GET",
+      url: `/all`,
+      success: function(articles) {
+        $("#board-heading").text("Results");
+        $(".article-container").empty();
+        renderArticles(articles);
+      }
+    });
+  });
+
+ $("#logout-button").on("click", function(event) {
+     event.preventDefault();
+     let query = $(this);
+
+      $.ajax({
+      type: "DELETE",
+      url: `/logout`,
+      success: function(articles) {
+      // redirect to / where login is
+      }
+    });
+  });
+
+
+
 
 });
 
