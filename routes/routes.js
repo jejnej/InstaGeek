@@ -237,7 +237,7 @@ console.log("DDDDDDDD")
             description: description,
             image_url: imgurl,
             creator_id: userID,
-            subject_id: newSubject;
+            // subject_id: newSubject;
 
           }).then().catch();
           return resolve();

@@ -49,7 +49,8 @@ function createArticleElement(article) {
       <form>
         <textarea id="commentSubmit" name="text" placeholder="What do you think?"></textarea>
         <div>
-        <input type="submit">
+        <input type="hidden" name="articleId" value="${article.id}">
+           <input type="submit" value="Submit">
         </div>
       </form>
     </section>
@@ -153,6 +154,19 @@ jQuery(document).ready(function($) {
       });
  });
 
+  $("form#commentSubmit").on("submit", function(event) {
+    event.preventDefault();
+      $.ajax({
+        type: "POST",
+        data: $(this).serialize(),
+        url: `/resource/:resid/comments`,
+        success: function(data) {
+         renderComments(data)
+        }
+      });
+ });
+
+
 
 // Event listener on click for drop down subjects
 
@@ -239,13 +253,13 @@ jQuery(document).ready(function($) {
 
 // On click of navbar search button. Return results on same page
 
- $("#main-search-board").on("submit", function(event) {
+ $("form#main-search").on("submit", function(event) {
      event.preventDefault();
-     let query = $(this);
 
       $.ajax({
       type: "GET",
-      url: `/all`,
+      url: `/search`,
+     data: $(this).serialize(),
       success: function(articles) {
         $("#board-heading").text("Results");
         $(".article-container").empty();
