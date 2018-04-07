@@ -78,10 +78,10 @@ module.exports = (knex) => {
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
     knex.select('*').from('resources').where('creator_id', req.cookies.id).union(function () {
-      this.select('*').from('resources').innerJoin.where('first_name');
+      this.select('resources.*').from('resources').innerJoin('likes', 'resources.id', 'likes.resource_id').where('likes.user_id', req.cookies.id);
     })
-      .then((results) => {
-        res.json(results.rows);
+      .then((rows) => {
+        res.json(rows);
       })
       .catch(err => {
         res.redirect('/');
@@ -91,7 +91,7 @@ module.exports = (knex) => {
   //Gives the user a list of their posts with the option to delete
   router.get("/myposts", (req, res) => {
     knex('resources').where('creator_id', req.cookies.id).select('*')
-      .then((results) => res.json(results))
+      .then((rows) => res.json(rows))
       .catch((err) => {
         console.log(err);
         res.redirect('/');
