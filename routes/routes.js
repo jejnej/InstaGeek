@@ -11,12 +11,20 @@ module.exports = (knex) => {
 
   // Home page
   router.get("/", (req, res) => {
+
+    if(req.cookies.handle){
+      res.redirect("/home");
+    } else {
+      res.render("index");
+    }
+
     res.render("index");
   });
 
 
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
+
     console.log('cookie', req.cookies.id);
     if (!req.cookies.id) {
       res.redirect('/');
@@ -126,7 +134,7 @@ module.exports = (knex) => {
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: userCookie, email: person.email }
+        let variables = { user: person.handle, email: person.email }
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -202,6 +210,7 @@ module.exports = (knex) => {
   })
 
 
+
   //For the user to create link post
   router.post("/create", (req, res) => {
 
@@ -239,6 +248,22 @@ module.exports = (knex) => {
 
   //PUT =================================
 
-  //router.put() <--- to update the user profile
+  router.post("/profile/update", (req, res) => {
+
+    let updateUser = req.body.updateUser
+    let updatePass = req.body.updatePass
+    let updateEmail = req.body.updateEmail
+    let userCookie = req.cookies.id
+
+    knex('rusers')
+      .where('id', '=', userCookie) //Handle or ID?
+      .update({
+        email: updateEmail,
+        password: updatePass,
+        handle: updateUser
+      })
+  res.redirect("/profile");
+  })
+
   return router;
 }
