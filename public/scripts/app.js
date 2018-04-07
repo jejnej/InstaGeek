@@ -1,6 +1,7 @@
 
 
 
+
 function createArticleElement(article) {
   let user = article.user;
   let title = article.title;
