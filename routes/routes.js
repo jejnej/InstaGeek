@@ -25,8 +25,11 @@ module.exports = (knex) => {
 
   // Home page
   router.get("/", (req, res) => {
-
-
+    if(req.cookies.handle){
+      res.redirect("/home");
+    } else {
+      res.render("index");
+    }
     res.render("index");
   });
 
@@ -121,7 +124,7 @@ router.get("/profile", (req, res) => {
 
     let variables = {user: userCookie, email: person.email}
 
-    res.render("user_profile", variables);
+    res.render("user_profile.ejs", variables);
     }))
 
 
@@ -179,31 +182,35 @@ router.get("/profile", (req, res) => {
   let newEmail = req.body.new_email;
   let newUsername = req.body.new_username;
   let newPassword = req.body.new_password;
+  let taken = 0;
 
   if(!newEmail || !newUsername){
     console.log("Invalid Entry");
   }
-  else if(newEmail && newUsername) {
+  else {
 
     knex('rusers').where('handle', newUsername)
       .then(rows => rows.forEach(function(person){
 
         if(newUsername === person.handle){
-          console.log("username taken");
+          alert("username taken");
+          taken = 1;
         }
-      })
-    )
-  }
-  else {
+      }.then(function() { console.log("OK");}
+  )))
+
+
+    if(taken === 0) {
     knex('rusers')
       .insert({
         email: newEmail,
         password: newPassword,
         handle: newUsername
-      }).then(function() {
-        res.redirect("/home")
-    })
-      console.log("Login created!");
+      }).then(function(){ console.log ("OK")})
+      res.cookie("handle", newUsername);
+      res.redirect("/")
+      console.log("Login created??");
+    }
   }
 })
 
