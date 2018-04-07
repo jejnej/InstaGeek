@@ -222,7 +222,7 @@ console.log(req.body);
       return new Promise(function (resolve, reject) {
 console.log("AAAAAAAA")
 
-      //return (function() {
+
 console.log("BBBBBBBB")
         ogParser(newURL, function (error, data) {
 console.log("CCCCCCCC")
@@ -239,7 +239,7 @@ console.log("DDDDDDDD")
             image_url: imgurl,
             creator_id: userID,
             //subject_id: "newSubject"
-//          }).then(resolve).catch(reject);
+
           }).then().catch();
           return resolve();
           return reject(error);
