@@ -141,14 +141,14 @@ jQuery(document).ready(function($) {
   });
 
 
-  $("#article-submit-button").on("submit", function(event) {
+  $("form#new-article-modal").on("submit", function(event) {
     event.preventDefault();
       $.ajax({
         type: "POST",
-        url: "/resource/create",
-        data: $("article-submit-button").serialize(),
+        data: $(this).serialize(),
+        url: `/resource/create`,
         success: function(data) {
-       renderArticles();
+       location.reload();
         }
       });
  });

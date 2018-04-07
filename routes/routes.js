@@ -210,7 +210,7 @@ module.exports = (knex) => {
 
 
 
-  router.post("/resoure/create", (req, res) => {
+  router.post("/resource/create", (req, res) => {
 
     let newSubject = req.body.new_subject;
     let newURL = req.body.new_url;
@@ -237,7 +237,7 @@ console.log("DDDDDDDD")
             description: description,
             image_url: imgurl,
             creator_id: userID,
-            //subject_id: "newSubject"
+            subject_id: newSubject;
 
           }).then().catch();
           return resolve();
@@ -251,7 +251,7 @@ console.log("DDDDDDDD")
 
     seedResourceFromUrl(knex, newURL, userID, newSubject);
 
-    //res.redirect("/home");
+    res.redirect("/home");
   });
 
 
