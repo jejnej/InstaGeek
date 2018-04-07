@@ -267,8 +267,8 @@ console.log(req.body);
       .insert({
         resource_id : resID,
         user_id     : userID
-      }),then()
-
+      }).then()
+    res.redirect("/home");
   });
 
   //For the user to comment and view comments on a post
@@ -281,25 +281,35 @@ console.log(req.body);
     let resID    = req.params.resid;
 
     //put it in the database based on the resource id
-       knex('comments')
-        .insert({
-          comment_text : userText,
-          resource_id  : resID,
-          user_id      : userID
-        }).then()
-
+     knex('comments')
+      .insert({
+        comment_text : userText,
+        resource_id  : resID,
+        user_id      : userID
+      }).then()
+    res.redirect("/home");
   });
 
-  //For the user to rate a post ----- need to discuess
-  router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
+  //For the user to rate a post
+  router.post("/resource/:resid/rating", (req, res) => {
 
-    let userID = req.cookies.id;
-    let resID = req.params.resid;
-    let ratingValue =
+    let ratingValue = req.params.rating;
+    let resID       = req.params.resid;
+    let userID      = req.cookies.id;
 
+    knex('ratings')
+      .insert({
+        rating_value : ratingValue,
+        resource_id  : resID,
+        user_id      : userID
+      }).then();
+    res.redirect("/home");
   });
 
-
+  router.delete("/logout", (req, res) => {
+    res.clearCookie("id");
+    res.redirect("/")
+  }
 
   //PUT =================================
 
