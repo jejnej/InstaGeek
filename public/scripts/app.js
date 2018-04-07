@@ -12,6 +12,7 @@ function createArticleElement(article) {
   let ratingClass = article.userRating;
 
 
+
   const articleHTML =
 
     `<div class = "col-sm">
@@ -22,7 +23,7 @@ function createArticleElement(article) {
     <p class="card-text">${des}</p>
   </div>
  <footer class = "card-footer">
-<button data-toggle="modal" data-target="#articleModal_${article.id}">Comment</button>
+<button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
 
 <div class="icons">
 <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
@@ -86,14 +87,10 @@ function createCommentElement(comment) {
   const commentHTML =
 
   `
-  <div class="card">
-  <div class="card-body">
-    <blockquote class="blockquote mb-0">
+  <div>
       <p>${commentBody}</p>
-      <footer class="blockquote-footer">"By - ${name}"</footer>
-    </blockquote>
-  </div>
-</div>
+     <p>"By - ${name}"</p>
+ </div>
 
   `
   return commentHTML
@@ -120,6 +117,24 @@ jQuery(document).ready(function($) {
   });
 
 
+$(".commentModal").on("click", function(event) {
+event.preventDefault();
+let comment = $(this);
+let commentID = comment.data("article")
+console.log(commentID)
+ $(".comments-container").empty();
+$.ajax({
+  type:"GET",
+  url: `/comments/${commentID}`,
+  success: function(comments) {
+
+   console.log(comments);
+   renderComments(comments);
+  }
+
+  });
+});
+
   // $.get('/all', articles => {
   //   renderArticles(articles);
   // });
@@ -140,6 +155,7 @@ jQuery(document).ready(function($) {
       });
 
   });
+
 
   //  $("body").on("click", ".fa-star", function(event) {
   //   var button = $(this);
