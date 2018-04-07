@@ -1,6 +1,4 @@
 
-
-
 function createArticleElement(article) {
   let user = article.user;
   let title = article.title;
@@ -12,24 +10,23 @@ function createArticleElement(article) {
   let ratingClass = article.userRating;
 
 
-
   const articleHTML =
 
     `<div class = "col-sm">
-<div class="card" style="width: 28rem;">
+  <div class="card" style="width: 28rem;">
   <a href="${url}"><img class="card-img-top" src="${image}"> </a>
   <div class="card-body">
     <h3>${title}</h3>
     <p class="card-text">${des}</p>
   </div>
- <footer class = "card-footer">
-<button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
+  <footer class = "card-footer">
+  <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
 
-<div class="icons">
-<i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
-   <div class="rating" ${ratingClass}>
-  <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
-<p>Rating: ${average}</p>
+  <div class="icons">
+      <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
+    <div class="rating" ${ratingClass}>
+        <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
+    <p>Rating: ${average}</p>
  </div>
   </div>
  </footer>
@@ -45,7 +42,7 @@ function createArticleElement(article) {
      <p class="modal-description">${des}</p>
 
      <section class="new-comment">
-      <h2>Comment Section</h2>
+      <h2>Comments</h2>
       <hr>
       <form>
         <textarea id="commentSubmit" name="text" placeholder="What do you think?"></textarea>
@@ -82,17 +79,17 @@ function renderArticles(articles) {
 
 
 function createCommentElement(comment) {
-  let name = comment.handle;
+  let name = comment.user;
   let commentBody = comment.comment_text;
   const commentHTML =
 
-  `
+    `
   <div class = "posted-comment">
       <div class="posted-comment-body">
       <p>${commentBody}</p>
       <hr>
       </div>
-     <p>"By - ${name}"</p>
+     <p>"Posted by: ${name}"</p>
  </div>
 
   `
@@ -102,7 +99,7 @@ function createCommentElement(comment) {
 
 
 function renderComments(comments) {
-   comments.forEach(function(comment) {
+  comments.forEach(function(comment) {
     $(".comments-container").prepend(createCommentElement(comment));
   });
 }
@@ -122,20 +119,20 @@ jQuery(document).ready(function($) {
   });
 
 
-$(".commentModal").on("click", function(event) {
-event.preventDefault();
-let comment = $(this);
-let commentID = comment.data("article")
- $(".comments-container").empty();
-$.ajax({
-  type:"GET",
-  url: `/comments/${commentID}`,
-  success: function(comments) {
-   renderComments(comments);
-  }
+  $(".commentModal").on("click", function(event) {
+    event.preventDefault();
+    let comment = $(this);
+    let commentID = comment.data("article")
+    $(".comments-container").empty();
+    $.ajax({
+      type: "GET",
+      url: `/comments/${commentID}`,
+      success: function(comments) {
+        renderComments(comments);
+      }
 
+    });
   });
-});
 
   // $.get('/all', articles => {
   //   renderArticles(articles);
@@ -146,15 +143,15 @@ $.ajax({
     let subject = $(this);
     let subjectID = subject.attr("data-subjects");
 
-      $.ajax({
-        type: "GET",
-        url: `/subject/${subjectID}`,
-        success: function(articles) {
-          $("#main-board").text(subjectID);
-          $(".article-container").empty();
-          renderArticles(articles);
-        }
-      });
+    $.ajax({
+      type: "GET",
+      url: `/subject/${subjectID}`,
+      success: function(articles) {
+        $("#board-heading").text(subjectID);
+        $(".article-container").empty();
+        renderArticles(articles);
+      }
+    });
 
   });
 

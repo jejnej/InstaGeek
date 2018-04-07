@@ -1,37 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 </head>
+
 <body>
 
-
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-    <a href="#"><img  class= "brand-logo" src="images/engineer.png"></a>
-
-    <a class="navbar-brand" href="#">InstaGeek</a>
-      <form class="form-inline my-2 my-lg-0" >
-      <input id = "main-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <div class="dropdown">
-  <button id = "subjects-button" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Subjects
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a data-subjects="Physics" class="dropdown-item" href="#">Physics</a>
-    <a data-subjects="Chemistry" class="dropdown-item" href="#">Chemistry</a>
-    <a data-subjects="Biology" class="dropdown-item" href="#">Biology</a>
-    <a data-subjects="Math" class="dropdown-item" href="#">Math</a>
-    <a data-subjects="Technology" class="dropdown-item" href="#">Technology</a>
-    <a data-subjects= "Economics" class="dropdown-item" href="#">Economics</a>
-    <a data-subjects= "Arts"class="dropdown-item" href="#">Arts</a>
-  </div>
-</div>
-  </div>
-</nav>
+    <!-- navbar brand and logo -->
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <a href="#"><img  class= "brand-logo" src="images/engineer.png"></a>
+      <a class="navbar-brand" href="#">InstaGeek</a>
+      <!-- Search Form on Nav -->
+      <form class="form-inline my-2 my-lg-0">
+        <input id="main-search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <!-- subjects drop down to filter by subjects -->
+      <div class="dropdown">
+        <button id="subjects-button" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Subjects</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a data-subjects="All" class="dropdown-item" href="#">All</a>
+          <a data-subjects="Physics" class="dropdown-item" href="#">Physics</a>
+          <a data-subjects="Chemistry" class="dropdown-item" href="#">Chemistry</a>
+          <a data-subjects="Biology" class="dropdown-item" href="#">Biology</a>
+          <a data-subjects="Math" class="dropdown-item" href="#">Math</a>
+          <a data-subjects="Technology" class="dropdown-item" href="#">Technology</a>
+          <a data-subjects="Economics" class="dropdown-item" href="#">Economics</a>
+          <a data-subjects="Arts" class="dropdown-item" href="#">Arts</a>
+        </div>
+      </div>
+    </div>
+  </nav>
