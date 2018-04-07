@@ -11,12 +11,20 @@ module.exports = (knex) => {
 
   // Home page
   router.get("/", (req, res) => {
+
+    if(req.cookies.handle){
+      res.redirect("/home");
+    } else {
+      res.render("index");
+    }
+
     res.render("index");
   });
 
 
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
+
     console.log('cookie', req.cookies.id);
     if (!req.cookies.id) {
       res.redirect('/');
@@ -70,10 +78,10 @@ module.exports = (knex) => {
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
     knex.select('*').from('resources').where('creator_id', req.cookies.id).union(function () {
-      this.select('*').from('resources').innerJoin.where('first_name');
+      this.select('resources.*').from('resources').innerJoin('likes', 'resources.id', 'likes.resource_id').where('likes.user_id', req.cookies.id);
     })
-      .then((results) => {
-        res.json(results.rows);
+      .then((rows) => {
+        res.json(rows);
       })
       .catch(err => {
         res.redirect('/');
@@ -83,7 +91,7 @@ module.exports = (knex) => {
   //Gives the user a list of their posts with the option to delete
   router.get("/myposts", (req, res) => {
     knex('resources').where('creator_id', req.cookies.id).select('*')
-      .then((results) => res.json(results))
+      .then((rows) => res.json(rows))
       .catch((err) => {
         console.log(err);
         res.redirect('/');
@@ -126,7 +134,7 @@ module.exports = (knex) => {
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: userCookie, email: person.email }
+        let variables = { user: person.handle, email: person.email, password: person.password }
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -202,6 +210,7 @@ module.exports = (knex) => {
   })
 
 
+
   //For the user to create link post
   router.post("/create", (req, res) => {
 
@@ -212,21 +221,21 @@ module.exports = (knex) => {
 
 
   //For the user to like a post
-  router.post("/like", (req, res) => {
+  router.post("/like", (req, res) => { //OR PUTS?
 
     //get the post request from the link button
 
   });
 
   //For the user to comment and view comments on a post
-  router.post("/comment", (req, res) => {
+  router.post("/comment", (req, res) => { //OR PUTS???
 
     //get the post request from comment button
 
   });
 
   //For the user to rate a post ----- need to discuess
-  router.post("/rate", (req, res) => {
+  router.post("/rate", (req, res) => { //OR PUTS??
 
     //get post request
 
@@ -239,6 +248,22 @@ module.exports = (knex) => {
 
   //PUT =================================
 
-  //router.put() <--- to update the user profile
+  router.post("/profile/update", (req, res) => {
+
+    let updateUser = req.body.updateUser
+    let updatePass = req.body.updatePass
+    let updateEmail = req.body.updateEmail
+    let userCookie = req.cookies.id
+
+    knex('rusers')
+      .where('id', '=', userCookie) //Handle or ID?
+      .update({
+        email: updateEmail,
+        password: updatePass,
+        handle: updateUser
+      }).then();
+  res.redirect("/profile");
+  })
+
   return router;
 }

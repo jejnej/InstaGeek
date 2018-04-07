@@ -12,27 +12,25 @@
   </header>
   <h1><%= `${user}` %>'s Profile</h1>
 
-  <div class="user-info">
-    <div>
+  <form class="user-info" action="/profile/update" method="POST">
       <label>Username:</label>
-      <label><%= `${user}` %></label>
-
+      <input type="text" value="<%= `${user}` %>" name="updateUser">
     </div>
     <div>
       <label>Password:</label>
-      <label>********</label>
+      <input type="password" value="<%= `${user}` %>" placeholder="************" name="updatePass">
     </div>
     <div>
       <label>Email:</label>
-      <label><%= `${email}` %></label>
+      <input type="email" value="<%= `${email}` %>" name="updateEmail">
     </div>
     <div>
       <label>Avatar:</label>
       <img src="images/atom.png">
-      <!-- an image! -->
-
+      <button type= >New Photo</button> <!-- needs to do things -->
     </div>
-  </div>
+    <button type="Submit">Update</button>
+  </form>
 
 
 
