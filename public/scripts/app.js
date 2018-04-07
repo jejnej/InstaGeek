@@ -87,14 +87,19 @@ function createCommentElement(comment) {
   const commentHTML =
 
   `
-  <div>
+  <div class = "posted-comment">
+      <div class="posted-comment-body">
       <p>${commentBody}</p>
+      <hr>
+      </div>
      <p>"By - ${name}"</p>
  </div>
 
   `
   return commentHTML
 }
+
+
 
 function renderComments(comments) {
    comments.forEach(function(comment) {
@@ -121,14 +126,11 @@ $(".commentModal").on("click", function(event) {
 event.preventDefault();
 let comment = $(this);
 let commentID = comment.data("article")
-console.log(commentID)
  $(".comments-container").empty();
 $.ajax({
   type:"GET",
   url: `/comments/${commentID}`,
   success: function(comments) {
-
-   console.log(comments);
    renderComments(comments);
   }
 
