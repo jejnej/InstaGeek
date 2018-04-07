@@ -334,7 +334,7 @@ module.exports = (knex) => {
   router.delete("/logout", (req, res) => {
     res.clearCookie("id");
     res.redirect("/")
-  }
+  });
 
   //PUT =================================
 
