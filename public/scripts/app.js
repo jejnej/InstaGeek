@@ -11,6 +11,7 @@ function createArticleElement(article) {
   let average = article.averageRating;
   let ratingClass = article.userRating;
 
+
   const articleHTML =
 
     `<div class = "col-sm">
@@ -21,25 +22,43 @@ function createArticleElement(article) {
     <p class="card-text">${des}</p>
   </div>
  <footer class = "card-footer">
-<button data-toggle="modal" data-target="#commentModal">Comment</button>
-<section class = "modal add-article" id="commentModal" tabindex="-1" role="dialog">
+<button data-toggle="modal" data-target="#articleModal_${article.id}">Comment</button>
 
-<form class = "modal-body">
-
-
-
-</form>
-
-  </section>
 <div class="icons">
-<i class="fas fa-heart ${heartClasses}" data-heart="${article._id}"></i>
+<i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
    <div class="rating" ${ratingClass}>
   <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
 <p>Rating: ${average}</p>
  </div>
   </div>
  </footer>
-</div>`
+</div>
+
+<section class = "modal" id="articleModal_${article.id}" data-article="${article.id}" tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
+   <div class="row modal-body article-modal-1">
+    <div class="col-sm">
+    <a href="${url}"><img class="modal-image" src="${image}"> </a>
+    </div>
+    <div class="col-sm">
+     <h2 class = "modal-title">${title}</h2>
+     <p class="modal-description">${des}</p>
+
+     <section class="new-comment">
+      <h2>Comment Section</h2>
+      <hr>
+      <form>
+        <textarea id="commentSubmit" name="text" placeholder="What do you think?"></textarea>
+        <div>
+        <input type="submit">
+        </div>
+      </form>
+    </section>
+    <div class ="comments-container">
+    </div>
+     </div>
+   </div>
+</section>
+`
 
   return articleHTML;
 }
@@ -50,14 +69,40 @@ function renderArticles(articles) {
     if (i % 4 === 0) {
       row = $("<div/>").addClass("row");
     }
-    row.prepend(createArticleElement(articles[i]));
+    row.append(createArticleElement(articles[i]));
     if (i % 4 === 3) {
-      $(".article-container").prepend(row);
+      $(".article-container").append(row);
     }
   }
   if (articles.length % 4 !== 0) {
-    $(".article-container").prepend(row)
+    $(".article-container").append(row)
   }
+}
+
+
+function createCommentElement(comment) {
+  let name = comment.handle;
+  let commentBody = comment.comment_text;
+  const commentHTML =
+
+  `
+  <div class="card">
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>${commentBody}</p>
+      <footer class="blockquote-footer">"By - ${name}"</footer>
+    </blockquote>
+  </div>
+</div>
+
+  `
+  return commentHTML
+}
+
+function renderComments(comments) {
+   comments.forEach(function(comment) {
+    $(".comments-container").prepend(createCommentElement(comment));
+  });
 }
 
 
