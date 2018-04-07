@@ -13,7 +13,7 @@ module.exports = (knex) => {
   // Home page
   router.get("/", (req, res) => {
 
-    if(req.cookies.id){
+    if (req.cookies.id) {
       res.redirect("/home");
     } else {
       res.render("index");
@@ -52,6 +52,30 @@ module.exports = (knex) => {
         res.redirect('/');
       });
   });
+
+  router.get("/search", (req, res) => {
+    if (!req.query.data) {
+      res.status(400).send('invalid search');
+    } else {
+      knex.raw(
+        'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+        + ' , "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+        + ` , "userratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = '${req.cookies.id}')`
+        + ' SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "userratings"."rating_value" "userRating" FROM "public"."resources" "resources"'
+        + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
+        + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"'
+        + ' LEFT OUTER JOIN "userratings" ON "userratings"."resource_id" = "resources"."id", "public"."rusers" "rusers"'
+        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.data}%'`
+        + ' ORDER BY "resources"."id" DESC'
+      ).then((results) => {
+        res.json(results.rows);
+      })
+      .catch(err => {
+        console.log('/search error');
+        res.redirect('/');
+      });
+    }
+    });
 
   //topic filter page
   router.get("/subject/:subjectname", (req, res) => {
@@ -123,8 +147,6 @@ module.exports = (knex) => {
       .then((results) => res.json(results))
       .catch(err => res.status(404).send('no comments'));
   });
-
-  //POSTS =================================
 
   router.get("/profile", (req, res) => {
 
@@ -215,55 +237,52 @@ module.exports = (knex) => {
     let newSubject = req.body.new_subject;
     let newURL = req.body.new_url;
     let userID = req.cookies.id
-console.log(req.body);
 
-    function seedResourceFromUrl(knex, newURL, userID, newSubject) {
-      return new Promise(function (resolve, reject) {
-console.log("AAAAAAAA")
+    ogParser(newURL, function (error, data) {
 
+      let imgurl = data.og.image.url || "";
+      if (imgurl[0] === '/') {
+        imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+      }
+      let description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
+      let title = data.og.title || "No Title";
+      knex.select('id').from('subjects').where('name', newSubject)
+        .then(([data]) => {
+          console.log('subject found: ', data, data.id);
+          console.log(newURL,
+            title,
+            description,
+            imgurl,
+            userID,
+            data.id);
 
-console.log("BBBBBBBB")
-        ogParser(newURL, function (error, data) {
-console.log("CCCCCCCC")
-          let imgurl = data.og.image.url;
-          if (imgurl[0] === '/') {
-            imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/")+8) + imgurl;
-          }
-          let description = data.og.description.length > 250 ? data.og.description.substring(0,250) + "..." : data.og.description;
-console.log("DDDDDDDD")
-          knex('resources').insert({
+          return knex('resources').insert({
             url: newURL,
-            title: data.og.title,
+            title: title,
             description: description,
             image_url: imgurl,
             creator_id: userID,
-            subject_id: newSubject;
-
-          }).then().catch();
-          return resolve();
-          return reject(error);
-
-         // }).then()
-        });
-      })
-    }
-
-
-    seedResourceFromUrl(knex, newURL, userID, newSubject);
-
-    res.redirect("/home");
+            subject_id: data.id
+          })
+        })
+        .then(() => res.redirect("/home"))
+        .catch((err) => {
+          console.log(err);
+          res.status(400).send(err);
+        })
+    })
+    
   });
-
 
   //For the user to like a post
   router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
- if (err) {
-        res.status(500).json({
-          error: err.message
-        });
-      } else {
-        res.status(201).send();
-      }
+    if (err) {
+      res.status(500).json({
+        error: err.message
+      });
+    } else {
+      res.status(201).send();
+    }
     //get the post request from the link button
 
   });
@@ -300,7 +319,7 @@ console.log("DDDDDDDD")
         password: updatePass,
         handle: updateUser
       }).then();
-  res.redirect("/profile");
+    res.redirect("/profile");
   })
 
   return router;
