@@ -69,21 +69,12 @@ module.exports = (knex) => {
 
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
-    knex.raw(
-      // 'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      // + ', "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      // + 'SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
-      // + '"resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating"'
-      // + 'FROM "public"."resources" "resources" '
-      // + 'LEFT OUTER JOIN "comments" ON "resources"."id" = "comments"."resource_id" '
-      // + 'LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
-      // + 'LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
-      // + ', "public"."rusers" "rusers" '
-      // + `WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."id" = ${req.params.resid}`
-      // + ' ORDER BY "resources"."id" DESC'
-    ).then((results) => {
-      res.json(results.rows);
+    knex.select('*').from('resources').where('creator_id', req.cookies.id).union(function () {
+      this.select('*').from('resources').innerJoin(.where('first_name');
     })
+      .then((results) => {
+        res.json(results.rows);
+      })
       .catch(err => {
         res.redirect('/');
       });
@@ -91,11 +82,10 @@ module.exports = (knex) => {
 
   //Gives the user a list of their posts with the option to delete
   router.get("/myposts", (req, res) => {
-    knex('resources').where('creator_id', 7)
-      .then(rows => {
-        console.log(rows);
-      })
-      .catch(err => {
+    knex('resources').where('creator_id', req.cookies.id).select('*')
+      .then((results) => res.json(results))
+      .catch((err) => {
+        console.log(err);
         res.redirect('/');
       });
   });
@@ -123,8 +113,8 @@ module.exports = (knex) => {
     knex.select('comment_text', 'handle as user')
       .from('comments').innerJoin('resources', 'resources.id', 'comments.resource_id').innerJoin('rusers', 'rusers.id', 'comments.user_id')
       .where('resources.id', req.params.resid)
-    .then((results) => res.json(results))
-    .catch(err => res.status(404).send('no comments'));
+      .then((results) => res.json(results))
+      .catch(err => res.status(404).send('no comments'));
   });
 
   //POSTS =================================
