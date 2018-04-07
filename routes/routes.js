@@ -1,8 +1,8 @@
 'use strict';
 
-const ogParser = require("og-parser");
-const express = require('express');
-const router = express.Router();
+const ogParser     = require("og-parser");
+const express      = require('express');
+const router       = express.Router();
 const cookieParser = require('cookie-parser') //cookie parser added
 router.use(cookieParser()); // cookie parser added
 
@@ -219,25 +219,20 @@ console.log(req.body);
 
     function seedResourceFromUrl(knex, newURL, userID, newSubject) {
       return new Promise(function (resolve, reject) {
-console.log("AAAAAAAA")
-
-
-console.log("BBBBBBBB")
         ogParser(newURL, function (error, data) {
-console.log("CCCCCCCC")
           let imgurl = data.og.image.url;
           if (imgurl[0] === '/') {
             imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/")+8) + imgurl;
           }
           let description = data.og.description.length > 250 ? data.og.description.substring(0,250) + "..." : data.og.description;
-console.log("DDDDDDDD")
+
           knex('resources').insert({
-            url: newURL,
-            title: data.og.title,
-            description: description,
-            image_url: imgurl,
-            creator_id: userID,
-            subject_id: newSubject;
+            url         : newURL,
+            title       : data.og.title,
+            description : description,
+            image_url   : imgurl,
+            creator_id  : userID,
+            subject_id  : newSubject
 
           }).then().catch();
           return resolve();
@@ -256,29 +251,51 @@ console.log("DDDDDDDD")
 
 
   //For the user to like a post
-  router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
- if (err) {
-        res.status(500).json({
-          error: err.message
+  router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
+    if (err) {
+      res.status(500).json({
+        error: err.message
         });
-      } else {
-        res.status(201).send();
-      }
-    //get the post request from the link button
+    } else {
+      res.status(201).send();
+    }
+
+    let resID  = req.params.resid;
+    let userID = req.cookies.id;
+
+    knex('likes')
+      .insert({
+        resource_id : resID,
+        user_id     : userID
+      }),then()
 
   });
 
   //For the user to comment and view comments on a post
-  router.put("/resource/:resid/comment", (req, res) => { //OR PUTS???
+  router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
 
-    //get the post request from comment button
+    //get the post request from comment button and assign to variables
+    //pull the comment out
+    let userText = req.body.text;
+    let userID   = req.cookies.id;
+    let resID    = req.params.resid;
+
+    //put it in the database based on the resource id
+       knex('comments')
+        .insert({
+          comment_text : userText,
+          resource_id  : resID,
+          user_id      : userID
+        }).then()
 
   });
 
   //For the user to rate a post ----- need to discuess
   router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
 
-    //get post request
+    let userID = req.cookies.id;
+    let resID = req.params.resid;
+    let ratingValue =
 
   });
 
@@ -288,17 +305,17 @@ console.log("DDDDDDDD")
 
   router.post("/profile/update", (req, res) => {
 
-    let updateUser = req.body.updateUser
-    let updatePass = req.body.updatePass
+    let updateUser  = req.body.updateUser
+    let updatePass  = req.body.updatePass
     let updateEmail = req.body.updateEmail
-    let userCookie = req.cookies.id
+    let userCookie  = req.cookies.id
 
     knex('rusers')
       .where('id', '=', userCookie) //Handle or ID?
       .update({
-        email: updateEmail,
-        password: updatePass,
-        handle: updateUser
+        email    : updateEmail,
+        password : updatePass,
+        handle   : updateUser
       }).then();
   res.redirect("/profile");
   })
