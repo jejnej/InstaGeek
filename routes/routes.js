@@ -34,7 +34,11 @@ module.exports = (knex) => {
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
     console.log("welcome home");
+    if(!req.cookies.handle){
+      res.redirect("/");
+    } else {
     res.render("home");
+    }
   });
 
   router.get("/all", (req, res) => {
@@ -108,7 +112,7 @@ router.get("/resource/:resid", (req, res) => {
 
 router.get("/profile", (req, res) => {
 
-  let userCookie = req.cookies.handle
+  let userCookie = req.cookies.handle;
 
   knex('rusers').where('handle', userCookie)
     .then(rows => rows.forEach(function(person){
@@ -151,7 +155,7 @@ router.get("/profile", (req, res) => {
       .then(rows => rows.forEach(function(person){
 
   //need to check req with database to see if user is correct
-        if(enterUser === person.handle || enterPass === person.password){
+        if(enterUser === person.handle && enterPass === person.password){
         res.redirect("/home");
         console.log("you're in!")
         } else {
@@ -179,22 +183,27 @@ router.get("/profile", (req, res) => {
   if(!newEmail || !newUsername){
     console.log("Invalid Entry");
   }
+  else if(newEmail && newUsername) {
+
+    knex('rusers').where('handle', newUsername)
+      .then(rows => rows.forEach(function(person){
+
+        if(newUsername === person.handle){
+          console.log("username taken");
+        }
+      })
+    )
+  }
   else {
-
-
-    //add the user email to database
-    //add the handle (username) to database
-    //add the password to database
-
     knex('rusers')
       .insert({
-        password: newPassword,
         email: newEmail,
+        password: newPassword,
         handle: newUsername
       }).then(function() {
-        res.send('OK')
-      })
-  console.log("Login created!");
+        res.redirect("/home")
+    })
+      console.log("Login created!");
   }
 })
 
@@ -236,6 +245,22 @@ router.post("/create", (req, res) => {
 
   //PUT =================================
 
-  //router.put() <--- to update the user profile
+  router.post("/profile/update", (req, res) => {
+
+    let updateUser = req.body.updateUser
+    let updatePass = req.body.updatePass
+    let updateEmail = req.body.updateEmail
+    let userCookie = req.cookies.handle
+
+    knex('rusers')
+      .where('handle', '=', userCookie) //Handle or ID?
+      .update({
+        email: updateEmail,
+        password: updatePass,
+        handle: updateUser
+      })
+  res.redirect("/profile");
+  })
+
   return router;
 }
