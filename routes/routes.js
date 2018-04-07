@@ -134,7 +134,7 @@ module.exports = (knex) => {
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: person.handle, email: person.email }
+        let variables = { user: person.handle, email: person.email, password: person.password }
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -221,21 +221,21 @@ module.exports = (knex) => {
 
 
   //For the user to like a post
-  router.post("/like", (req, res) => {
+  router.post("/like", (req, res) => { //OR PUTS?
 
     //get the post request from the link button
 
   });
 
   //For the user to comment and view comments on a post
-  router.post("/comment", (req, res) => {
+  router.post("/comment", (req, res) => { //OR PUTS???
 
     //get the post request from comment button
 
   });
 
   //For the user to rate a post ----- need to discuess
-  router.post("/rate", (req, res) => {
+  router.post("/rate", (req, res) => { //OR PUTS??
 
     //get post request
 
@@ -261,7 +261,7 @@ module.exports = (knex) => {
         email: updateEmail,
         password: updatePass,
         handle: updateUser
-      })
+      }).then();
   res.redirect("/profile");
   })
 
