@@ -4,6 +4,11 @@
 <head>
   <% include ./partials/head %>
     <title>Front Page</title>
+    <script>
+      $.get('/all', articles => {
+        renderArticles(articles);
+      });
+    </script>
 </head>
 
 <body>

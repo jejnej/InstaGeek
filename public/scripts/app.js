@@ -75,9 +75,9 @@ jQuery(document).ready(function($) {
   });
 
 
-  $.get('/all', articles => {
-    renderArticles(articles);
-  });
+  // $.get('/all', articles => {
+  //   renderArticles(articles);
+  // });
 
   $(".dropdown-item").on("click", function(event) {
     event.preventDefault();

@@ -1,7 +1,5 @@
 'use strict';
 
-const USER_ID = 7;
-
 const express = require('express');
 const router = express.Router();
 const cookieParser = require('cookie-parser') //cookie parser added
@@ -9,23 +7,7 @@ router.use(cookieParser()); // cookie parser added
 
 module.exports = (knex) => {
 
-  /*
-  router.get('/', (req, res) => {
-    let
-    knex
-      // .column({user: 'handle'}, 'title', {imageUrl: 'image_url'}, {articleUrl: 'url'}, 'description', )
-      .select()
-      .from('resources').leftjoin()
-      .then((results) => {
-        console.log(results);
-    });
-    select handle as user
-  });
-*/
-
   //GETS =================================
-  ;
-
 
   // Home page
   router.get("/", (req, res) => {
@@ -35,15 +17,20 @@ module.exports = (knex) => {
 
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
-    console.log("welcome home");
-    res.render("home");
+    console.log('cookie', req.cookies.id);
+    if (!req.cookies.id) {
+      res.redirect('/');
+    } else {
+      console.log("welcome home");
+      res.render("home");
+    }
   });
 
   router.get("/all", (req, res) => {
     knex.raw(
       'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
       + ' , "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      + ` , "userratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = ${USER_ID})`
+      + ` , "userratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = '${req.cookies.id}')`
       + ' SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "userratings"."rating_value" "userRating" FROM "public"."resources" "resources"'
       + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
       + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"'
@@ -52,7 +39,11 @@ module.exports = (knex) => {
       + ' ORDER BY "resources"."id" DESC'
     ).then((results) => {
       res.json(results.rows);
-    });
+    })
+      .catch(err => {
+        console.log('/all error');
+        res.redirect('/');
+      });
   });
 
   //topic filter page
@@ -60,7 +51,7 @@ module.exports = (knex) => {
     knex.raw(
       'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
       + ' , "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
-      + ` , "userratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = ${USER_ID})`
+      + ` , "userratings" AS (SELECT * FROM "public"."ratings" "ratings" WHERE "user_id" = '${req.cookies.id}')`
       + ' SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", "resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating", "userratings"."rating_value" "userRating" FROM "public"."resources" "resources"'
       + ' LEFT OUTER JOIN "subjects" ON "resources"."subject_id" = "subjects"."id"'
       + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
@@ -70,20 +61,43 @@ module.exports = (knex) => {
       + ' ORDER BY "resources"."id" DESC'
     ).then((results) => {
       res.json(results.rows);
-    });
+    })
+      .catch(err => {
+        res.redirect('/');
+      });
   });
 
   //Collection of the users posts and liked link cards
-  router.get("/myresources/:uid", (req, res) => {
+  router.get("/myresources", (req, res) => {
     knex.raw(
-    ).then(results => {
+      // 'WITH "likesPerResource" AS (SELECT "resources"."id", COUNT( "likes".* ) FROM "public"."likes" "likes" RIGHT OUTER JOIN "public"."resources" "resources" ON "likes"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+      // + ', "avgRatingsPerResource" AS (SELECT "resources"."id", AVG( "ratings"."rating_value" ) "avgRating" FROM "public"."ratings" "ratings", "public"."resources" "resources" WHERE "ratings"."resource_id" = "resources"."id" GROUP BY "resources"."id")'
+      // + 'SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
+      // + '"resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating"'
+      // + 'FROM "public"."resources" "resources" '
+      // + 'LEFT OUTER JOIN "comments" ON "resources"."id" = "comments"."resource_id" '
+      // + 'LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
+      // + 'LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
+      // + ', "public"."rusers" "rusers" '
+      // + `WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."id" = ${req.params.resid}`
+      // + ' ORDER BY "resources"."id" DESC'
+    ).then((results) => {
       res.json(results.rows);
-    });
+    })
+      .catch(err => {
+        res.redirect('/');
+      });
   });
 
   //Gives the user a list of their posts with the option to delete
   router.get("/myposts", (req, res) => {
-
+    knex('resources').where('creator_id', 7)
+      .then(rows => {
+        console.log(rows);
+      })
+      .catch(err => {
+        res.redirect('/');
+      });
   });
 
   //A link to the card on a standalone site to allow people to comment
@@ -94,7 +108,6 @@ module.exports = (knex) => {
       + 'SELECT "resources"."id", "rusers"."handle" "user", "resources"."title", "resources"."image_url" "imageUrl", "resources"."url" "articleUrl", '
       + '"resources"."description", "likesPerResource"."count" "likes", "avgRatingsPerResource"."avgRating"'
       + 'FROM "public"."resources" "resources" '
-      + 'LEFT OUTER JOIN "comments" ON "resources"."id" = "comments"."resource_id" '
       + 'LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id" '
       + 'LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id" '
       + ', "public"."rusers" "rusers" '
@@ -105,31 +118,36 @@ module.exports = (knex) => {
     });
   });
 
+  // comments associated with a given resource
+  router.get("/comments/:resid", (req, res) => {
+    knex.select('comment_text', 'handle as user')
+      .from('comments').innerJoin('resources', 'resources.id', 'comments.resource_id').innerJoin('rusers', 'rusers.id', 'comments.user_id')
+      .where('resources.id', req.params.resid)
+    .then((results) => res.json(results))
+    .catch(err => res.status(404).send('no comments'));
+  });
 
   //POSTS =================================
 
+  router.get("/profile", (req, res) => {
 
-router.get("/profile", (req, res) => {
+    let userCookie = req.cookies.id
+    console.log('userCookie', userCookie);
 
-  let userCookie = req.cookies.handle
-
-  knex('rusers').where('handle', userCookie)
-    .then(rows => rows.forEach(function(person){
-
-
-
-    let variables = {user: userCookie, email: person.email}
-
-    res.render("user_profile", variables);
-    }))
-
-
-});
+    knex('rusers').where('id', userCookie)
+      .then(rows => rows.forEach(function (person) {
+        let variables = { user: userCookie, email: person.email }
+        res.render("user_profile", variables);
+      }))
+      .catch(err => {
+        res.redirect('/');
+      });
+  });
 
 
-//POSTS =================================
+  //POSTS =================================
 
-// login page.
+  // login page.
   router.post("/login", (req, res) => {
 
 
@@ -140,33 +158,25 @@ router.get("/profile", (req, res) => {
     let enterUser = req.body.username;
     let enterPass = req.body.password;
 
-    //set the cookie
-    res.cookie("handle", enterUser);
-
     //check to see if password or user blank
     if (!enterUser || !enterPass) {
       console.log("Please enter a username or password");
     } else {
 
-      //practice using the seed data in 'rusers'
-
-    knex('rusers').where('handle', enterUser)
-      .then(rows => rows.forEach(function(person){
-
-  //need to check req with database to see if user is correct
-        if(enterUser === person.handle || enterPass === person.password){
-        res.redirect("/home");
-        console.log("you're in!")
-        } else {
-        console.log("user does not exist");
-        }
-      }));
-
+      knex('rusers').where('handle', enterUser)
+        .then(([person]) => {
+          //need to check req with database to see if user is correct
+          if (enterUser === person.handle && enterPass === person.password) {
+            console.log('setting cookie', 'id', person.id);
+            res.cookie("id", person.id);
+            console.log("about to redirect");
+            res.redirect("/home");
+          } else {
+            res.status(401).send('failed to authenticate');
+          }
+        })
+        .catch(() => res.status(401).send('failed to authenticate'));
     }
-
-    //need to check req with database to see if password is correct
-    //if correct then login and render home page
-
   });
 
 
@@ -175,40 +185,40 @@ router.get("/profile", (req, res) => {
 
   router.post("/register", (req, res) => {
 
-  let newEmail = req.body.new_email;
-  let newUsername = req.body.new_username;
-  let newPassword = req.body.new_password;
+    let newEmail = req.body.new_email;
+    let newUsername = req.body.new_username;
+    let newPassword = req.body.new_password;
 
-  if(!newEmail || !newUsername){
-    console.log("Invalid Entry");
-  }
-  else {
-
-
-    //add the user email to database
-    //add the handle (username) to database
-    //add the password to database
-
-    knex('rusers')
-      .insert({
-        password: newPassword,
-        email: newEmail,
-        handle: newUsername
-      }).then(function() {
-        res.send('OK')
-      })
-  console.log("Login created!");
-  }
-})
+    if (!newEmail || !newUsername) {
+      console.log("Invalid Entry");
+    }
+    else {
 
 
-//For the user to create link post
-router.post("/create", (req, res) => {
+      //add the user email to database
+      //add the handle (username) to database
+      //add the password to database
 
- console.log("here");
+      knex('rusers')
+        .insert({
+          password: newPassword,
+          email: newEmail,
+          handle: newUsername
+        }).then(function () {
+          res.send('OK')
+        })
+      console.log("Login created!");
+    }
+  })
 
-  console.log(req.body);
-});
+
+  //For the user to create link post
+  router.post("/create", (req, res) => {
+
+    console.log("here");
+
+    console.log(req.body);
+  });
 
 
   //For the user to like a post
