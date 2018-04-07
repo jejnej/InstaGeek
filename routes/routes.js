@@ -262,14 +262,16 @@ module.exports = (knex) => {
             description: description,
             image_url: imgurl,
             creator_id: userID,
-
-            // subject_id: newSubject;
-
-         // }).then()
-        });
-      })
-    }
-
+            subject_id: data.id
+          })
+        })
+        .then(() => res.redirect("/home"))
+        .catch((err) => {
+          console.log(err);
+          res.status(400).send(err);
+        })
+    })
+    
   });
 
   //For the user to like a post
