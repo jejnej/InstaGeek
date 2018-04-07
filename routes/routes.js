@@ -1,5 +1,6 @@
 'use strict';
 
+const ogParser = require("og-parser");
 const express = require('express');
 const router = express.Router();
 const cookieParser = require('cookie-parser') //cookie parser added
@@ -12,13 +13,11 @@ module.exports = (knex) => {
   // Home page
   router.get("/", (req, res) => {
 
-    if(req.cookies.handle){
+    if(req.cookies.id){
       res.redirect("/home");
     } else {
       res.render("index");
     }
-
-    res.render("index");
   });
 
 
@@ -161,7 +160,7 @@ module.exports = (knex) => {
       console.log("Please enter a username or password");
     } else {
 
-      knex('rusers').where('handle', enterUser)
+      knex('rusers').where('handle', enterUser) //double check this!
         .then(([person]) => {
           //need to check req with database to see if user is correct
           if (enterUser === person.handle && enterPass === person.password) {
@@ -212,11 +211,47 @@ module.exports = (knex) => {
 
 
   //For the user to create link post
-  router.post("/create", (req, res) => {
+  router.post("/resoure/create", (req, res) => {
 
-    console.log("here");
+    let newSubject = req.body.new_subject;
+    let newURL = req.body.new_url;
+    let userID = req.cookies.id
+console.log(req.body);
 
-    console.log(req.body);
+    function seedResourceFromUrl(knex, newURL, userID, newSubject) {
+      return new Promise(function (resolve, reject) {
+console.log("AAAAAAAA")
+
+      //return (function() {
+console.log("BBBBBBBB")
+        ogParser(newURL, function (error, data) {
+console.log("CCCCCCCC")
+          let imgurl = data.og.image.url;
+          if (imgurl[0] === '/') {
+            imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/")+8) + imgurl;
+          }
+          let description = data.og.description.length > 250 ? data.og.description.substring(0,250) + "..." : data.og.description;
+console.log("DDDDDDDD")
+          knex('resources').insert({
+            url: newURL,
+            title: data.og.title,
+            description: description,
+            image_url: imgurl,
+            creator_id: userID,
+            //subject_id: "newSubject"
+//          }).then(resolve).catch(reject);
+          }).then().catch();
+          return resolve();
+          return reject(error);
+
+         // }).then()
+        });
+      })
+    }
+
+    seedResourceFromUrl(knex, newURL, userID, newSubject);
+
+    //res.redirect("/home");
   });
 
 
