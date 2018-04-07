@@ -70,7 +70,7 @@ module.exports = (knex) => {
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
     knex.select('*').from('resources').where('creator_id', req.cookies.id).union(function () {
-      this.select('*').from('resources').innerJoin(.where('first_name');
+      this.select('*').from('resources').innerJoin.where('first_name');
     })
       .then((results) => {
         res.json(results.rows);
