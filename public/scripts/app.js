@@ -26,8 +26,8 @@ function createArticleElement(article) {
       <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}" ></i>
       <span class="numberLikes"></span>
     <div class="rating" data-id="${article.id}" data-user="${isRated}">
-        <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
-    <p>Rating: ${round(averageRating)}</p>
+        <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
+    <p>Average: ${round(averageRating)}</p>
  </div>
   <p>By: ${user}</p>
   </div>
@@ -233,13 +233,13 @@ jQuery(document).ready(function ($) {
 
   $("body").on("click", ".rating span", function (event) {
     let star= $(this);
-    let articleID = star.data("id");
     let isRated = star.data("user");
     let rating = star.data("rating");
+   let articleID = star.closest(".rating").data("id");
     $.ajax({
       type: "POST",
-      url: `/resource/`,
-      data: "rating",
+      url: `/resource/${articleID}/rating`,
+      data: {rating:rating},
       success: data => {
        if(!isRated) {
         star.css("color", "yellow");
