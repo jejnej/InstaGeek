@@ -44,7 +44,7 @@ function createArticleElement(article) {
       <h2>Comments</h2>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea  name="text" placeholder="What do you think?"></textarea>
+        <textarea  id="commentText" name="text" placeholder="What do you think?"></textarea>
         <input type="submit" value="comment">
       </form>
     </section>
@@ -95,13 +95,13 @@ function createCommentElement(comment) {
 
 // Function that appends comments to the comment container
 function renderComments(comments) {
-  comments.forEach(function(comment) {
+  comments.forEach(function (comment) {
     $(".comments-container").prepend(createCommentElement(comment));
   });
 }
 
 function addClickHandlersForComments() {
-    $(".commentModal").on("click", function(event) {
+  $(".commentModal").on("click", function (event) {
     event.preventDefault();
     let comment = $(this);
     let commentID = comment.data("article")
@@ -109,7 +109,7 @@ function addClickHandlersForComments() {
     $.ajax({
       type: "GET",
       url: `/comments/${commentID}`,
-      success: function(comments) {
+      success: function (comments) {
         renderComments(comments);
       }
 
@@ -120,11 +120,11 @@ function addClickHandlersForComments() {
 
 
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
   tab = $('.tabs h3 a');
 
-// Tabbing between login/signup form
-  tab.on('click', function(event) {
+  // Tabbing between login/signup form
+  tab.on('click', function (event) {
     event.preventDefault();
     tab.removeClass('active');
     $(this).addClass('active');
@@ -134,44 +134,59 @@ jQuery(document).ready(function($) {
   });
 
 
-  $("form#new-article-modal").on("submit", function(event) {
+  $("form#new-article-modal").on("submit", function (event) {
     event.preventDefault();
-      $.ajax({
-        type: "POST",
-        data: $(this).serialize(),
-        url: `/resource/create`,
-        success: function(data) {
-       location.reload();
-        }
-      });
- });
+    $.ajax({
+      type: "POST",
+      data: $(this).serialize(),
+      url: `/resource/create`,
+      success: function (data) {
+        location.reload();
+      }
+    });
+  });
 
-  $("#commentSubmit").on("submit", function(event) {
+  $("body").on("submit", "#commentSubmit", function (event) {
     event.preventDefault();
+    let articleID = $(this).data("comment");
 
-    let article = ($this);
-    let articleID = article.attr("data-comment");
+    // $.post(
+    //   `/resource/${articleID}/comment`,
+    //   { comment: $(this).find("#commentText").val() }
+    // );
+    console.log("before POST");
+    $.ajax({
+      url: `/resource/${articleID}/comment`,
+      type: "POST",
+      data: { comment: $(this).find("#commentText").val() },
+      success: function () {
+        $.ajax({
+          url: `comments/${articleID}`,
+          type: "GET",
+          success: function (data) {
+            $(".comments-container").empty();
+            renderComments(data);
+            $(this).find("#commentSubmit")[0].reset();
 
-      $.ajax({
-        type: "POST",
-        data: $("#commentSubmit").serialize(),
-        url: `/resource/${articleID}/comment`,
-        success: function(data) {
+            // $(this).find("#commentText").empty();
+          }
+        });
+      }
+      , error: function (err) {
+        console.log(err);
+      }
+    })
+  });
 
-         renderComments();
-        }
-      });
- });
+  $("#main-search").on("submit", function (event) {
 
-   $("#main-search").on("submit", function(event) {
-
-     event.preventDefault();
+    event.preventDefault();
     let search = event.target.searchfield.value;
-      $.ajax({
+    $.ajax({
       type: "GET",
       url: `/search`,
-     data: $("#main-search").serialize(),
-      success: function(articles) {
+      data: $("#main-search").serialize(),
+      success: function (articles) {
         $("#board-heading").text("Results");
         $(".article-container").empty();
         renderArticles(articles);
@@ -181,9 +196,9 @@ jQuery(document).ready(function($) {
 
 
 
-// Event listener on click for drop down subjects
+  // Event listener on click for drop down subjects
 
-  $(".dropdown-item").on("click", function(event) {
+  $(".dropdown-item").on("click", function (event) {
     event.preventDefault();
     let subject = $(this);
     let subjectID = subject.attr("data-subjects");
@@ -191,7 +206,7 @@ jQuery(document).ready(function($) {
     $.ajax({
       type: "GET",
       url: `/subject/${subjectID}`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text(subjectID);
         $(".article-container").empty();
         renderArticles(articles);
@@ -200,13 +215,13 @@ jQuery(document).ready(function($) {
     });
   });
 
-    $("#dropdown-all").on("click", function(event) {
+  $("#dropdown-all").on("click", function (event) {
     event.preventDefault();
 
     $.ajax({
       type: "GET",
       url: `/all`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text("Main Board");
         $(".article-container").empty();
         renderArticles(articles);
@@ -218,7 +233,7 @@ jQuery(document).ready(function($) {
   });
 
 
-   $("body").on("click", ".fa-star", function(event) {
+  $("body").on("click", ".fa-star", function (event) {
     var icon = $(this);
     var starID = icon.attr("rating");
     $.ajax({
@@ -233,29 +248,29 @@ jQuery(document).ready(function($) {
   });
 
 
-    $("body").on("click", ".fa-heart", function(event) {
-     event.preventDefault();
+  $("body").on("click", ".fa-heart", function (event) {
+    event.preventDefault();
     var icon = $(this);
     var articleID = icon.data("heart");
     $.ajax({
       type: "POST",
       url: `/resource/${articleID}/like`,
-       success: data => {
-        icon.css('color','red');
+      success: data => {
+        icon.css('color', 'red');
       }
     });
   });
 
-// Returns articles created by user or liked by user
+  // Returns articles created by user or liked by user
 
-  $("#my-board").on("click", function(event) {
-     event.preventDefault();
-     let board = $(this);
-       let boardID = board.data("");
-      $.ajax({
+  $("#my-board").on("click", function (event) {
+    event.preventDefault();
+    let board = $(this);
+    let boardID = board.data("");
+    $.ajax({
       type: "GET",
       url: `/user/saved`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text("My board");
         $(".article-container").empty();
         renderArticles(articles);
@@ -264,18 +279,18 @@ jQuery(document).ready(function($) {
   });
 
 
-// On click of navbar search button. Return results on same page
+  // On click of navbar search button. Return results on same page
 
 
- $("#logout-button").on("click", function(event) {
-     event.preventDefault();
-     let query = $(this);
+  $("#logout-button").on("click", function (event) {
+    event.preventDefault();
+    let query = $(this);
 
-      $.ajax({
+    $.ajax({
       type: "DELETE",
       url: `/logout`,
-      success: function(articles) {
-      // redirect to / where login is
+      success: function (articles) {
+        // redirect to / where login is
       }
     });
   });
