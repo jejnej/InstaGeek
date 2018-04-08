@@ -103,7 +103,7 @@ function addClickHandlersForComments() {
   $(".commentModal").on("click", function (event) {
     event.preventDefault();
     let article = $(this);
-    let articleID = article.data("article")
+    let articleID = article.data("article");
     $(".comments-container").empty();
     $.ajax({
       type: "GET",
@@ -160,6 +160,7 @@ jQuery(document).ready(function ($) {
       data: { comment: $(this).find("#commentText").val() },
       success: function () {
         $(".comments-container").empty();
+        // $("text").val("");
         $.ajax({
           url: `resource/${articleID}/comments`,
           type: "GET",
@@ -252,7 +253,7 @@ jQuery(document).ready(function ($) {
       type: "POST",
       url: `/resource/${articleID}/like`,
       success: data => {
-        articleID.css('color', 'red');
+       $(".fa-heart").css('color', 'red');
       }
     });
   });
