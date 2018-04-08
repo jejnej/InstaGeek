@@ -246,31 +246,22 @@ module.exports = (knex) => {
     let title = "No Title";
 
     ogParser(newURL, function (error, data) {
-      console.log('OGOGOG:', data.og);
       if (data.og) {
-        console.log('data.og OK');
         if (data.og.image) {
-          console.log('data.og.image OK');
           imgurl = data.og.image.url;
           if (imgurl[0] === '/') {
             imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
           }
         }
-        console.log('DESC:', data.og.description);
-        console.log('TOTLE:', data.og.title);
-        description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
-        title = data.og.title || "No Title";
+        if (data.og.description) {
+          description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
+        }
+        if (data.og.title) {
+          title = data.og.title;
+        }
       }
       knex.select('id').from('subjects').where('name', newSubject)
         .then(([data]) => {
-          console.log('subject found: ', data, data.id);
-          console.log(newURL,
-            title,
-            description,
-            imgurl,
-            userID,
-            data.id);
-
           return knex('resources').insert({
             url: newURL,
             title: title,
@@ -291,14 +282,14 @@ module.exports = (knex) => {
   //For the user to like a post
   router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
     console.log('GOT A LIKE FOR', req.params.resid);
-    if (err) {
-      res.status(500).json({
-        error: err.message
-      });
-    } else {
-      res.status(201).send();
-    }
-    //get the post request from the link button
+
+    knex('likes')
+      .insert({
+        resource_id: req.params.resid,
+        user_id: req.cookies.id
+      })
+      .then(() => res.status(200))
+      .catch((err) => res.status(400).send(err));
   });
 
   //For the user to comment and view comments on a post
@@ -320,8 +311,15 @@ module.exports = (knex) => {
     console.log('GOT A RATING FOR', req.params.resid, ':', req.body.rating);
 
     //get post request
-
+    knex('ratings').insert({
+      rating_value: req.body.rating,
+      resource_id: req.params.resid,
+      user_id: req.cookies.id
+    })
+      .then(() => res.status(200))
+      .catch((err) => res.status(400).send(err));
   });
+
 
   router.delete("/logout", (req, res) => {
     res.clearCookie("id").redirect("/");
