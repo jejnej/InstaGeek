@@ -54,7 +54,8 @@ module.exports = (knex) => {
   });
 
   router.get("/search", (req, res) => {
-    if (!req.query.data) {
+    console.log('/search', req.query);
+    if (!req.query.searchfield) {
       res.status(400).send('invalid search');
     } else {
       knex.raw(
@@ -65,7 +66,7 @@ module.exports = (knex) => {
         + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
         + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"'
         + ' LEFT OUTER JOIN "userratings" ON "userratings"."resource_id" = "resources"."id", "public"."rusers" "rusers"'
-        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.data}%'`
+        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.searchfield}%'`
         + ' ORDER BY "resources"."id" DESC'
       ).then((results) => {
         res.json(results.rows);
@@ -271,7 +272,7 @@ module.exports = (knex) => {
           res.status(400).send(err);
         })
     })
-    
+
   });
 
   //For the user to like a post

@@ -161,7 +161,7 @@ jQuery(document).ready(function($) {
         data: $(this).serialize(),
         url: `/resource/:resid/comments`,
         success: function(data) {
-         renderComments(data)
+         renderComments(data);
         }
       });
  });
@@ -253,13 +253,14 @@ jQuery(document).ready(function($) {
 
 // On click of navbar search button. Return results on same page
 
- $("form#main-search").on("submit", function(event) {
+ $("#main-search").on("submit", function(event) {
+     debugger
      event.preventDefault();
-
+    let search = event.target.searchfield.value;
       $.ajax({
       type: "GET",
       url: `/search`,
-     data: $(this).serialize(),
+     data: $("#main-search").serialize(),
       success: function(articles) {
         $("#board-heading").text("Results");
         $(".article-container").empty();
