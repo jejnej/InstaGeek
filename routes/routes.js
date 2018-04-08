@@ -224,9 +224,9 @@ module.exports = (knex) => {
 
           handle: newUsername,
           password: newPassword
-          })
+        })
         .returning('id')
-        .then(function(result) {
+        .then(function (result) {
           res.cookie("id", result[0]).redirect('/home');
         });
 
@@ -246,30 +246,22 @@ module.exports = (knex) => {
     let title = "No Title";
 
     ogParser(newURL, function (error, data) {
-      console.log('OGOGOG:', data.og);
       if (data.og) {
-        console.log ('data.og OK');
         if (data.og.image) {
+          imgurl = data.og.image.url;
           if (imgurl[0] === '/') {
-            imgurl = data.og.image.url;
             imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
           }
         }
-        console.log ('DESC:', data.og.description);
-        console.log ('TOTLE:', data.og.title);
-        description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
-        title = data.og.title || "No Title";
+        if (data.og.description) {
+          description =  data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
+        }
+        if (data.og.title) {
+          title = data.og.title;
+        }
       }
       knex.select('id').from('subjects').where('name', newSubject)
         .then(([data]) => {
-          console.log('subject found: ', data, data.id);
-          console.log(newURL,
-            title,
-            description,
-            imgurl,
-            userID,
-            data.id);
-
           return knex('resources').insert({
             url: newURL,
             title: title,
@@ -288,31 +280,46 @@ module.exports = (knex) => {
   });
 
   //For the user to like a post
-  router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
-    if (err) {
-      res.status(500).json({
-        error: err.message
-      });
-    } else {
-      res.status(201).send();
-    }
-    //get the post request from the link button
+  router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
+    console.log('GOT A LIKE FOR', req.params.resid);
 
+    knex('likes')
+      .insert({
+        resource_id: req.params.resid,
+        user_id: req.cookies.id
+      })
+      .then(() => res.status(200))
+      .catch((err) => res.status(400).send(err));
   });
 
   //For the user to comment and view comments on a post
-  router.put("/resource/:resid/comment", (req, res) => { //OR PUTS???
+  router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
+    console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body.text);
 
     //get the post request from comment button
-
+    knex('comments').insert({
+      comment_text: req.body.text,
+      resource_id: req.params.resid,
+      user_id: req.cookies.id
+    })
+      .then(() => res.status(200))
+      .catch((err) => res.status(400).send(err));
   });
 
   //For the user to rate a post ----- need to discuess
   router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
+    console.log('GOT A RATING FOR', req.params.resid, ':', req.body.rating);
 
     //get post request
-
+    knex('ratings').insert({
+      rating_value: req.body.rating,
+      resource_id: req.params.resid,
+      user_id: req.cookies.id
+    })
+      .then(() => res.status(200))
+      .catch((err) => res.status(400).send(err));
   });
+
 
   router.delete("/logout", (req, res) => {
     res.clearCookie("id").redirect("/");

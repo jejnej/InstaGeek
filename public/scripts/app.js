@@ -23,7 +23,6 @@ function createArticleElement(article) {
   </div>
   <footer class = "card-footer">
   <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
-
   <div class="icons">
       <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
     <div class="rating" ${ratingClass} >
@@ -33,7 +32,6 @@ function createArticleElement(article) {
   </div>
  </footer>
 </div>
-
 <section class = "modal" id="articleModal_${article.id}"  tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
    <div class="row modal-body article-modal-1">
     <div class="col-sm">
@@ -42,16 +40,12 @@ function createArticleElement(article) {
     <div class="col-sm">
      <h2 class = "modal-title">${title}</h2>
      <p class="modal-description">${des}</p>
-
      <section class="new-comment">
       <h2>Comments</h2>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea name="text" placeholder="What do you think?"></textarea>
-        <div>
-        <input type="hidden" name="articleId" value="${article.id}">
-           <input type="submit" value="Submit">
-        </div>
+        <textarea  name="text" placeholder="What do you think?"></textarea>
+        <input type="submit" value="comment">
       </form>
     </section>
     <div class ="comments-container">
@@ -95,7 +89,6 @@ function createCommentElement(comment) {
       <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${commentBody}</span>
       <hr>
  </div>
-
   `
   return commentHTML
 }
@@ -155,21 +148,23 @@ jQuery(document).ready(function($) {
 
   $("#commentSubmit").on("submit", function(event) {
     event.preventDefault();
-      let submit = $(this)
-      let submitID = submit.attr("data-comment")
+
+    let article = ($this);
+    let articleID = article.attr("data-comment");
+
       $.ajax({
         type: "POST",
         data: $("#commentSubmit").serialize(),
-        url: `/resource/${submitID}/comment`,
+        url: `/resource/${articleID}/comment`,
         success: function(data) {
-         location.reload();
-         renderComments(data);
+
+         renderComments();
         }
       });
  });
 
    $("#main-search").on("submit", function(event) {
-     debugger
+
      event.preventDefault();
     let search = event.target.searchfield.value;
       $.ajax({
@@ -289,10 +284,6 @@ jQuery(document).ready(function($) {
 
 
 });
-
-
-
-
 
 
 
