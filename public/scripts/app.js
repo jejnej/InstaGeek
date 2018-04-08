@@ -7,8 +7,8 @@ function createArticleElement(article) {
   let image = article.imageUrl;
   let des = article.description;
   let numLikes = article.likes;
-  let average = article.rating_value;
-  let ratingClass = article.userRating;
+  let averageRating = article.avgRating;
+  let isRated = article.userRating;
   let isLiked = article.liked;
 
   const articleHTML =
@@ -25,10 +25,11 @@ function createArticleElement(article) {
   <div class="icons">
       <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}" ></i>
       <span class="numberLikes"></span>
-    <div class="rating" ${ratingClass} >
-        <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
-    <p>Rating: ${average}</p>
+    <div class="rating" data-id="${article.id}" data-user="${isRated}">
+        <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
+    <p>Average: ${round(averageRating)}</p>
  </div>
+  <p>By: ${user}</p>
   </div>
  </footer>
 </div>
@@ -117,6 +118,9 @@ function addClickHandlersForComments() {
   });
 }
 
+function round(number) {
+  return Math.round(number * 100) / 100;
+}
 
 
 
@@ -150,18 +154,14 @@ jQuery(document).ready(function ($) {
     event.preventDefault();
     let articleID = $(this).data("comment");
 
-    // $.post(
-    //   `/resource/${articleID}/comment`,
-    //   { comment: $(this).find("#commentText").val() }
-    // );
-    console.log("before POST");
+
     $.ajax({
       url: `/resource/${articleID}/comment`,
       type: "POST",
       data: { comment: $(this).find("#commentText").val() },
       success: function () {
         $(".comments-container").empty();
-        // $("text").val("");
+
         $.ajax({
           url: `resource/${articleID}/comments`,
           type: "GET",
@@ -232,19 +232,25 @@ jQuery(document).ready(function ($) {
   });
 
 
-  // $("body").on("click", ".fa-star", function (event) {
-  //   var icon = $(this);
-  //   var starID = icon.attr("rating");
-  //   $.ajax({
-  //     type: "POST",
-  //     url: `/resource/`,
-  //     data: starID.serialize(),
-  //     success: data => {
+  $("body").on("click", ".rating span", function (event) {
+    let star= $(this);
+    let isRated = star.data("user");
+    let rating = star.data("rating");
+   let articleID = star.closest(".rating").data("id");
+    $.ajax({
+      type: "POST",
+      url: `/resource/${articleID}/rating`,
+      data: {rating:rating},
+      success: data => {
+       if(!isRated) {
+        star.css("color", "yellow");
+      } else if(isRated) {
+        star.css("color", "gray");
+      }
+     }
+    });
 
-  //     }
-  //   });
-
-  // });
+  });
 
 
   $("body").on("click", ".fa-heart", function (event) {
@@ -265,7 +271,6 @@ jQuery(document).ready(function ($) {
         heart.css("color","gray");
          heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) - 1; } );
       }
-
 
       }
 
@@ -294,7 +299,6 @@ jQuery(document).ready(function ($) {
 
   $("#logout-button").on("click", function (event) {
     event.preventDefault();
-
 
     $.ajax({
       type: "POST",
