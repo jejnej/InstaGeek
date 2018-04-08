@@ -6,10 +6,10 @@ function createArticleElement(article) {
   let url = article.articleUrl;
   let image = article.imageUrl;
   let des = article.description;
-  let heartClasses = article.likes;
+  let numLikes = article.likes;
   let average = article.rating_value;
   let ratingClass = article.userRating;
-
+  let isLiked = article.liked;
 
   const articleHTML =
 
@@ -23,7 +23,8 @@ function createArticleElement(article) {
   <footer class = "card-footer">
   <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
   <div class="icons">
-      <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
+      <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}" ></i>
+      <span class="numberLikes"></span>
     <div class="rating" ${ratingClass} >
         <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
     <p>Rating: ${average}</p>
@@ -103,7 +104,7 @@ function addClickHandlersForComments() {
   $(".commentModal").on("click", function (event) {
     event.preventDefault();
     let article = $(this);
-    let articleID = article.data("article")
+    let articleID = article.data("article");
     $(".comments-container").empty();
     $.ajax({
       type: "GET",
@@ -160,6 +161,7 @@ jQuery(document).ready(function ($) {
       data: { comment: $(this).find("#commentText").val() },
       success: function () {
         $(".comments-container").empty();
+        // $("text").val("");
         $.ajax({
           url: `resource/${articleID}/comments`,
           type: "GET",
@@ -230,31 +232,43 @@ jQuery(document).ready(function ($) {
   });
 
 
-  $("body").on("click", ".fa-star", function (event) {
-    var icon = $(this);
-    var starID = icon.attr("rating");
-    $.ajax({
-      type: "POST",
-      url: `/resource/`,
-      data: starID.serialize(),
-      success: data => {
+  // $("body").on("click", ".fa-star", function (event) {
+  //   var icon = $(this);
+  //   var starID = icon.attr("rating");
+  //   $.ajax({
+  //     type: "POST",
+  //     url: `/resource/`,
+  //     data: starID.serialize(),
+  //     success: data => {
 
-      }
-    });
+  //     }
+  //   });
 
-  });
+  // });
 
 
   $("body").on("click", ".fa-heart", function (event) {
     event.preventDefault();
-    let article  = $(this);
-    var articleID = article.data("heart");
+    let heart  = $(this);
+    let articleID = heart.data("id");
+    let isLiked = heart.data("liked");
+    let likes = heart.data("likes");
+
     $.ajax({
       type: "POST",
       url: `/resource/${articleID}/like`,
       success: data => {
-        articleID.css('color', 'red');
+      if(isLiked) {
+        heart.css("color", "red");
+        heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) + 1; } );
+      } else if(!isLiked) {
+        heart.css("color","gray");
+         heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) - 1; } );
       }
+
+
+      }
+
     });
   });
 
