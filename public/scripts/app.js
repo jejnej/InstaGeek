@@ -269,12 +269,11 @@ jQuery(document).ready(function($) {
 
  $("#logout-button").on("click", function(event) {
      event.preventDefault();
-     let query = $(this);
 
       $.ajax({
       type: "DELETE",
       url: `/logout`,
-      success: function(articles) {
+      success: function() {
       // redirect to / where login is
       }
     });

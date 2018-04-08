@@ -8,15 +8,15 @@ exports.seed = function (knex, Promise) {
     .then(function () {
       return Promise.all([
         // Inserts seed entries
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 10, user_id: 5}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 3, user_id: 8}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 5, user_id: 2}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 6, user_id: 4}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 6, user_id: 6}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 2}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 4}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 7, user_id: 6}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 8, user_id: 8}),
-        knex('comments').insert({comment_text: chance.sentence(), resource_id: 9, user_id: 8}),      ]);
+        knex('comments').insert({comment_text: 'wow I have not been able to figure this out, this really cleared it up', resource_id: 43, user_id: 1}),
+        knex('comments').insert({comment_text: 're-post, seen it before', resource_id: 43, user_id: 1}),
+        knex('comments').insert({comment_text: 'this is pretty impressive', resource_id: 43, user_id: 2}),
+        knex('comments').insert({comment_text: 'whoa crazy', resource_id: 44, user_id: 2}),
+        knex('comments').insert({comment_text: 'this really clarified it', resource_id: 44, user_id: 3}),
+        knex('comments').insert({comment_text: '2018, still checking out this link', resource_id: 44, user_id: 4}),
+        knex('comments').insert({comment_text: 'definitely a fan', resource_id: 44, user_id: 4}),
+        knex('comments').insert({comment_text: 'not a great source', resource_id: 45, user_id: 5}),
+        knex('comments').insert({comment_text: 'wow thanks InstaGeek!', resource_id: 45, user_id: 5}),
+        knex('comments').insert({comment_text: 'interesting', resource_id: 45, user_id: 6}),      ]);
     });
 };

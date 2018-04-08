@@ -16,20 +16,21 @@ module.exports = (knex) => {
     if (req.cookies.id) {
       res.redirect("/home");
     } else {
-      res.render("index");
+      res.render("index", CookieInfo(req));
     }
   });
 
 
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
+    CookieInfo(req);
 
     console.log('cookie', req.cookies.id);
     if (!req.cookies.id) {
       res.redirect('/');
     } else {
       console.log("welcome home");
-      res.render("home");
+      res.render("home", CookieInfo(req));
     }
   });
 
@@ -149,13 +150,12 @@ module.exports = (knex) => {
   });
 
   router.get("/profile", (req, res) => {
-
     let userCookie = req.cookies.id
     console.log('userCookie', userCookie);
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: person.handle, email: person.email, password: person.password, firstname: person.first_name,lastname: person.last_name, city: person.city}
+        let variables = { cookie: userCookie, user: person.handle, email: person.email, password: person.password, firstname: person.first_name,lastname: person.last_name, city: person.city}
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -349,6 +349,11 @@ module.exports = (knex) => {
       }).then();
     res.redirect("/profile");
   })
+
+  function CookieInfo(req){
+    let pageInfo = { cookie : req.cookies.id }
+  return pageInfo;
+  }
 
   return router;
 }
