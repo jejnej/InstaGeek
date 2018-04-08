@@ -79,8 +79,8 @@ module.exports = (knex) => {
   //topic filter page
   router.get("/subject/:subjectname", (req, res) => {
     knex.raw(masterQueryString(req.cookies.id)
-    + ' LEFT OUTER JOIN "subjects" ON "subjects"."id" = "resources"."subject_id" '
-    + ` WHERE "subjects"."name" = '${req.params.subjectname}'`
+      + ' LEFT OUTER JOIN "subjects" ON "subjects"."id" = "resources"."subject_id" '
+      + ` WHERE "subjects"."name" = '${req.params.subjectname}'`
       + ' ORDER BY "resources"."id" DESC'
     ).then((results) => {
       res.json(results.rows);
@@ -92,9 +92,9 @@ module.exports = (knex) => {
 
   //Collection of the users posts and liked link cards
   router.get("/myresources", (req, res) => {
-    console.log ('myresroucse', masterQueryString(req.cookies.id)
-    + ` WHERE ("resources"."creator_id = '${req.cookies.id}' OR "userlikes"."liked" = 1) `
-    + ' ORDER BY "resources"."id" DESC');
+    console.log('myresroucse', masterQueryString(req.cookies.id)
+      + ` WHERE ("resources"."creator_id = '${req.cookies.id}' OR "userlikes"."liked" = 1) `
+      + ' ORDER BY "resources"."id" DESC');
     knex.raw(masterQueryString(req.cookies.id)
       + ` WHERE (resources.creator_id = '${req.cookies.id}' OR userlikes.liked = 1) `
       + ' ORDER BY "resources"."id" DESC'
@@ -102,7 +102,7 @@ module.exports = (knex) => {
       res.json(results.rows);
     }
     ).catch(err => {
-      console.log ("myresources errlr:", err);
+      console.log("myresources errlr:", err);
       res.redirect('/');
     });
   });
@@ -228,36 +228,40 @@ module.exports = (knex) => {
     let title = "No Title";
 
     ogParser(newURL, function (error, data) {
-      if (data.og) {
-        if (data.og.image) {
-          imgurl = data.og.image.url;
-          if (imgurl[0] === '/') {
-            imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+      if (error) {
+        res.redirect("/home");  // bad url usually, as far as we know.  As a basic solution, let's just get out of here.
+      } else {
+        if (data.og) {
+          if (data.og.image) {
+            imgurl = data.og.image.url;
+            if (imgurl[0] === '/') {
+              imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+            }
+          }
+          if (data.og.description) {
+            description = data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
+          }
+          if (data.og.title) {
+            title = data.og.title;
           }
         }
-        if (data.og.description) {
-          description = data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
-        }
-        if (data.og.title) {
-          title = data.og.title;
-        }
-      }
-      knex.select('id').from('subjects').where('name', newSubject)
-        .then(([data]) => {
-          return knex('resources').insert({
-            url: newURL,
-            title: title,
-            description: description,
-            image_url: imgurl,
-            creator_id: userID,
-            subject_id: data.id
+        knex.select('id').from('subjects').where('name', newSubject)
+          .then(([data]) => {
+            return knex('resources').insert({
+              url: newURL,
+              title: title,
+              description: description,
+              image_url: imgurl,
+              creator_id: userID,
+              subject_id: data.id
+            });
+          })
+          .then(() => res.redirect("/home"))
+          .catch((err) => {
+            console.log(err);
+            res.status(400).send(err);
           });
-        })
-        .then(() => res.redirect("/home"))
-        .catch((err) => {
-          console.log(err);
-          res.status(400).send(err);
-        })
+      }
     })
   });
 
