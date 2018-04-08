@@ -159,6 +159,7 @@ jQuery(document).ready(function ($) {
       type: "POST",
       data: { comment: $(this).find("#commentText").val() },
       success: function () {
+        $(".comments-container").empty();
         $.ajax({
           url: `comments/${articleID}`,
           type: "GET",
@@ -169,9 +170,6 @@ jQuery(document).ready(function ($) {
       }
       , error: function (err) {
         console.log(err);
-      }
-      , complete: function () {
-        render("home");
       }
     })
   });
