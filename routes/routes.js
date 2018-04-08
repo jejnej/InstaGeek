@@ -140,11 +140,12 @@ module.exports = (knex) => {
   });
 
   // comments associated with a given resource
-  router.get("/comments/:resid", (req, res) => {
+  router.get("/resource/:resid/comments", (req, res) => {
     knex.select('comment_text', 'handle as user')
       .from('comments').innerJoin('resources', 'resources.id', 'comments.resource_id').innerJoin('rusers', 'rusers.id', 'comments.user_id')
       .where('resources.id', req.params.resid)
-      .then((results) => res.json(results))
+      .orderBy('comments.id', 'asc')
+      .then((results) => res.status(200).json(results))
       .catch(err => res.status(404).send('no comments'));
   });
 
