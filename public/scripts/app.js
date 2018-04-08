@@ -102,12 +102,12 @@ function renderComments(comments) {
 function addClickHandlersForComments() {
   $(".commentModal").on("click", function (event) {
     event.preventDefault();
-    let comment = $(this);
-    let commentID = comment.data("article")
+    let article = $(this);
+    let articleID = article.data("article")
     $(".comments-container").empty();
     $.ajax({
       type: "GET",
-      url: `/comments/${commentID}`,
+      url: `/resource/${articleID}/comments`,
       success: function (comments) {
         renderComments(comments);
       }
@@ -161,7 +161,7 @@ jQuery(document).ready(function ($) {
       success: function () {
         $(".comments-container").empty();
         $.ajax({
-          url: `comments/${articleID}`,
+          url: `resource/${articleID}/comments`,
           type: "GET",
           success: function (data) {
             renderComments(data);
@@ -252,7 +252,7 @@ jQuery(document).ready(function ($) {
       type: "POST",
       url: `/resource/${articleID}/like`,
       success: data => {
-        article.css('color', 'red');
+        articleID.css('color', 'red');
       }
     });
   });
