@@ -163,16 +163,15 @@ jQuery(document).ready(function ($) {
           url: `comments/${articleID}`,
           type: "GET",
           success: function (data) {
-            $(".comments-container").empty();
             renderComments(data);
-            $(this).find("#commentSubmit")[0].reset();
-
-            // $(this).find("#commentText").empty();
           }
         });
       }
       , error: function (err) {
         console.log(err);
+      }
+      , complete: function () {
+        render("home");
       }
     })
   });
@@ -293,8 +292,11 @@ jQuery(document).ready(function ($) {
       }
     });
   });
-});
 
+
+
+
+});
 
 
 
