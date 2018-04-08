@@ -155,7 +155,7 @@ module.exports = (knex) => {
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: person.handle, email: person.email, password: person.password, firstname: person.first_name,lastname: person.last_name, city: person.city}
+        let variables = { user: person.handle, email: person.email, password: person.password, firstname: person.first_name, lastname: person.last_name, city: person.city }
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -254,7 +254,7 @@ module.exports = (knex) => {
           }
         }
         if (data.og.description) {
-          description =  data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
+          description = data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
         }
         if (data.og.title) {
           title = data.og.title;
@@ -269,7 +269,7 @@ module.exports = (knex) => {
             image_url: imgurl,
             creator_id: userID,
             subject_id: data.id
-          })
+          });
         })
         .then(() => res.redirect("/home"))
         .catch((err) => {
@@ -283,12 +283,27 @@ module.exports = (knex) => {
   router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
     console.log('GOT A LIKE FOR', req.params.resid);
 
-    knex('likes')
-      .insert({
-        resource_id: req.params.resid,
-        user_id: req.cookies.id
-      })
-      .then(() => res.status(200))
+    /* check whether a like already exists for this resource 
+     * and delete or insert the appropriate record;
+     * i.e. toggle the like
+     */
+    knex('likes').where({
+      resource_id: req.params.resid,
+      user_id: req.cookies.id
+    }).then((likes) => {
+      if (likes.length > 0) {
+        return knex('likes').where({
+          resource_id: req.params.resid,
+          user_id: req.cookies.id
+        }).del();
+      } else {
+        return knex('likes')
+          .insert({
+            resource_id: req.params.resid,
+            user_id: req.cookies.id
+          });
+      }
+    }).then(() => res.status(200))
       .catch((err) => res.status(400).send(err));
   });
 
@@ -329,13 +344,13 @@ module.exports = (knex) => {
 
   router.post("/profile/update", (req, res) => {
 
-    let updateUser  = req.body.updateUser;
-    let updatePass  = req.body.updatePass;
+    let updateUser = req.body.updateUser;
+    let updatePass = req.body.updatePass;
     let updateEmail = req.body.updateEmail;
-    let userCookie  = req.cookies.id;
+    let userCookie = req.cookies.id;
     let updateFirst = req.body.userFirst;
-    let updateLast  = req.body.userLast;
-    let updateCity  = req.body.userCity;
+    let updateLast = req.body.userLast;
+    let updateCity = req.body.userCity;
 
     knex('rusers')
       .where('id', '=', userCookie) //Handle or ID?
