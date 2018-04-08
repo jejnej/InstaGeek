@@ -47,7 +47,7 @@ function createArticleElement(article) {
       <h2>Comments</h2>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea name="text" placeholder="What do you think?"></textarea>
+        <textarea id ="comment-text"name="text" placeholder="What do you think?"></textarea>
         <div>
         <input type="hidden" name="articleId" value="${article.id}">
            <input type="submit" value="Submit">
@@ -155,8 +155,8 @@ jQuery(document).ready(function($) {
 
   $("#commentSubmit").on("submit", function(event) {
     event.preventDefault();
-      let submit = $(this)
-      let submitID = submit.attr("data-comment")
+      let submit = $(this);
+      let submitID = submit.attr("data-comment");
       $.ajax({
         type: "POST",
         data: $("#commentSubmit").serialize(),
