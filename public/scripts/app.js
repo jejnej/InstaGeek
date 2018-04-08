@@ -46,10 +46,10 @@ function createArticleElement(article) {
      <section class="new-comment">
       <h2>Comments</h2>
       <hr>
-      <form id="commentSubmit" data-comment="${article.id}">
+      <form id="commentSubmit">
         <textarea name="text" placeholder="What do you think?"></textarea>
         <div>
-        <input type="hidden" name="articleId" value="${article.id}">
+        <input id ="comment-text" type="hidden" name="articleId" value="${article.id}">
            <input type="submit" value="Submit">
         </div>
       </form>
@@ -155,21 +155,22 @@ jQuery(document).ready(function($) {
 
   $("#commentSubmit").on("submit", function(event) {
     event.preventDefault();
-      let submit = $(this)
-      let submitID = submit.attr("data-comment")
+
+    articleId = $('input#comment-text').val();
+
       $.ajax({
         type: "POST",
-        data: $("#commentSubmit").serialize(),
-        url: `/resource/${submitID}/comment`,
+        data: $(this).serialize(),
+        url: `/resource/articleId/comment`,
         success: function(data) {
-         location.reload();
-         renderComments(data);
+
+         renderComments();
         }
       });
  });
 
    $("#main-search").on("submit", function(event) {
-     debugger
+
      event.preventDefault();
     let search = event.target.searchfield.value;
       $.ajax({
