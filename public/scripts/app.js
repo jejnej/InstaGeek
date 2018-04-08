@@ -44,7 +44,7 @@ function createArticleElement(article) {
       <h2>Comments</h2>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea  name="text" placeholder="What do you think?"></textarea>
+        <textarea  name="comment" placeholder="What do you think?"></textarea>
         <input type="submit" value="comment">
       </form>
     </section>
@@ -147,8 +147,8 @@ jQuery(document).ready(function($) {
  });
 
   $("#commentSubmit").on("submit", function(event) {
+    debugger
     event.preventDefault();
-
     let article = ($this);
     let articleID = article.attr("data-comment");
 
@@ -158,7 +158,7 @@ jQuery(document).ready(function($) {
         url: `/resource/${articleID}/comment`,
         success: function(data) {
 
-         renderComments();
+         renderComments(data);
         }
       });
  });
