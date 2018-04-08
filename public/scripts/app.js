@@ -246,13 +246,13 @@ jQuery(document).ready(function ($) {
 
   $("body").on("click", ".fa-heart", function (event) {
     event.preventDefault();
-    var icon = $(this);
-    var articleID = icon.data("heart");
+    let article  = $(this);
+    var articleID = article.data("heart");
     $.ajax({
       type: "POST",
       url: `/resource/${articleID}/like`,
       success: data => {
-        icon.css('color', 'red');
+        article.css('color', 'red');
       }
     });
   });
@@ -279,12 +279,12 @@ jQuery(document).ready(function ($) {
 
   $("#logout-button").on("click", function (event) {
     event.preventDefault();
-    let query = $(this);
+
 
     $.ajax({
-      type: "DELETE",
+      type: "POST",
       url: `/logout`,
-      success: function (articles) {
+      success: function () {
         // redirect to / where login is
       }
     });
