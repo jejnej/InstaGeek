@@ -46,8 +46,8 @@ function createArticleElement(article) {
      <section class="new-comment">
       <h2>Comments</h2>
       <hr>
-      <form>
-        <textarea id="commentSubmit" name="text" placeholder="What do you think?"></textarea>
+      <form id="commentSubmit" data-comment="${article.id}">
+        <textarea name="text" placeholder="What do you think?"></textarea>
         <div>
         <input type="hidden" name="articleId" value="${article.id}">
            <input type="submit" value="Submit">
@@ -153,17 +153,36 @@ jQuery(document).ready(function($) {
       });
  });
 
-  $("form#commentSubmit").on("submit", function(event) {
+  $("#commentSubmit").on("submit", function(event) {
     event.preventDefault();
+      let submit = $(this)
+      let submitID = submit.attr("data-comment")
       $.ajax({
         type: "POST",
-        data: $(this).serialize(),
-        url: `/resource/:resid/comments`,
+        data: $("#commentSubmit").serialize(),
+        url: `/resource/${submitID}/comment`,
         success: function(data) {
+         location.reload();
          renderComments(data);
         }
       });
  });
+
+   $("#main-search").on("submit", function(event) {
+     debugger
+     event.preventDefault();
+    let search = event.target.searchfield.value;
+      $.ajax({
+      type: "GET",
+      url: `/search`,
+     data: $("#main-search").serialize(),
+      success: function(articles) {
+        $("#board-heading").text("Results");
+        $(".article-container").empty();
+        renderArticles(articles);
+      }
+    });
+  });
 
 
 
@@ -252,21 +271,6 @@ jQuery(document).ready(function($) {
 
 // On click of navbar search button. Return results on same page
 
- $("#main-search").on("submit", function(event) {
-     debugger
-     event.preventDefault();
-    let search = event.target.searchfield.value;
-      $.ajax({
-      type: "GET",
-      url: `/search`,
-     data: $("#main-search").serialize(),
-      success: function(articles) {
-        $("#board-heading").text("Results");
-        $(".article-container").empty();
-        renderArticles(articles);
-      }
-    });
-  });
 
  $("#logout-button").on("click", function(event) {
      event.preventDefault();
