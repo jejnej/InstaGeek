@@ -60,7 +60,6 @@ function createArticleElement(article) {
    </div>
 </section>
 `
-
   return articleHTML;
 }
 

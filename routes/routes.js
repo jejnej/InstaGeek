@@ -1,8 +1,8 @@
 'use strict';
 
-const ogParser = require("og-parser");
-const express = require('express');
-const router = express.Router();
+const ogParser     = require("og-parser");
+const express      = require('express');
+const router       = express.Router();
 const cookieParser = require('cookie-parser') //cookie parser added
 router.use(cookieParser()); // cookie parser added
 
@@ -276,49 +276,82 @@ module.exports = (knex) => {
   });
 
   //For the user to like a post
-  router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
+
+  router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
     if (err) {
       res.status(500).json({
         error: err.message
-      });
+        });
     } else {
       res.status(201).send();
     }
-    //get the post request from the link button
 
+    let resID  = req.params.resid;
+    let userID = req.cookies.id;
+
+    knex('likes')
+      .insert({
+        resource_id : resID,
+        user_id     : userID
+      }).then()
+    res.redirect("/home");
   });
 
   //For the user to comment and view comments on a post
-  router.put("/resource/:resid/comment", (req, res) => { //OR PUTS???
+  router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
 
-    //get the post request from comment button
+    //get the post request from comment button and assign to variables
+    //pull the comment out
+    let userText = req.body.text;
+    let userID   = req.cookies.id;
+    let resID    = req.params.resid;
 
+    //put it in the database based on the resource id
+     knex('comments')
+      .insert({
+        comment_text : userText,
+        resource_id  : resID,
+        user_id      : userID
+      }).then()
+    res.redirect("/home");
   });
 
-  //For the user to rate a post ----- need to discuess
-  router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
+  //For the user to rate a post
+  router.post("/resource/:resid/rating", (req, res) => {
 
-    //get post request
+    let ratingValue = req.params.rating;
+    let resID       = req.params.resid;
+    let userID      = req.cookies.id;
 
+    knex('ratings')
+      .insert({
+        rating_value : ratingValue,
+        resource_id  : resID,
+        user_id      : userID
+      }).then();
+    res.redirect("/home");
   });
 
-
+  router.delete("/logout", (req, res) => {
+    res.clearCookie("id");
+    res.redirect("/")
+  });
 
   //PUT =================================
 
   router.post("/profile/update", (req, res) => {
 
-    let updateUser = req.body.updateUser
-    let updatePass = req.body.updatePass
+    let updateUser  = req.body.updateUser
+    let updatePass  = req.body.updatePass
     let updateEmail = req.body.updateEmail
-    let userCookie = req.cookies.id
+    let userCookie  = req.cookies.id
 
     knex('rusers')
       .where('id', '=', userCookie) //Handle or ID?
       .update({
-        email: updateEmail,
-        password: updatePass,
-        handle: updateUser
+        email    : updateEmail,
+        password : updatePass,
+        handle   : updateUser
       }).then();
     res.redirect("/profile");
   })
