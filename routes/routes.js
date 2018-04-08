@@ -23,7 +23,6 @@ module.exports = (knex) => {
 
   //Route to the "/home" page to hold "link cards" for the user
   router.get("/home", (req, res) => {
-    CookieInfo(req);
 
     console.log('cookie', req.cookies.id);
     if (!req.cookies.id) {
