@@ -167,6 +167,7 @@ jQuery(document).ready(function ($) {
           type: "GET",
           success: function (data) {
             renderComments(data);
+            $("#commentSubmit").trigger("reset");
           }
         });
       }
