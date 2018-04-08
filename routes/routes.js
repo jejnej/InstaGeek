@@ -223,10 +223,12 @@ module.exports = (knex) => {
           password: newPassword,
           email: newEmail,
           handle: newUsername
-        }).then(function () {
-          res.send('OK')
-        })
+          })
+        .returning('id') // might not be putting cookie at register
+        .then()
+
       console.log("Login created!");
+    res.redirect('/home')
     }
   })
 
