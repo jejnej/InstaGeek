@@ -294,11 +294,11 @@ module.exports = (knex) => {
 
   //For the user to comment and view comments on a post
   router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
-    console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body.text);
+    console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body.comment);
 
     //get the post request from comment button
     knex('comments').insert({
-      comment_text: req.body.text,
+      comment_text: req.body.comment,
       resource_id: req.params.resid,
       user_id: req.cookies.id
     })
