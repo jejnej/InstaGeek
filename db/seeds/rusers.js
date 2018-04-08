@@ -5,16 +5,16 @@ exports.seed = function(knex, Promise) {
   return knex('rusers').del()
     .then(function () {
       return Promise.all([
-        knex('rusers').insert({password: 'password', handle: 'hester', email: chance.email(), first_name: 'Hester', last_name: 'Norris', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'carrie', email: chance.email(), first_name: 'Carrie', last_name: 'Briggs', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'lida', email: chance.email(), first_name: 'Lida', last_name: 'Lewis', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'lillian', email: chance.email(), first_name: 'Lillian', last_name: 'Nash', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'melvin', email: chance.email(), first_name: 'Melvin', last_name: 'Neal', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'ryan', email: chance.email(), first_name: 'Ryan', last_name: 'Fer', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'ethel', email: chance.email(), first_name: 'Ethel', last_name: 'Massey', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'minnie', email: chance.email(), first_name: 'Minnie', last_name: 'Rob', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'cora', email: chance.email(), first_name: 'Cora', last_name: 'Massey', city: chance.city()}),
-        knex('rusers').insert({password: 'password', handle: 'jorge', email: chance.email(), first_name: 'Jorge', last_name: 'Watson', city: chance.city()})
+        knex('rusers').insert({password: 'password', handle: 'Jody', email: 'jody@jodymail.com', first_name: 'Jody', last_name: 'S', city: 'Toronto'}),
+        knex('rusers').insert({password: 'password', handle: 'Thomas', email: 'thomas@thomasmail.com', first_name: 'Thomas', last_name: 'S', city: 'Toronto'}),
+        knex('rusers').insert({password: 'password', handle: 'Michael', email: 'michael@mymail.com', first_name: 'Michael', last_name: 'S', city: 'Toronto'}),
+        knex('rusers').insert({password: 'password', handle: 'Mathwiz', email: 'Lilly@mail.com', first_name: 'Lillian', last_name: 'Nash', city: 'Miami'}),
+        knex('rusers').insert({password: 'password', handle: 'Bragamat', email: 'Melvin@mail.com', first_name: 'Melvin', last_name: 'Neal', city: 'Edmonton'}),
+        knex('rusers').insert({password: 'password', handle: 'Rocketman', email: 'Ryan@mail.com', first_name: 'Ryan', last_name: 'Fer', city: 'New York'}),
+        knex('rusers').insert({password: 'password', handle: 'Saturn5', email: 'Ethel@mail.com', first_name: 'Ethel', last_name: 'Massey', city: 'Calgary'}),
+        knex('rusers').insert({password: 'password', handle: 'Jupiter', email: 'Minnie@mousemail.com', first_name: 'Minnie', last_name: 'Rob', city: 'Vancouver'}),
+        knex('rusers').insert({password: 'password', handle: 'Falconheavy', email: 'Cora@eggmail.com', first_name: 'Cora', last_name: 'Massey', city: 'Ottawa'}),
+        knex('rusers').insert({password: 'password', handle: 'Teslax', email: 'Jorge@mail.com', first_name: 'Jorge', last_name: 'Watson', city: 'Vaugan'})
       ]);
     });
 };
