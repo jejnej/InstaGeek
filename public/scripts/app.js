@@ -263,11 +263,10 @@ jQuery(document).ready(function ($) {
 
   $("#my-board").on("click", function (event) {
     event.preventDefault();
-    let board = $(this);
-    let boardID = board.data("");
+
     $.ajax({
       type: "GET",
-      url: `/user/saved`,
+      url: `/myresources`,
       success: function (articles) {
         $("#board-heading").text("My board");
         $(".article-container").empty();
