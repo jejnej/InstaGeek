@@ -303,13 +303,14 @@ module.exports = (knex) => {
             user_id: req.cookies.id
           });
       }
-    }).then(() => res.status(200))
+    }).then(() => res.status(200).send('like toggled'))
       .catch((err) => res.status(400).send(err));
   });
 
   //For the user to comment and view comments on a post
   router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
-    console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body.comment);
+    
+    console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body);
 
     //get the post request from comment button
     knex('comments').insert({
@@ -317,7 +318,9 @@ module.exports = (knex) => {
       resource_id: req.params.resid,
       user_id: req.cookies.id
     })
-      .then(() => res.status(200))
+      .then(() => {
+        res.status(200).send('comment added');
+      })
       .catch((err) => res.status(400).send(err));
   });
 
@@ -331,7 +334,7 @@ module.exports = (knex) => {
       resource_id: req.params.resid,
       user_id: req.cookies.id
     })
-      .then(() => res.status(200))
+      .then(() => res.status(200).send('rating added'))
       .catch((err) => res.status(400).send(err));
   });
 

@@ -1,12 +1,3 @@
-
-
-function escape(str) {
-  let div = document.createElement('div');
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
-}
-
-
 // Creates article cards which have their own modal pop up when clicked
 
 function createArticleElement(article) {
@@ -24,20 +15,19 @@ function createArticleElement(article) {
 
     `<div class = "col-sm">
   <div class="card" style="width: 28rem;">
-  <a href="${escape(url)}"><img class="card-img-top" src="${escape(image)}"> </a>
+  <a href="${url}"><img class="card-img-top" src="${image}"> </a>
   <div class="card-body">
-    <h3>${escape(title)}</h3>
-    <p class="card-text">${escape(des)}</p>
+    <h3>${title}</h3>
+    <p class="card-text">${des}</p>
   </div>
   <footer class = "card-footer">
   <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
   <div class="icons">
       <i class="fas fa-heart ${heartClasses}" data-heart="${article.id}"></i>
-    <form class="rating"action="/resource/${article.id}/rating" method="POST">
-        <input type="hidden" id="rating" name="rating" value="-1">
+    <div class="rating" ${ratingClass} >
         <span data-rating="1">☆</span><span data-rating="2">☆</span><span data-rating="3"> ☆</span><span data-rating="4">☆</span><span data-rating="5">☆</span>
     <p>Rating: ${average}</p>
- </form>
+ </div>
   </div>
  </footer>
 </div>
@@ -53,10 +43,10 @@ function createArticleElement(article) {
       <h2>Comments</h2>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea name="comment" placeholder="What do you think?"></textarea>
-        <input type="submit" value="Submit">
+        <textarea  id="commentText" name="text" placeholder="What do you think?"></textarea>
+        <input type="submit" value="comment">
       </form>
-
+    </section>
     <div class ="comments-container">
     </div>
      </div>
@@ -84,6 +74,7 @@ function renderArticles(articles) {
   if (articles.length % 4 !== 0) {
     $(".article-container").append(row)
   }
+
   addClickHandlersForComments();
 }
 
@@ -94,7 +85,7 @@ function createCommentElement(comment) {
   const commentHTML =
     `
   <div class = "posted-comment">
-      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${escape(commentBody)}</span>
+      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${commentBody}</span>
       <hr>
  </div>
   `
@@ -103,14 +94,13 @@ function createCommentElement(comment) {
 
 // Function that appends comments to the comment container
 function renderComments(comments) {
-  comments.forEach(function(comment) {
+  comments.forEach(function (comment) {
     $(".comments-container").prepend(createCommentElement(comment));
   });
 }
 
-
 function addClickHandlersForComments() {
-    $(".commentModal").on("click", function(event) {
+  $(".commentModal").on("click", function (event) {
     event.preventDefault();
     let comment = $(this);
     let commentID = comment.data("article")
@@ -118,8 +108,7 @@ function addClickHandlersForComments() {
     $.ajax({
       type: "GET",
       url: `/comments/${commentID}`,
-      success: function(comments) {
-
+      success: function (comments) {
         renderComments(comments);
       }
 
@@ -130,11 +119,11 @@ function addClickHandlersForComments() {
 
 
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
   tab = $('.tabs h3 a');
 
-// Tabbing between login/signup form
-  tab.on('click', function(event) {
+  // Tabbing between login/signup form
+  tab.on('click', function (event) {
     event.preventDefault();
     tab.removeClass('active');
     $(this).addClass('active');
@@ -144,29 +133,59 @@ jQuery(document).ready(function($) {
   });
 
 
-  $("form#new-article-modal").on("submit", function(event) {
+  $("form#new-article-modal").on("submit", function (event) {
     event.preventDefault();
-      $.ajax({
-        type: "POST",
-        data: $(this).serialize(),
-        url: `/resource/create`,
-        success: function(data) {
-       location.reload();
-        }
-      });
- });
+    $.ajax({
+      type: "POST",
+      data: $(this).serialize(),
+      url: `/resource/create`,
+      success: function (data) {
+        location.reload();
+      }
+    });
+  });
 
+  $("body").on("submit", "#commentSubmit", function (event) {
+    event.preventDefault();
+    let articleID = $(this).data("comment");
 
+    // $.post(
+    //   `/resource/${articleID}/comment`,
+    //   { comment: $(this).find("#commentText").val() }
+    // );
+    console.log("before POST");
+    $.ajax({
+      url: `/resource/${articleID}/comment`,
+      type: "POST",
+      data: { comment: $(this).find("#commentText").val() },
+      success: function () {
+        $.ajax({
+          url: `comments/${articleID}`,
+          type: "GET",
+          success: function (data) {
+            $(".comments-container").empty();
+            renderComments(data);
+            $(this).find("#commentSubmit")[0].reset();
 
-   $("#main-search").on("submit", function(event) {
+            // $(this).find("#commentText").empty();
+          }
+        });
+      }
+      , error: function (err) {
+        console.log(err);
+      }
+    })
+  });
 
-     event.preventDefault();
+  $("#main-search").on("submit", function (event) {
+
+    event.preventDefault();
     let search = event.target.searchfield.value;
-      $.ajax({
+    $.ajax({
       type: "GET",
       url: `/search`,
-     data: $("#main-search").serialize(),
-      success: function(articles) {
+      data: $("#main-search").serialize(),
+      success: function (articles) {
         $("#board-heading").text("Results");
         $(".article-container").empty();
         renderArticles(articles);
@@ -174,27 +193,11 @@ jQuery(document).ready(function($) {
     });
   });
 
-  $("body").on("submit", "#commentSubmit", function(event) {
-    event.preventDefault();
-    let article = $(this);
-    let articleID = article.attr("data-comment");
-      $.ajax({
-        type: "POST",
-        data: $("#commentSubmit").serialize(),
-        url: `/resource/${articleID}/comment`,
-        success: function(data) {
-         $("#comments-container").empty();
-         renderComments();
-         location.reload();
-        }
-      });
- });
 
 
+  // Event listener on click for drop down subjects
 
-// Event listener on click for drop down subjects
-
-  $(".dropdown-item").on("click", function(event) {
+  $(".dropdown-item").on("click", function (event) {
     event.preventDefault();
     let subject = $(this);
     let subjectID = subject.attr("data-subjects");
@@ -202,7 +205,7 @@ jQuery(document).ready(function($) {
     $.ajax({
       type: "GET",
       url: `/subject/${subjectID}`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text(subjectID);
         $(".article-container").empty();
         renderArticles(articles);
@@ -211,13 +214,13 @@ jQuery(document).ready(function($) {
     });
   });
 
-    $("#dropdown-all").on("click", function(event) {
+  $("#dropdown-all").on("click", function (event) {
     event.preventDefault();
 
     $.ajax({
       type: "GET",
       url: `/all`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text("Main Board");
         $(".article-container").empty();
         renderArticles(articles);
@@ -229,45 +232,44 @@ jQuery(document).ready(function($) {
   });
 
 
-   $("body").on("submit", ".fa-star", function(event) {
-    var url = `resource/${article.id}/rating`;
-     var rating = $(this).data('rating'); // Get the rating from the selected star
-     $('#rating').val(rating); //
-
+  $("body").on("click", ".fa-star", function (event) {
+    var icon = $(this);
+    var starID = icon.attr("rating");
     $.ajax({
       type: "POST",
-      url: url,
-
+      url: `/resource/`,
+      data: starID.serialize(),
       success: data => {
-       star.css("color","yellow");
+
       }
     });
 
   });
 
-    $("body").on("click", ".fa-heart", function(event) {
-     event.preventDefault();
+
+  $("body").on("click", ".fa-heart", function (event) {
+    event.preventDefault();
     var icon = $(this);
     var articleID = icon.data("heart");
     $.ajax({
       type: "POST",
       url: `/resource/${articleID}/like`,
-       success: data => {
-        icon.css('color','red');
+      success: data => {
+        icon.css('color', 'red');
       }
     });
   });
 
-// Returns articles created by user or liked by user
+  // Returns articles created by user or liked by user
 
-  $("#my-board").on("click", function(event) {
-     event.preventDefault();
-     let board = $(this);
-      let boardID = board.data("");
-      $.ajax({
+  $("#my-board").on("click", function (event) {
+    event.preventDefault();
+    let board = $(this);
+    let boardID = board.data("");
+    $.ajax({
       type: "GET",
       url: `/user/saved`,
-      success: function(articles) {
+      success: function (articles) {
         $("#board-heading").text("My board");
         $(".article-container").empty();
         renderArticles(articles);
@@ -276,29 +278,22 @@ jQuery(document).ready(function($) {
   });
 
 
-// Logout button
-
- $("#logout-button").on("click", function(event) {
-     event.preventDefault();
+  // On click of navbar search button. Return results on same page
 
 
-      $.ajax({
+  $("#logout-button").on("click", function (event) {
+    event.preventDefault();
+    let query = $(this);
+
+    $.ajax({
       type: "DELETE",
       url: `/logout`,
-      success: function(articles) {
-      window.location.href="/";
+      success: function (articles) {
+        // redirect to / where login is
       }
     });
   });
-
-
-
-
-
-
-
 });
-
 
 
 
