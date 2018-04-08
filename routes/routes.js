@@ -286,7 +286,8 @@ module.exports = (knex) => {
   });
 
   //For the user to like a post
-  router.put("/resource/:resid/like", (req, res) => { //OR PUTS?
+  router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
+    console.log ('GOT A LIKE FOR', req.params.resid);
     if (err) {
       res.status(500).json({
         error: err.message
@@ -295,24 +296,23 @@ module.exports = (knex) => {
       res.status(201).send();
     }
     //get the post request from the link button
-
   });
-
+  
   //For the user to comment and view comments on a post
-  router.put("/resource/:resid/comment", (req, res) => { //OR PUTS???
-
+  router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
+    console.log ('GOT A COMMENT FOR', req.params.resid, ':', req.body.text);
+    
     //get the post request from comment button
 
   });
 
   //For the user to rate a post ----- need to discuess
   router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
+    console.log ('GOT A RATING FOR', req.params.resid, ':', req.body.rating);
 
     //get post request
 
   });
-
-
 
   //PUT =================================
 
