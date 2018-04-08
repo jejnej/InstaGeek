@@ -10,32 +10,25 @@
   <header>
     <% include ./partials/_header %>
   </header>
-  <h1><%= `${user}` %>'s Profile</h1>
+
+      <h1><%= `${user}` %>'s Profile</h1>
 
   <form class="user-info" action="/profile/update" method="POST">
-      <label>Username:</label>
-      <input type="text" value="<%= `${user}` %>" name="updateUser">
-    </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" value="<%= `${password}` %>" placeholder="************" name="updatePass">
-    </div>
-    <div>
-      <label>Email:</label>
-      <input type="email" value="<%= `${email}` %>" name="updateEmail">
-    </div>
-    <div>
-      <label>Avatar:</label>
-      <img src="images/atom.png">
-      <button type= >New Photo</button> <!-- needs to do things -->
-    </div>
-    <button type="Submit">Update</button>
+      <div>Username:</div>
+      <div><input type="text" value="<%= `${user}` %>" name="updateUser"></div>
+      <div>Password:</div>
+      <div><input type="password" value="<%= `${password}` %>" placeholder="************" name="updatePass"></div>
+      <div>Email:</div>
+      <div><input type="email" value="<%= `${email}` %>" name="updateEmail"></div>
+      <div>First Name:</div>
+      <div><input type="text" value="<%= `${firstname}` %>" name ="userFirst" placeholder="optional"></div>
+      <div>Last Name:</div>
+      <div><input type="text" value="<%= `${lastname}` %>" name="userLast" placeholder="optional"></div>
+      <div>City:</div>
+      <div><input type="text" value="<%= `${city}` %>" name="userCity" placeholder="optional"></div>
+      <div><button type="Submit">Update</button></div>
+
   </form>
-
-
-
-
-
 
   <footer>
     <% include ./partials/_footer %>
