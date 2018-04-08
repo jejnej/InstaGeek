@@ -254,7 +254,7 @@ module.exports = (knex) => {
           }
         }
         if (data.og.description) {
-          description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
+          description =  data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description;
         }
         if (data.og.title) {
           title = data.og.title;
