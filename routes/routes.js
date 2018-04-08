@@ -221,15 +221,16 @@ module.exports = (knex) => {
 
       knex('rusers')
         .insert({
-          password: newPassword,
           email: newEmail,
-          handle: newUsername
+          handle: newUsername,
+          password: newPassword
           })
-        .returning('id') // might not be putting cookie at register
-        .then()
+        .returning('id')
+        .then(function(result) {
+          res.cookie("id", result[0]).redirect('/home');
+        });
 
       console.log("Login created!");
-    res.redirect('/home')
     }
   })
 
@@ -335,8 +336,7 @@ module.exports = (knex) => {
   });
 
   router.delete("/logout", (req, res) => {
-    res.clearCookie("id");
-    res.redirect("/")
+    res.clearCookie("id").redirect("/");
   });
 
   //PUT =================================
