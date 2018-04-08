@@ -1,8 +1,8 @@
 'use strict';
 
-const ogParser     = require("og-parser");
-const express      = require('express');
-const router       = express.Router();
+const ogParser = require("og-parser");
+const express = require('express');
+const router = express.Router();
 const cookieParser = require('cookie-parser') //cookie parser added
 router.use(cookieParser()); // cookie parser added
 
@@ -54,7 +54,6 @@ module.exports = (knex) => {
   });
 
   router.get("/search", (req, res) => {
-    console.log('/search', req.query);
     if (!req.query.searchfield) {
       res.status(400).send('invalid search');
     } else {
@@ -66,17 +65,17 @@ module.exports = (knex) => {
         + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
         + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"'
         + ' LEFT OUTER JOIN "userratings" ON "userratings"."resource_id" = "resources"."id", "public"."rusers" "rusers"'
-        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.searchfield}%'`
+        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.searchfield.toLowerCase()}%'`
         + ' ORDER BY "resources"."id" DESC'
       ).then((results) => {
         res.json(results.rows);
       })
-      .catch(err => {
-        console.log('/search error');
-        res.redirect('/');
-      });
+        .catch(err => {
+          console.log('/search error');
+          res.redirect('/');
+        });
     }
-    });
+  });
 
   //topic filter page
   router.get("/subject/:subjectname", (req, res) => {
@@ -221,15 +220,17 @@ module.exports = (knex) => {
 
       knex('rusers')
         .insert({
-          password: newPassword,
           email: newEmail,
-          handle: newUsername
+
+          handle: newUsername,
+          password: newPassword
           })
-        .returning('id') // might not be putting cookie at register
-        .then()
+        .returning('id')
+        .then(function(result) {
+          res.cookie("id", result[0]).redirect('/home');
+        });
 
       console.log("Login created!");
-    res.redirect('/home')
     }
   })
 
@@ -239,16 +240,26 @@ module.exports = (knex) => {
 
     let newSubject = req.body.new_subject;
     let newURL = req.body.new_url;
-    let userID = req.cookies.id
+    let userID = req.cookies.id;
+    let imgurl = "https://cdn.pixabay.com/photo/2014/05/27/23/32/matrix-356024_960_720.jpg";
+    let description = "No Description";
+    let title = "No Title";
 
     ogParser(newURL, function (error, data) {
-
-      let imgurl = data.og.image.url || "";
-      if (imgurl[0] === '/') {
-        imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+      console.log('OGOGOG:', data.og);
+      if (data.og) {
+        console.log ('data.og OK');
+        if (data.og.image) {
+          if (imgurl[0] === '/') {
+            imgurl = data.og.image.url;
+            imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+          }
+        }
+        console.log ('DESC:', data.og.description);
+        console.log ('TOTLE:', data.og.title);
+        description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
+        title = data.og.title || "No Title";
       }
-      let description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
-      let title = data.og.title || "No Title";
       knex.select('id').from('subjects').where('name', newSubject)
         .then(([data]) => {
           console.log('subject found: ', data, data.id);
@@ -274,86 +285,56 @@ module.exports = (knex) => {
           res.status(400).send(err);
         })
     })
-
   });
 
   //For the user to like a post
-
   router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
+    console.log ('GOT A LIKE FOR', req.params.resid);
     if (err) {
       res.status(500).json({
         error: err.message
-        });
+      });
     } else {
       res.status(201).send();
     }
-
-    let resID  = req.params.resid;
-    let userID = req.cookies.id;
-
-    knex('likes')
-      .insert({
-        resource_id : resID,
-        user_id     : userID
-      }).then()
-    res.redirect("/home");
+    //get the post request from the link button
   });
-
+  
   //For the user to comment and view comments on a post
   router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
+    console.log ('GOT A COMMENT FOR', req.params.resid, ':', req.body.text);
+    
+    //get the post request from comment button
 
-    //get the post request from comment button and assign to variables
-    //pull the comment out
-    let userText = req.body.text;
-    let userID   = req.cookies.id;
-    let resID    = req.params.resid;
-
-    //put it in the database based on the resource id
-     knex('comments')
-      .insert({
-        comment_text : userText,
-        resource_id  : resID,
-        user_id      : userID
-      }).then()
-    res.redirect("/home");
   });
 
-  //For the user to rate a post
-  router.post("/resource/:resid/rating", (req, res) => {
+  //For the user to rate a post ----- need to discuess
+  router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
+    console.log ('GOT A RATING FOR', req.params.resid, ':', req.body.rating);
 
-    let ratingValue = req.params.rating;
-    let resID       = req.params.resid;
-    let userID      = req.cookies.id;
+    //get post request
 
-    knex('ratings')
-      .insert({
-        rating_value : ratingValue,
-        resource_id  : resID,
-        user_id      : userID
-      }).then();
-    res.redirect("/home");
   });
 
   router.delete("/logout", (req, res) => {
-    res.clearCookie("id");
-    res.redirect("/")
+    res.clearCookie("id").redirect("/");
   });
 
   //PUT =================================
 
   router.post("/profile/update", (req, res) => {
 
-    let updateUser  = req.body.updateUser
-    let updatePass  = req.body.updatePass
+    let updateUser = req.body.updateUser
+    let updatePass = req.body.updatePass
     let updateEmail = req.body.updateEmail
-    let userCookie  = req.cookies.id
+    let userCookie = req.cookies.id
 
     knex('rusers')
       .where('id', '=', userCookie) //Handle or ID?
       .update({
-        email    : updateEmail,
-        password : updatePass,
-        handle   : updateUser
+        email: updateEmail,
+        password: updatePass,
+        handle: updateUser
       }).then();
     res.redirect("/profile");
   })
