@@ -139,6 +139,12 @@ footer {
      padding-bottom:12px;
 }
  // Comment Box for old comments
+
+.comments-container {
+  overflow: scroll;
+  height:600px;
+}
+
 .posted-comment {
      border: 1px solid rgba(192, 192, 192, 0.6);
      margin-top: 20px;
@@ -151,6 +157,8 @@ footer {
      color:black;
      font-size: 20px;
 }
+
+
 
 .posted-by-comment {
   font-size:30px;

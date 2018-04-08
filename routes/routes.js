@@ -283,7 +283,7 @@ module.exports = (knex) => {
   router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
     console.log('GOT A LIKE FOR', req.params.resid);
 
-    /* check whether a like already exists for this resource 
+    /* check whether a like already exists for this resource
      * and delete or insert the appropriate record;
      * i.e. toggle the like
      */
@@ -309,7 +309,7 @@ module.exports = (knex) => {
 
   //For the user to comment and view comments on a post
   router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
-    
+
     console.log('GOT A COMMENT FOR', req.params.resid, ':', req.body);
 
     //get the post request from comment button
