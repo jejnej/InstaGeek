@@ -155,7 +155,7 @@ module.exports = (knex) => {
 
     knex('rusers').where('id', userCookie)
       .then(rows => rows.forEach(function (person) {
-        let variables = { user: person.handle, email: person.email, password: person.password }
+        let variables = { user: person.handle, email: person.email, password: person.password, firstname: person.first_name,lastname: person.last_name, city: person.city}
         res.render("user_profile", variables);
       }))
       .catch(err => {
@@ -322,17 +322,23 @@ module.exports = (knex) => {
 
   router.post("/profile/update", (req, res) => {
 
-    let updateUser = req.body.updateUser
-    let updatePass = req.body.updatePass
-    let updateEmail = req.body.updateEmail
-    let userCookie = req.cookies.id
+    let updateUser  = req.body.updateUser;
+    let updatePass  = req.body.updatePass;
+    let updateEmail = req.body.updateEmail;
+    let userCookie  = req.cookies.id;
+    let updateFirst = req.body.userFirst;
+    let updateLast  = req.body.userLast;
+    let updateCity  = req.body.userCity;
 
     knex('rusers')
       .where('id', '=', userCookie) //Handle or ID?
       .update({
-        email: updateEmail,
+        handle: updateUser,
         password: updatePass,
-        handle: updateUser
+        email: updateEmail,
+        first_name: updateFirst,
+        last_name: updateLast,
+        city: updateCity
       }).then();
     res.redirect("/profile");
   })

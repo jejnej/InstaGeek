@@ -1,0 +1,26 @@
+body h1 {
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+form.user-info {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-row-gap: 10px;
+
+  margin: auto;
+  width: 500px;
+  border: 1px solid black;
+  margin-bottom: 100px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-right: 20px;
+
+  input {
+    width: 200px;
+    margin: auto;
+    display: inline-block;
+  }
+
+}
