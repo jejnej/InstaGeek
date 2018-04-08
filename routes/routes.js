@@ -65,17 +65,17 @@ module.exports = (knex) => {
         + ' LEFT OUTER JOIN "likesPerResource" ON "resources"."id" = "likesPerResource"."id"'
         + ' LEFT OUTER JOIN "avgRatingsPerResource" ON "resources"."id" = "avgRatingsPerResource"."id"'
         + ' LEFT OUTER JOIN "userratings" ON "userratings"."resource_id" = "resources"."id", "public"."rusers" "rusers"'
-        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.searchfield}%'`
+        + ` WHERE "rusers"."id" = "resources"."creator_id" AND "resources"."title" LIKE '%${req.query.searchfield.toLowerCase()}%'`
         + ' ORDER BY "resources"."id" DESC'
       ).then((results) => {
         res.json(results.rows);
       })
-      .catch(err => {
-        console.log('/search error');
-        res.redirect('/');
-      });
+        .catch(err => {
+          console.log('/search error');
+          res.redirect('/');
+        });
     }
-    });
+  });
 
   //topic filter page
   router.get("/subject/:subjectname", (req, res) => {
@@ -223,12 +223,12 @@ module.exports = (knex) => {
           password: newPassword,
           email: newEmail,
           handle: newUsername
-          })
+        })
         .returning('id') // might not be putting cookie at register
         .then()
 
       console.log("Login created!");
-    res.redirect('/home')
+      res.redirect('/home')
     }
   })
 
@@ -238,16 +238,26 @@ module.exports = (knex) => {
 
     let newSubject = req.body.new_subject;
     let newURL = req.body.new_url;
-    let userID = req.cookies.id
+    let userID = req.cookies.id;
+    let imgurl = "https://cdn.pixabay.com/photo/2014/05/27/23/32/matrix-356024_960_720.jpg";
+    let description = "No Description";
+    let title = "No Title";
 
     ogParser(newURL, function (error, data) {
-
-      let imgurl = data.og.image.url || "";
-      if (imgurl[0] === '/') {
-        imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+      console.log('OGOGOG:', data.og);
+      if (data.og) {
+        console.log ('data.og OK');
+        if (data.og.image) {
+          if (imgurl[0] === '/') {
+            imgurl = data.og.image.url;
+            imgurl = data.og.url.substr(0, data.og.url.slice(8).search("/") + 8) + imgurl;
+          }
+        }
+        console.log ('DESC:', data.og.description);
+        console.log ('TOTLE:', data.og.title);
+        description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
+        title = data.og.title || "No Title";
       }
-      let description = data.og.description ? data.og.description.length > 250 ? data.og.description.substring(0, 250) + "..." : data.og.description : "No Description";
-      let title = data.og.title || "No Title";
       knex.select('id').from('subjects').where('name', newSubject)
         .then(([data]) => {
           console.log('subject found: ', data, data.id);
@@ -263,9 +273,16 @@ module.exports = (knex) => {
             title: title,
             description: description,
             image_url: imgurl,
-            creator_id: userID
-        });
-      })
+            creator_id: userID,
+            subject_id: data.id
+          })
+        })
+        .then(() => res.redirect("/home"))
+        .catch((err) => {
+          console.log(err);
+          res.status(400).send(err);
+        })
+    })
   });
 
   //For the user to like a post
