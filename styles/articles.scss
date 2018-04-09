@@ -1,11 +1,9 @@
 @import "colours";
 
-  * {
+ * {
      font-family:$fontFamily;
- }
-
-
-button {
+}
+ button {
      border-radius:6px;
      background-color:#4682B4;
      width:50px;
@@ -15,31 +13,27 @@ button {
      opacity:0.9;
      color:white;
 }
-
-button:hover {
+ button:hover {
      opacity:1;
      cursor:pointer;
 }
-
-//  Board heading
-#board-heading {
-  margin-top:10px;
-  margin-bottom:10px;
-  margin-left:40px;
-  font-size:25px;
+ // Board heading
+ #board-heading {
+     margin-top:10px;
+     margin-bottom:10px;
+     margin-left:40px;
+     font-size:25px;
 }
-
-// Styles on add article button
-#add-article {
-  margin-left:40px;
-  width:130px;
-  height:40px;
+ // Styles on add article button
+ #add-article {
+     margin-left:40px;
+     width:130px;
+     height:40px;
 }
-
-// Styles modal when add article button clicked
+ // Styles modal when add article button clicked
  #new-article-modal {
      margin-top:30px;
-    background-color: rgba(160, 160, 160, 0.95);
+     background-color: rgba(160, 160, 160, 0.95);
      display: block;
      position: absolute;
      left: 30%;
@@ -48,145 +42,115 @@ button:hover {
      overflow-y:auto;
      overflow-x:auto;
      border-radius: 0px;
-   padding-left:20px;
- }
-
-// Container where all the articles will be populated
-.article-container {
-  margin-left:40px;
-  margin-right:40px;
-  margin-bottom:30px;
-  margin-top:30px;
-
+     padding-left:20px;
 }
-
-// Styles the articles being added as a card
-.card {
-margin-top:10px;
-margin-bottom:20px;
-
-  img {
-    height:170px;
-  }
-
- h5 {
-  font-size: 0.9em;
-  weight:bold;
- }
-  .card-text {
-    font-size:0.7em;
-  }
-
-#commentModal {
-  height:25px;
-  font-size:8px;
-  width:60px;
-  margin-top:5px;;
-  margin-bottom:5px;
+ // Container where all the articles will be populated
+ .article-container {
+     margin-left:40px;
+     margin-right:40px;
+     margin-bottom:30px;
+     margin-top:20px;
 }
+ // Styles the articles being added as a card
+ .card {
+     margin-top:10px;
+     margin-bottom:20px;
+     img {
+         height:170px;
+    }
+     h5 {
+         font-size: 0.9em;
+         weight:bold;
+    }
+     .card-text {
+         font-size:0.7em;
+    }
+     #commentModal {
+         height:25px;
+         font-size:8px;
+         width:60px;
+         margin-top:5px;
+        ;
+         margin-bottom:5px;
+    }
+     #cardFooter {
+         padding-top:3px;
+         padding-bottom:3px;
+         padding-left:10px;
+         padding-right:10px;
+    }
+     #cardBody {
+         padding-top:5px;
+         padding-bottom:5px;
+         padding-left:10px;
+         padding-right:10px;
+    }
+     //Footer of article card
 
-#cardFooter {
-  padding-top:3px;
-  padding-bottom:3px;
-  padding-left:10px;
-  padding-right:10px;
+     footer {
+         height:70px;
+         .rating {
+             unicode-bidi: bidi-override;
+             direction: rtl;
+        }
+         .rating > span {
+             display: inline-block;
+             position: relative;
+             width: 0.8em;
+             -moz-transform: rotate(35deg) scale(.7);
+             -webkit-transform: rotate(35deg) scale(.7);
+             -ms-transform: rotate(35deg) scale(.7);
+             -o-transform: rotate(35deg) scale(.7);
+        }
+         .rating > span:hover:before, .rating > span:hover ~ span:before {
+             content: "\2605";
+             position: absolute;
+             color: gold;
+        }
+         .fa-heart {
+             color:gray;
+             font-size: 10px;
+        }
+         .fa-heart.liked {
+             color:red;
+        }
+         .average-rating {
+             font-size:10px;
+             margin-top:0;
+        }
+         .numberLikes {
+             font-size:0.7em;
+        }
+         .rating {
+             margin-top:0;
+        }
+         .icons {
+             float:right;
+        }
+         .creator-name {
+             font-size:0.6em;
+        }
+    }
 }
+ // Modal when comment button on card article clicked
 
-#cardBody {
-  padding-top:5px;
-  padding-bottom:5px;
-  padding-left:10px;
-  padding-right:10px;
-}
-//Footer of article card
-footer {
-  height:70px;
-
-
-
-.rating {
-  unicode-bidi: bidi-override;
-  direction: rtl;
-}
-.rating > span {
-  display: inline-block;
-  position: relative;
-  width: 0.8em;
-  -moz-transform:    rotate(35deg) scale(.7);
--webkit-transform: rotate(35deg) scale(.7);
--ms-transform:     rotate(35deg) scale(.7);
--o-transform:      rotate(35deg) scale(.7);
-}
-
-.rating > span:hover:before,
-.rating > span:hover ~ span:before {
-   content: "\2605";
-   position: absolute;
-   color: gold;
-}
-
-
-.fa-heart {
-  color:gray;
-  font-size: 10px;
-}
-
-.fa-heart.liked {
-  color:red;
-}
-
-.average-rating {
-  font-size:10px;
-  margin-top:0;
-}
-
-.numberLikes {
-  font-size:0.7em;
-}
-
-.rating {
-  margin-top:0;
-}
-
-
-  .icons {
-    float:right;
-
-
-
-  }
-  .creator-name {
-    font-size:0.6em; }
-}
-}
-
-
-
-// Modal when comment button on card article clicked
-.article-modal-1 {
+ .article-modal-1 {
      background-color: rgba(255, 255, 255, 0.95);
      height: 600px;
      width: 800px;
-    left:20%;
+     left:20%;
      margin-top:30px;
-
-.col-sm .modal-right {
-  width:300px;
+     .col-sm .modal-right {
+         width:300px;
+    }
 }
-
-}
-
-
  .modal-title {
      font-size:20px;
      weight:bold;
-
 }
-
  .modal-image {
      width:400px;
      height:550px;
-
 }
  .modal-title {
      font-size:22px;
@@ -197,26 +161,19 @@ footer {
 }
  // Comments on modal populated by jquery
  //Form for submitting comment
-
  #commentSubmit {
      width:200px;
      height:100px;
-
 }
-
-#commentText  {
-  width:300px;
-
+ #commentText {
+     width:300px;
 }
-
-
  // Comment Container for old comments
-.comments-container {
-  overflow: scroll;
-  height:250px;
+ .comments-container {
+     overflow: scroll;
+     height:250px;
 }
-
-.posted-comment {
+ .posted-comment {
      border: 1px solid rgba(192, 192, 192, 0.6);
      margin-top: 10px;
      padding-left:5px;
@@ -228,8 +185,7 @@ footer {
      color:black;
      font-size: 15px;
 }
-
-.posted-by-comment {
-  font-size:16px;
-  weight:bold;
+ .posted-by-comment {
+     font-size:16px;
+     weight:400;
 }

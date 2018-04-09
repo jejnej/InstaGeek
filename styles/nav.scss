@@ -1,106 +1,96 @@
 nav {
-
-a {
-  font-size:10px;
-}
-
+     a {
+         font-size:10px;
+    }
      .navbar-brand {
          font-family: Indie Flower, cursive;
          font-size: 30px;
          margin-left:10px;
          margin-right:100px;
     }
-
-
-
-    .brand-logo {
-      margin-left:15px;
+     .brand-logo {
+         margin-left:15px;
     }
-
-  #main-search {
-      width:470px;
-  }
-
-  .form-control.mr-sm-2 {
-    width: 300px;
-  }
-
-  form {
-    margin-left:0px;
-
-  }
-
-  #subjects-button {
-    width:70px;
-    height:30px;
-    margin-left:20px;
-    font-size:10px;
-  }
-
-  #take-me-back {
-    text-decoration: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #4682B4;
-    height: 30px;
-    width: 70px;
-    margin-left: 10px;
-    margin-right: 10px;
-    text-align: center;
-    padding-top: 5px;
-    border-radius: .25rem;
-    opacity: 0.9;
-    &:hover { opacity: 1.0; }
-
-  }
-
-  #my-board {
-    border: 1px solid black;
-    text-decoration: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #4682B4;
-    height: 30px;
-    margin-right: 10px;
-    width: 70px;
-    padding-top: 5px;
-    text-align: center;
-    border-radius: .25rem;
-    opacity: 0.9;
-    &:hover { opacity: 1.0; }
-  }
-
-  #my-profile {
-    border: 1px solid black;
-    text-decoration: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #4682B4;
-    height: 30px;
-    width: 70px;
-    margin-right: 10px;
-  padding-top: 5px;
-    text-align: center;
-    border-radius: .25rem;
-    opacity: 0.9;
-    &:hover { opacity: 1.0; }
-  }
-
-  #logout-button {
-    border: 1px solid black;
-    text-decoration: none;
-    border: 1px solid transparent;
-    color: white;
-    background-color: #4682B4;
-    height: 30px;
-    width: 70px;;
-    margin-right: 10px;
-
-    text-align: center;
-    font-size: 10px;
-    border-radius: .25rem;
-  }
-
+     #main-search {
+         width:470px;
+    }
+     .form-control.mr-sm-2 {
+         width: 300px;
+    }
+     form {
+         margin-left:0px;
+    }
+     #subjects-button {
+         width:70px;
+         height:30px;
+         margin-left:20px;
+         font-size:10px;
+    }
+     #take-me-back {
+         text-decoration: none;
+         border: 1px solid transparent;
+         color: white;
+         background-color: #4682B4;
+         height: 30px;
+         width: 70px;
+         margin-left: 10px;
+         margin-right: 10px;
+         text-align: center;
+         padding-top: 5px;
+         border-radius: .25rem;
+         opacity: 0.9;
+         &:hover {
+             opacity: 1.0;
+        }
+    }
+     #my-board {
+         border: 1px solid black;
+         text-decoration: none;
+         border: 1px solid transparent;
+         color: white;
+         background-color: #4682B4;
+         height: 30px;
+         margin-right: 10px;
+         width: 70px;
+         padding-top: 5px;
+         text-align: center;
+         border-radius: .25rem;
+         opacity: 0.9;
+         &:hover {
+             opacity: 1.0;
+        }
+    }
+     #my-profile {
+         border: 1px solid black;
+         text-decoration: none;
+         border: 1px solid transparent;
+         color: white;
+         background-color: #4682B4;
+         height: 30px;
+         width: 70px;
+         margin-right: 10px;
+         padding-top: 5px;
+         text-align: center;
+         border-radius: .25rem;
+         opacity: 0.9;
+         &:hover {
+             opacity: 1.0;
+        }
+    }
+     #logout-button {
+         border: 1px solid black;
+         text-decoration: none;
+         border: 1px solid transparent;
+         color: white;
+         background-color: #4682B4;
+         height: 30px;
+         width: 70px;
+        ;
+         margin-right: 10px;
+         text-align: center;
+         font-size: 10px;
+         border-radius: .25rem;
+    }
 }
 
 

@@ -193,11 +193,12 @@ function createArticleElement(article) {
   let averageRating = article.avgRating;
   let isRated = article.userRating;
   let isLiked = article.liked ? 'liked' : '';
- let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
+  let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
   let color4star = article.userRating >= 4 ? 'style="color:#DAA520";' : "";
   let color3star = article.userRating >= 3 ? 'style="color:#DAA520";' : "";
   let color2star = article.userRating >= 2 ? 'style="color:#DAA520";' : "";
   let color1star = article.userRating >= 1 ? 'style="color:#DAA520";' : "";
+
 
   const articleHTML =
 
