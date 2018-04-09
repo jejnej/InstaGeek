@@ -9,7 +9,7 @@ function createArticleElement(article) {
   let numLikes = article.likes;
   let averageRating = article.avgRating;
   let isRated = article.userRating;
-  let isLiked = article.liked;
+  let isLiked = article.liked ? 'liked' : '';
 
   const articleHTML =
 
@@ -23,8 +23,8 @@ function createArticleElement(article) {
   <footer class = "card-footer">
   <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
   <div class="icons">
-      <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}" ></i>
-      <span class="numberLikes"></span>
+      <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
+       <span class="numberLikes">${numLikes}</span>
     <div class="rating" data-id="${article.id}" data-user="${isRated}">
         <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
     <p>Average: ${round(averageRating)}</p>
@@ -264,12 +264,13 @@ jQuery(document).ready(function ($) {
       type: "POST",
       url: `/resource/${articleID}/like`,
       success: data => {
-      if(isLiked) {
-        heart.css("color", "red");
-        heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) + 1; } );
-      } else if(!isLiked) {
-        heart.css("color","gray");
-         heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) - 1; } );
+      if(!isLiked) {
+        heart.addClass("liked")
+        heart.closest(".fa-heart").find(".numberLikes").html(function(i, val) { return Number(val) +1; } );
+      } else if(isLiked) {
+        heart.removeClass("liked");
+
+         heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) -1 ; } );
       }
 
       }
