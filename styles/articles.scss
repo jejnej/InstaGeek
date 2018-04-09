@@ -81,14 +81,23 @@ footer {
   position: relative;
   width: 1.1em;
 }
+
 .rating > span:hover:before,
 .rating > span:hover ~ span:before {
    content: "\2605";
    position: absolute;
+   color: gold;
 }
 
+.rating span.rated {
+  color: gold;
+}
 .fa-heart {
   color:gray;
+}
+
+.fa-heart.liked {
+  color:red;
 }
 
 .fa-star.rated {
@@ -138,8 +147,7 @@ footer {
      padding-right:12px;
      padding-bottom:12px;
 }
- // Comment Box for old comments
-
+ // Comment Container for old comments
 .comments-container {
   overflow: scroll;
   height:600px;
