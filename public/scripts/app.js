@@ -1,3 +1,147 @@
+
+// Creates article cards which have their own modal pop up when clicked
+function createArticleElement(article) {
+  let user = article.user;
+  let title = article.title;
+  let url = article.articleUrl;
+  let image = article.imageUrl;
+  let des = article.description;
+  let numLikes = article.likes;
+  let averageRating = article.avgRating;
+  let isRated = article.userRating;
+  let isLiked = article.liked ? 'liked' : '';
+  let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
+  let color4star = article.userRating >= 4 ? 'style="color:#DAA520";' : "";
+  let color3star = article.userRating >= 3 ? 'style="color:#DAA520";' : "";
+  let color2star = article.userRating >= 2 ? 'style="color:#DAA520";' : "";
+  let color1star = article.userRating >= 1 ? 'style="color:#DAA520";' : "";
+
+
+  const articleHTML =
+
+    `<div class = "col-sm">
+  <div class="card" style="width: 17rem;">
+  <a href="${safeEncode(url)}"><img class="card-img-top" src="${image}"> </a>
+  <div class="card-body" id="cardBody">
+    <h5 class="card-title">${title}</h5>
+    <p class="card-text">${des}</p>
+  </div>
+  <footer class = "card-footer" id="cardFooter">
+  <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" id="comment-modal-btn" data-article="${article.id}">Comment</button>
+  <div class="icons">
+      <i class="fas fa-heart ${isLiked}" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
+       <span class="numberLikes">${numLikes}</span>
+    <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
+        <span data-rating="5"${color5star}>☆</span><span data-rating="4"${color4star}>☆</span><span data-rating="3"${color3star}> ☆</span><span data-rating="2"${color2star}>☆</span><span data-rating="1"${color1star}>☆</span>
+    <p class="average-rating">Average: ${round(averageRating)}</p>
+ </div>
+  </div>
+   <p class ="creator-name">By: ${user}</p>
+ </footer>
+</div>
+<section class = "modal" id="articleModal_${article.id}"  tabindex="-1" role="dialog"  aria-hidden="true">
+   <div class="row modal-body article-modal-1">
+    <div class="col-sm">
+    <a href="${url}"><img class="modal-image" src="${image}"> </a>
+    </div>
+    <div class="col-sm">
+     <div class="modal-right">
+     <h2 class = "modal-title">${title}</h2>
+     </div>
+     <p class="modal-description">${des}</p>
+     <section class="new-comment">
+      <h6>Comments</h6>
+      <hr>
+      <form id="commentSubmit" data-comment="${article.id}">
+        <div><textarea  id="commentText" name="text" placeholder="What do you think?"></textarea></div>
+        <input type="submit" value="comment">
+      </form>
+    </section>
+    <div class="comments-container">
+    </div>
+     </div>
+   </div>
+</section>
+`
+  return articleHTML;
+}
+
+// Renders articles depending on how many articles in the row
+// appends a new row when 4 articles reached
+// appends articles to the article container
+
+function renderArticles(articles) {
+  var row = "";
+  for (var i = 0; i < articles.length; i++) {
+    if (i % 4 === 0) {
+      row = $("<div/>").addClass("row");
+    }
+    row.append(createArticleElement(articles[i]));
+    if (i % 4 === 3) {
+      $(".article-container").append(row);
+    }
+
+  }
+  if (articles.length % 4 !== 0) {
+    $(".article-container").append(row);
+  }
+  addClickHandlersForComments();
+
+}
+
+// Creates comment card for comments
+function createCommentElement(comment) {
+  let name = comment.user;
+  let commentBody = comment.comment_text;
+  const commentHTML =
+    `
+  <div class = "posted-comment">
+      <span class ="posted-by-comment">${name}: </span><span class = "posted-comment-body">${safeEncode(commentBody)}</span>
+ </div>
+  `
+  return commentHTML;
+}
+
+// Function that appends comments to the comment container
+function renderComments(comments, id) {
+  comments.forEach(function(comment) {
+    $(`#articleModal_${id} .comments-container`).prepend(createCommentElement(comment));
+  });
+}
+
+function addClickHandlersForComments() {
+  $(".commentModal").on("click", function(event) {
+    event.preventDefault();
+    let article = $(this);
+    let articleID = article.data("article");
+    $(".comments-container").empty();
+    $.ajax({
+      type: "GET",
+      url: `/resource/${articleID}/comments`,
+      success: function(comments) {
+        renderComments(comments, articleID);
+      }
+
+    });
+  });
+}
+
+
+//Function used to round average rating to two decimal places
+function round(number) {
+  return Math.round(number * 100) / 100;
+}
+
+// Function to re-encode text to convert unsafe characters
+//encoded into safe encoded representation
+
+function safeEncode(str) {
+  let div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+
 jQuery(document).ready(function($) {
 
  // Tabbing between login/signup form
@@ -44,7 +188,7 @@ jQuery(document).ready(function($) {
               url: `resource/${articleID}/comments`,
               type: "GET",
               success: function(data) {
-                renderComments(data);
+                renderComments(data, articleID);
                 $("#commentSubmit").trigger("reset");
               }
             });
@@ -70,7 +214,6 @@ jQuery(document).ready(function($) {
           }
         });
       });
-
 
 
 // On click of subjects button. Choosing a subject filters page
@@ -182,146 +325,6 @@ jQuery(document).ready(function($) {
 
  });
 
-// Creates article cards which have their own modal pop up when clicked
-function createArticleElement(article) {
-  let user = article.user;
-  let title = article.title;
-  let url = article.articleUrl;
-  let image = article.imageUrl;
-  let des = article.description;
-  let numLikes = article.likes;
-  let averageRating = article.avgRating;
-  let isRated = article.userRating;
-  let isLiked = article.liked ? 'liked' : '';
-  let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
-  let color4star = article.userRating >= 4 ? 'style="color:#DAA520";' : "";
-  let color3star = article.userRating >= 3 ? 'style="color:#DAA520";' : "";
-  let color2star = article.userRating >= 2 ? 'style="color:#DAA520";' : "";
-  let color1star = article.userRating >= 1 ? 'style="color:#DAA520";' : "";
 
-
-  const articleHTML =
-
-    `<div class = "col-sm">
-  <div class="card" style="width: 17rem;">
-  <a href="${safeEncode(url)}"><img class="card-img-top" src="${image}"> </a>
-  <div class="card-body" id="cardBody">
-    <h5 class="card-title">${title}</h5>
-    <p class="card-text">${des}</p>
-  </div>
-  <footer class = "card-footer" id="cardFooter">
-  <button data-toggle="modal" data-target="#articleModal_${article.id}" id="commentModal" data-article="${article.id}">Comment</button>
-  <div class="icons">
-      <i class="fas fa-heart ${isLiked}" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
-       <span class="numberLikes">${numLikes}</span>
-    <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
-        <span data-rating="5"${color5star}>☆</span><span data-rating="4"${color4star}>☆</span><span data-rating="3"${color3star}> ☆</span><span data-rating="2"${color2star}>☆</span><span data-rating="1"${color1star}>☆</span>
-    <p class="average-rating">Average: ${round(averageRating)}</p>
- </div>
-  </div>
-   <p class ="creator-name">By: ${user}</p>
- </footer>
-</div>
-<section class = "modal" id="articleModal_${article.id}"  tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
-   <div class="row modal-body article-modal-1">
-    <div class="col-sm">
-    <a href="${url}"><img class="modal-image" src="${image}"> </a>
-    </div>
-    <div class="col-sm">
-     <div class="modal-right">
-     <h2 class = "modal-title">${title}</h2>
-     </div>
-     <p class="modal-description">${des}</p>
-     <section class="new-comment">
-      <h6>Comments</h6>
-      <hr>
-      <form id="commentSubmit" data-comment="${article.id}">
-        <div><textarea  id="commentText" name="text" placeholder="What do you think?"></textarea></div>
-        <input type="submit" value="comment">
-      </form>
-    </section>
-    <div class ="comments-container">
-    </div>
-     </div>
-   </div>
-</section>
-`
-  return articleHTML;
-}
-
-// Renders articles depending on how many articles in the row
-// appends a new row when 4 articles reached
-// appends articles to the article container
-
-function renderArticles(articles) {
-  var row = "";
-  for (var i = 0; i < articles.length; i++) {
-    if (i % 4 === 0) {
-      row = $("<div/>").addClass("row");
-    }
-    row.append(createArticleElement(articles[i]));
-    if (i % 4 === 3) {
-      $(".article-container").append(row);
-    }
-  }
-  if (articles.length % 4 !== 0) {
-    $(".article-container").append(row);
-  }
-
-  addClickHandlersForComments();
-}
-
-// Creates comment card for comments
-function createCommentElement(comment) {
-  let name = comment.user;
-  let commentBody = comment.comment_text;
-  const commentHTML =
-    `
-  <div class = "posted-comment">
-      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${safeEncode(commentBody)}</span>
- </div>
-  `
-  return commentHTML
-}
-
-// Function that appends comments to the comment container
-function renderComments(comments) {
-  comments.forEach(function(comment) {
-    $(".comments-container").prepend(createCommentElement(comment));
-  });
-}
-
-//Adds clickhandlers for comments as they disappear when modal is clicked
-function addClickHandlersForComments() {
-  $(".commentModal").on("click", function(event) {
-    event.preventDefault();
-    let article = $(this);
-    let articleID = article.data("article");
-    $(".comments-container").empty();
-    $.ajax({
-      type: "GET",
-      url: `/resource/${articleID}/comments`,
-      success: function(comments) {
-        renderComments(comments);
-      }
-
-    });
-  });
-}
-
-
-//Function used to round average rating to two decimal places
-function round(number) {
-  return Math.round(number * 100) / 100;
-}
-
-// Function to re-encode text to convert unsafe characters
-//encoded into safe encoded representation
-
-function safeEncode(str) {
-  let div = document.createElement('div');
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
-}
 
 
