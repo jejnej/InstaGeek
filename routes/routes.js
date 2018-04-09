@@ -284,7 +284,7 @@ router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
 });
 
 
-router.delete("/logout", (req, res) => {
+router.post("/logout", (req, res) => {
   res.clearCookie("id").redirect("/");
 });
 

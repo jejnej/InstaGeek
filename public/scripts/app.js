@@ -176,6 +176,7 @@ jQuery(document).ready(function($) {
           type: "POST",
           url: `/logout`,
           success: function() {
+             window.location.href="/";
           }
         });
       });
@@ -191,7 +192,7 @@ function createArticleElement(article) {
   let des = article.description;
   let numLikes = article.likes;
   let averageRating = article.avgRating;
-  let isRated = article.userRating ? 'rated' : '';
+  let isRated = article.userRating;
   let isLiked = article.liked ? 'liked' : '';
  let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
   let color4star = article.userRating >= 4 ? 'style="color:#DAA520";' : "";
