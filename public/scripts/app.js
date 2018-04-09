@@ -204,7 +204,7 @@ function createArticleElement(article) {
     `<div class = "col-sm">
   <div class="card" style="width: 17rem;">
   <a href="${safeEncode(url)}"><img class="card-img-top" src="${image}"> </a>
-  <div class="card-body">
+  <div class="card-body" id="cardBody">
     <h5 class="card-title">${title}</h5>
     <p class="card-text">${des}</p>
   </div>

@@ -26,7 +26,7 @@ button:hover {
   margin-top:10px;
   margin-bottom:10px;
   margin-left:40px;
-  font-size:30px;
+  font-size:25px;
 }
 
 // Styles on add article button
@@ -70,19 +70,19 @@ margin-bottom:20px;
   }
 
  h5 {
-  font-size: 0.8em;
+  font-size: 0.9em;
   weight:bold;
  }
   .card-text {
-    font-size:0.6em;
+    font-size:0.7em;
   }
 
 #commentModal {
   height:25px;
   font-size:8px;
   width:60px;
-  margin-top:0;
-  margin-bottom:3px;
+  margin-top:5px;;
+  margin-bottom:5px;
 }
 
 #cardFooter {
@@ -91,9 +91,16 @@ margin-bottom:20px;
   padding-left:10px;
   padding-right:10px;
 }
+
+#cardBody {
+  padding-top:5px;
+  padding-bottom:5px;
+  padding-left:10px;
+  padding-right:10px;
+}
 //Footer of article card
 footer {
-  height:60px;
+  height:70px;
 
 
 
@@ -104,11 +111,11 @@ footer {
 .rating > span {
   display: inline-block;
   position: relative;
-  width: 1.1em;
-  -moz-transform:    rotate(35deg) scale(.6);
--webkit-transform: rotate(35deg) scale(.6);
--ms-transform:     rotate(35deg) scale(.6);
--o-transform:      rotate(35deg) scale(.6);
+  width: 0.8em;
+  -moz-transform:    rotate(35deg) scale(.7);
+-webkit-transform: rotate(35deg) scale(.7);
+-ms-transform:     rotate(35deg) scale(.7);
+-o-transform:      rotate(35deg) scale(.7);
 }
 
 .rating > span:hover:before,
@@ -121,7 +128,7 @@ footer {
 
 .fa-heart {
   color:gray;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .fa-heart.liked {
@@ -134,7 +141,7 @@ footer {
 }
 
 .numberLikes {
-  font-size:0.8em;
+  font-size:0.7em;
 }
 
 .rating {
@@ -149,7 +156,7 @@ footer {
 
   }
   .creator-name {
-    font-size:0.5em; }
+    font-size:0.6em; }
 }
 }
 

@@ -6,17 +6,19 @@
      opacity:0.8;
      margin-left: 20px;
      margin-right:20px;
-     height:675px;
+     height:600px;
 
      h1 {
          color: white;
          text-align:center;
          weight:bold;
+         font-size:50px;
     }
      p {
          text-align: center;
          font-size:1.5em;
          color: #f3cba0;
+         font-size:20px;
     }
      hr {
          border: 0;
@@ -26,7 +28,8 @@
     }
      .form-wrap {
          background-color: #fff;
-         width: 320px;
+         width: 220px;
+
          margin: 3em auto;
          box-shadow: 0px 1px 8px #BEBEBE;
          -webkit-box-shadow: 0px 1px 8px #BEBEBE;
@@ -92,8 +95,8 @@
              content: '';
              position: absolute;
              border: 1px solid #CFCFCF;
-             width: 17px;
-             height: 17px;
+             width: 14px;
+             height: 14px;
              top: 0px;
              left: -14px;
         }
@@ -111,26 +114,26 @@
              border: 3px solid #28A55F;
              border-top: none;
              border-right: none;
-             -webkit-transform: rotate(-45deg);
-             -moz-transform: rotate(-45deg);
-             -o-transform: rotate(-45deg);
-             -ms-transform: rotate(-45deg);
-             transform: rotate(-45deg);
+             -webkit-transform: rotate(-60deg);
+             -moz-transform: rotate(-60deg);
+             -o-transform: rotate(-60deg);
+             -ms-transform: rotate(-60deg);
+             transform: rotate(-60deg);
         }
     }
 }
 
 //  Styling container holding subjects icon
  .subjects-container {
-     height:350px;
+     height:300px;
      .col-sm {
-         padding-right:30px;
+         padding-right:20px;
          padding-left:30px;
-         padding-top:50px;
-         padding-bottom:50px;
+         padding-top:30px;
+         padding-bottom:30px;
          text-align:center;
     }
      img {
-         width: 170px;
+         width: 140px;
     }
 }
