@@ -42,11 +42,16 @@
           <a data-subjects="Arts" class="dropdown-item" href="#">Arts</a>
         </div>
       </div>
+      </form>
 
-      <a id = "take-me-back" href="/home">Explore</a>
+
+  <!-- Need to put logic. If USER then display these.  -->
+      <a id = "take-me-back" href="/home">Home</a>
       <a id = "my-board" data-board="" href="#">My Board</a>
       <a id = "my-profile" href="/profile">My Profile</a>
-      <button id = "logout-button">Logout</button>
+      <form method="POST" action="/logout">
+        <button id ="logout-button">Logout</button>
+      </form>
     </div>
     <% } %>
   </nav>
