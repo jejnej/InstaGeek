@@ -61,7 +61,7 @@ module.exports = (knex) => {
       res.status(400).send('invalid search');
     } else {
       knex.raw(masterQueryString(req.cookies.id)
-        + ` WHERE "resources"."title" LIKE '%${req.query.searchfield.toLowerCase()}%'`
+        + ` WHERE LOWER("resources"."title") LIKE LOWER('%${req.query.searchfield}%')`
         + ' ORDER BY "resources"."id" DESC'
       ).then((results) => {
         res.json(results.rows);
