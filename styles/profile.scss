@@ -1,31 +1,45 @@
-  #profile-heading {
-  margin-top: 10px;
-  margin-left: 40px;
-  font-family: Raleway;
-  text-align:center;
-  text-transform:uppercase;
-  margin-top:40px;
+ #profile-heading {
+     margin-top: 10px;
+     margin-left: 40px;
+     font-family: Raleway;
+     text-align:center;
+     text-transform:uppercase;
+     margin-top:40px;
 }
-
-form.user-info {
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-row-gap: 10px;
-  background-color: #f8f9fa;
-
-  margin: auto;
-  width: 500px;
-  border: 1px solid black;
-  margin-bottom: 75px;
-  padding-left: 20px;
-  padding-bottom: 25px;
-  padding-top: 20px;
-  padding-right: 20px;
-
-  input {
-    width: 200px;
-    margin: auto;
-    display: inline-block;
-  }
+ form.user-info {
+     display: grid;
+     grid-template-columns: auto auto;
+     grid-row-gap: 10px;
+     background-color: #f8f9fa;
+     margin: auto;
+     width: 500px;
+     border: 1px solid black;
+     margin-bottom: 75px;
+     padding-left: 20px;
+     padding-bottom: 25px;
+     padding-top: 20px;
+     padding-right: 20px;
+     input {
+         width: 200px;
+         margin: auto;
+         display: inline-block;
+    }
+     #profile-button {
+         text-decoration: none;
+         border: 1px solid transparent;
+         color: white;
+         background-color: #4682B4;
+         height: 40px;
+         width: 80px;
+         margin-left: 10px;
+         margin-right: 10px;
+         text-align: center;
+         padding-top: 5px;
+         border-radius: .25rem;
+         opacity: 0.9;
+         &:hover {
+             opacity: 1.0;
+        }
+    }
 }
 
