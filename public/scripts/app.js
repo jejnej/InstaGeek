@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function($) {
 
  // Tabbing between login/signup form
@@ -176,7 +175,6 @@ jQuery(document).ready(function($) {
           type: "POST",
           url: `/logout`,
           success: function() {
-             window.location.href="/";
           }
         });
       });
@@ -192,21 +190,13 @@ function createArticleElement(article) {
   let des = article.description;
   let numLikes = article.likes;
   let averageRating = article.avgRating;
-  let isRated = article.userRating;
+  let isRated = article.userRating ? 'rated' : '';
   let isLiked = article.liked ? 'liked' : '';
-<<<<<<< HEAD
  let color5star = article.userRating >= 5 ? 'style="color:#DAA520";' : "";
   let color4star = article.userRating >= 4 ? 'style="color:#DAA520";' : "";
   let color3star = article.userRating >= 3 ? 'style="color:#DAA520";' : "";
   let color2star = article.userRating >= 2 ? 'style="color:#DAA520";' : "";
   let color1star = article.userRating >= 1 ? 'style="color:#DAA520";' : "";
-=======
-  let color5star = article.userRating >= 5 ? 'style="color:gold";' : "";
-  let color4star = article.userRating >= 4 ? 'style="color:gold";' : "";
-  let color3star = article.userRating >= 3 ? 'style="color:gold";' : "";
-  let color2star = article.userRating >= 2 ? 'style="color:gold";' : "";
-  let color1star = article.userRating >= 1 ? 'style="color:gold";' : "";
->>>>>>> 8325dfda9ca20abc12b3ecfd3f415c42c16690b3
 
   const articleHTML =
 
@@ -321,199 +311,5 @@ function addClickHandlersForComments() {
 function round(number) {
   return Math.round(number * 100) / 100;
 }
-
-
-
-
-jQuery(document).ready(function ($) {
-  tab = $('.tabs h3 a');
-
-  // Tabbing between login/signup form
-  tab.on('click', function (event) {
-    event.preventDefault();
-    tab.removeClass('active');
-    $(this).addClass('active');
-    tab_content = $(this).attr('href');
-    $('div[id$="tab-content"]').removeClass('active');
-    $(tab_content).addClass('active');
-  });
-
-
-  $("form#new-article-modal").on("submit", function (event) {
-    event.preventDefault();
-    $.ajax({
-      type: "POST",
-      data: $(this).serialize(),
-      url: `/resource/create`,
-      success: function (data) {
-        location.reload();
-      }
-    });
-  });
-
-  $("body").on("submit", "#commentSubmit", function (event) {
-    event.preventDefault();
-    let articleID = $(this).data("comment");
-
-
-    $.ajax({
-      url: `/resource/${articleID}/comment`,
-      type: "POST",
-      data: { comment: $(this).find("#commentText").val() },
-      success: function () {
-        $(".comments-container").empty();
-
-        $.ajax({
-          url: `resource/${articleID}/comments`,
-          type: "GET",
-          success: function (data) {
-            renderComments(data);
-            $("#commentSubmit").trigger("reset");
-          }
-        });
-      }
-      , error: function (err) {
-        console.log(err);
-      }
-    })
-  });
-
-  $("#main-search").on("submit", function (event) {
-
-    event.preventDefault();
-    let search = event.target.searchfield.value;
-    $.ajax({
-      type: "GET",
-      url: `/search`,
-      data: $("#main-search").serialize(),
-      success: function (articles) {
-        $("#board-heading").text("Results");
-        $(".article-container").empty();
-        renderArticles(articles);
-      }
-    });
-  });
-
-
-
-  // Event listener on click for drop down subjects
-
-  $(".dropdown-item").on("click", function (event) {
-    event.preventDefault();
-    let subject = $(this);
-    let subjectID = subject.attr("data-subjects");
-
-    $.ajax({
-      type: "GET",
-      url: `/subject/${subjectID}`,
-      success: function (articles) {
-        $("#board-heading").text(subjectID);
-        $(".article-container").empty();
-        renderArticles(articles);
-        // renderComments(comments);
-      }
-    });
-  });
-
-  $("#dropdown-all").on("click", function (event) {
-    event.preventDefault();
-
-    $.ajax({
-      type: "GET",
-      url: `/all`,
-      success: function (articles) {
-        $("#board-heading").text("Main Board");
-        $(".article-container").empty();
-        renderArticles(articles);
-        // we can add click handlers
-        // addClickHandlersToCards()
-
-      }
-    });
-  });
-
-
-  $("body").on("click", ".rating span", function (event) {
-    let star= $(this);
-    let isRated = star.data("user");
-    let rating = star.data("rating");
-   let articleID = star.closest(".rating").data("id");
-    $.ajax({
-      type: "POST",
-      url: `/resource/${articleID}/rating`,
-      data: {rating:rating},
-      success: data => {
-       if(!isRated) {
-        star.css("color", "yellow");
-      } else if(isRated) {
-        star.css("color", "gray");
-      }
-     }
-    });
-
-  });
-
-
-  $("body").on("click", ".fa-heart", function (event) {
-    event.preventDefault();
-    let heart  = $(this);
-    let articleID = heart.data("id");
-    let isLiked = heart.data("liked");
-    let likes = heart.data("likes");
-
-    $.ajax({
-      type: "POST",
-      url: `/resource/${articleID}/like`,
-      success: data => {
-      if(isLiked) {
-        heart.css("color", "red");
-        heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) + 1; } );
-      } else if(!isLiked) {
-        heart.css("color","gray");
-         heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) - 1; } );
-      }
-
-      }
-
-    });
-  });
-
-  // Returns articles created by user or liked by user
-
-  $("#my-board").on("click", function (event) {
-    event.preventDefault();
-
-    $.ajax({
-      type: "GET",
-      url: `/myresources`,
-      success: function (articles) {
-        $("#board-heading").text("My board");
-        $(".article-container").empty();
-        renderArticles(articles);
-      }
-    });
-  });
-
-
-  // On click of navbar search button. Return results on same page
-
-
-/*  $("#logout-button").on("click", function (event) {
-    event.preventDefault();
-
-    $.ajax({
-      type: "POST",
-      url: `/logout`,
-      success: function () {
-        // redirect to / where login is
-      }
-    });
-  });*/
-
-
-
-
-});
-
 
 
