@@ -212,7 +212,7 @@ function createArticleElement(article) {
   <footer class = "card-footer" id="cardFooter">
   <button data-toggle="modal" data-target="#articleModal_${article.id}" id="commentModal" data-article="${article.id}">Comment</button>
   <div class="icons">
-      <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
+      <i class="fas fa-heart ${isLiked}" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
        <span class="numberLikes">${numLikes}</span>
     <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
         <span data-rating="5"${color5star}>☆</span><span data-rating="4"${color4star}>☆</span><span data-rating="3"${color3star}> ☆</span><span data-rating="2"${color2star}>☆</span><span data-rating="1"${color1star}>☆</span>
