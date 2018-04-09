@@ -17,7 +17,7 @@ exports.seed = function (knex, Promise) {
         knex('comments').insert({comment_text: 'This actually makes sense', resource_id: 55, user_id: 4}),
         knex('comments').insert({comment_text: 'this really clarified it', resource_id: 55, user_id: 3}),
         knex('comments').insert({comment_text: 'This is awesome, I need a beer', resource_id: 55, user_id: 1}),
-        knex('comments').insert({comment_text: 'I should be studying, but i can not stop searching', resource_id: s55, user_id: 2}),
+        knex('comments').insert({comment_text: 'I should be studying, but i can not stop searching', resource_id: 55, user_id: 2}),
         knex('comments').insert({comment_text: 'I have been browsing for hours.  What time is it?', resource_id: 55, user_id: 1}),
 
         knex('comments').insert({comment_text: 'Wow cool pop ups! nice job InstaGeek', resource_id: 54, user_id: 2}),
