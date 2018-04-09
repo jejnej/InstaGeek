@@ -46,6 +46,7 @@ module.exports = (knex) => {
     }
   });
 
+  // data to populate the default page
   router.get("/all", (req, res) => {
     knex.raw(masterQueryString(req.cookies.id) + ' ORDER BY "resources"."id" DESC')
       .then((results) => {
@@ -54,6 +55,7 @@ module.exports = (knex) => {
       .catch((err) => res.status(400).send(err));
   });
 
+  // like default page, but filtered on title by a search string
   router.get("/search", (req, res) => {
     if (!req.query.searchfield) {
       res.status(400).send('invalid search');
@@ -68,7 +70,7 @@ module.exports = (knex) => {
     }
   });
 
-  //topic filter page
+  // like default page, but filtered on topic
   router.get("/subject/:subjectname", (req, res) => {
     knex.raw(masterQueryString(req.cookies.id)
       + ' LEFT OUTER JOIN "subjects" ON "subjects"."id" = "resources"."subject_id" '
@@ -91,7 +93,7 @@ module.exports = (knex) => {
     ).catch((err) => res.status(400).send(err));
   });
 
-  //A link to the card on a standalone site to allow people to comment
+  // return one specified resource
   router.get("/resource/:resid", (req, res) => {
     knex.raw(masterQueryString(req.cookies.id)
       + `WHERE "resources"."id" = ${req.params.resid}`
@@ -112,6 +114,7 @@ router.get("/resource/:resid/comments", (req, res) => {
   .catch((err) => res.status(400).send(err));
 });
 
+// user profile data
 router.get("/profile", (req, res) => {
   let userCookie = req.cookies.id
   knex('rusers').where('id', userCookie)
@@ -186,7 +189,7 @@ router.post("/register", (req, res) => {
 })
 
 
-
+// create a new resource, attempting to populate all fields (except subject) based on a provided URL
 router.post("/resource/create", (req, res) => {
 
   let newSubject = req.body.new_subject;
@@ -257,7 +260,7 @@ router.post("/resource/:resid/like", (req, res) => { //OR PUTS?
     .catch((err) => res.status(400).send(err));
 });
 
-//For the user to comment and view comments on a post
+//For the user to submit a comment on a post
 router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
   //get the post request from comment button
   knex('comments').insert({
@@ -271,7 +274,7 @@ router.post("/resource/:resid/comment", (req, res) => { //OR PUTS???
     .catch((err) => res.status(400).send(err));
 });
 
-//For the user to rate a post ----- need to discuess
+//For the user to rate a post
 router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
   //get post request
   knex('ratings').insert({
@@ -283,12 +286,10 @@ router.post("/resource/:resid/rating", (req, res) => { //OR PUTS??
     .catch((err) => res.status(400).send(err));
 });
 
-
+// log out
 router.delete("/logout", (req, res) => {
   res.clearCookie("id").redirect("/");
 });
-
-//PUT =================================
 
 router.post("/profile/update", (req, res) => {
 

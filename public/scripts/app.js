@@ -191,6 +191,11 @@ function createArticleElement(article) {
   let averageRating = article.avgRating;
   let isRated = article.userRating ? 'rated' : '';
   let isLiked = article.liked ? 'liked' : '';
+  let color5star = article.userRating >= 5 ? 'style="color:gold";' : "";
+  let color4star = article.userRating >= 4 ? 'style="color:gold";' : "";
+  let color3star = article.userRating >= 3 ? 'style="color:gold";' : "";
+  let color2star = article.userRating >= 2 ? 'style="color:gold";' : "";
+  let color1star = article.userRating >= 1 ? 'style="color:gold";' : "";
 
   const articleHTML =
 
@@ -207,7 +212,7 @@ function createArticleElement(article) {
       <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
        <span class="numberLikes">${numLikes}</span>
     <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
-        <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
+        <span data-rating="5"${color5star}>☆</span><span data-rating="4"${color4star}>☆</span><span data-rating="3"${color3star}> ☆</span><span data-rating="2"${color2star}>☆</span><span data-rating="1"${color1star}>☆</span>
     <p>Average: ${round(averageRating)}</p>
  </div>
   <p>By: ${user}</p>
