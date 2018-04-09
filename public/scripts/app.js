@@ -8,7 +8,7 @@ function createArticleElement(article) {
   let des = article.description;
   let numLikes = article.likes;
   let averageRating = article.avgRating;
-  let isRated = article.userRating;
+  let isRated = article.userRating ? 'rated' : '';
   let isLiked = article.liked ? 'liked' : '';
 
   const articleHTML =
@@ -25,7 +25,7 @@ function createArticleElement(article) {
   <div class="icons">
       <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
        <span class="numberLikes">${numLikes}</span>
-    <div class="rating" data-id="${article.id}" data-user="${isRated}">
+    <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
         <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
     <p>Average: ${round(averageRating)}</p>
  </div>
@@ -234,22 +234,22 @@ jQuery(document).ready(function ($) {
 
   $("body").on("click", ".rating span", function (event) {
     let star= $(this);
-    let isRated = star.data("user");
+    let isRated = star.data("userRated");
     let rating = star.data("rating");
    let articleID = star.closest(".rating").data("id");
+      if(!isRated) {
     $.ajax({
       type: "POST",
       url: `/resource/${articleID}/rating`,
       data: {rating:rating},
       success: data => {
-       if(!isRated) {
-        star.css("color", "yellow");
-      } else if(isRated) {
-        star.css("color", "gray");
+       star.addClass("rated");
+        star.closest(".rating").data("rating");
+        star.closest(".rating").data("userRated");
       }
-     }
-    });
 
+    });
+}
   });
 
 
@@ -265,11 +265,12 @@ jQuery(document).ready(function ($) {
       url: `/resource/${articleID}/like`,
       success: data => {
       if(!isLiked) {
-        heart.addClass("liked")
-        heart.closest(".fa-heart").find(".numberLikes").html(function(i, val) { return Number(val) +1; } );
+       heart.addClass("liked")
+        heart.data("liked", 1);
+        heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) +1; } );
       } else if(isLiked) {
         heart.removeClass("liked");
-
+        heart.data("liked",0)
          heart.closest(".icons").find(".numberLikes").html(function(i, val) { return Number(val) -1 ; } );
       }
 
