@@ -3,7 +3,7 @@ nav {
          font-family: Indie Flower, cursive;
          font-size: 60px;
          margin-left:10px;
-         margin-right:150px;
+         margin-right:100px;
     }
 
     .brand-logo {
@@ -11,11 +11,15 @@ nav {
     }
 
   #main-search {
-    width:500px;
+      width:875px;
+  }
+
+  .form-control.mr-sm-2 {
+    width: 400px;
   }
 
   form {
-    margin-left:130px;
+    margin-left:0px;
   }
 
   #subjects-button {

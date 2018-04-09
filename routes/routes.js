@@ -322,7 +322,7 @@ module.exports = (knex) => {
   });
 
 
-  router.delete("/logout", (req, res) => {
+  router.post("/logout", (req, res) => {
     res.clearCookie("id").redirect("/");
   });
 

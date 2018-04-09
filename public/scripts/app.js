@@ -297,7 +297,7 @@ jQuery(document).ready(function ($) {
   // On click of navbar search button. Return results on same page
 
 
-  $("#logout-button").on("click", function (event) {
+/*  $("#logout-button").on("click", function (event) {
     event.preventDefault();
 
     $.ajax({
@@ -307,7 +307,7 @@ jQuery(document).ready(function ($) {
         // redirect to / where login is
       }
     });
-  });
+  });*/
 
 
 
