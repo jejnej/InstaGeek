@@ -202,20 +202,20 @@ function createArticleElement(article) {
   const articleHTML =
 
     `<div class = "col-sm">
-  <div class="card" style="width: 28rem;">
-  <a href="${url}"><img class="card-img-top" src="${image}"> </a>
+  <div class="card" style="width: 17rem;">
+  <a href="${safeEncode(url)}"><img class="card-img-top" src="${image}"> </a>
   <div class="card-body">
-    <h3>${title}</h3>
+    <h5 class="card-title">${title}</h5>
     <p class="card-text">${des}</p>
   </div>
-  <footer class = "card-footer">
-  <button data-toggle="modal" data-target="#articleModal_${article.id}" class="commentModal" data-article="${article.id}">Comment</button>
+  <footer class = "card-footer" id="cardFooter">
+  <button data-toggle="modal" data-target="#articleModal_${article.id}" id="commentModal" data-article="${article.id}">Comment</button>
   <div class="icons">
       <i class="fas fa-heart" data-id="${article.id}" data-liked="${isLiked}" data-likes="${numLikes}"></i>
        <span class="numberLikes">${numLikes}</span>
     <div class="rating" data-id="${article.id}" data-userRated="${isRated}">
         <span data-rating="5"${color5star}>☆</span><span data-rating="4"${color4star}>☆</span><span data-rating="3"${color3star}> ☆</span><span data-rating="2"${color2star}>☆</span><span data-rating="1"${color1star}>☆</span>
-    <p>Average: ${round(averageRating)}</p>
+    <p class="average-rating">Average: ${round(averageRating)}</p>
  </div>
   </div>
    <p class ="creator-name">By: ${user}</p>
@@ -227,13 +227,15 @@ function createArticleElement(article) {
     <a href="${url}"><img class="modal-image" src="${image}"> </a>
     </div>
     <div class="col-sm">
+     <div class="modal-right">
      <h2 class = "modal-title">${title}</h2>
+     </div>
      <p class="modal-description">${des}</p>
      <section class="new-comment">
-      <h2>Comments</h2>
+      <h6>Comments</h6>
       <hr>
       <form id="commentSubmit" data-comment="${article.id}">
-        <textarea  id="commentText" name="text" placeholder="What do you think?"></textarea>
+        <div><textarea  id="commentText" name="text" placeholder="What do you think?"></textarea></div>
         <input type="submit" value="comment">
       </form>
     </section>
@@ -275,8 +277,7 @@ function createCommentElement(comment) {
   const commentHTML =
     `
   <div class = "posted-comment">
-      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${commentBody}</span>
-      <hr>
+      <span class ="posted-by-comment">${name}:   </span><span class = "posted-comment-body">${safeEncode(commentBody)}</span>
  </div>
   `
   return commentHTML
@@ -311,6 +312,15 @@ function addClickHandlersForComments() {
 //Function used to round average rating to two decimal places
 function round(number) {
   return Math.round(number * 100) / 100;
+}
+
+// Function to re-encode text to convert unsafe characters
+//encoded into safe encoded representation
+
+function safeEncode(str) {
+  let div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
 }
 
 

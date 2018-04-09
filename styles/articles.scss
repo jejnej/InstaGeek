@@ -8,10 +8,9 @@
 button {
      border-radius:6px;
      background-color:#4682B4;
-     width:110px;
+     width:50px;
      height:50px;
-     font-size:15px;
-     margin-top:20px;
+     font-size: 4px;
      color:#00a087;
      opacity:0.9;
      color:white;
@@ -24,16 +23,17 @@ button:hover {
 
 //  Board heading
 #board-heading {
-  padding-left:40px;
-  margin-top:20px;
-  margin-bottom:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+  margin-left:40px;
+  font-size:30px;
 }
 
 // Styles on add article button
 #add-article {
   margin-left:40px;
-  width:250px;
-  height:80px;
+  width:130px;
+  height:40px;
 }
 
 // Styles modal when add article button clicked
@@ -44,7 +44,7 @@ button:hover {
      position: absolute;
      left: 30%;
      height: 300px;
-   width: 40%;
+     width: 40%;
      overflow-y:auto;
      overflow-x:auto;
      border-radius: 0px;
@@ -62,15 +62,40 @@ button:hover {
 
 // Styles the articles being added as a card
 .card {
-margin-top:20px;
+margin-top:10px;
 margin-bottom:20px;
+
   img {
-    height:350px;
+    height:170px;
   }
 
+ h5 {
+  font-size: 0.8em;
+  weight:bold;
+ }
+  .card-text {
+    font-size:0.6em;
+  }
+
+#commentModal {
+  height:25px;
+  font-size:8px;
+  width:60px;
+  margin-top:0;
+  margin-bottom:3px;
+}
+
+#cardFooter {
+  padding-top:3px;
+  padding-bottom:3px;
+  padding-left:10px;
+  padding-right:10px;
+}
 //Footer of article card
 footer {
-  height:130px;
+  height:60px;
+
+
 
 .rating {
   unicode-bidi: bidi-override;
@@ -80,6 +105,10 @@ footer {
   display: inline-block;
   position: relative;
   width: 1.1em;
+  -moz-transform:    rotate(35deg) scale(.6);
+-webkit-transform: rotate(35deg) scale(.6);
+-ms-transform:     rotate(35deg) scale(.6);
+-o-transform:      rotate(35deg) scale(.6);
 }
 
 .rating > span:hover:before,
@@ -89,86 +118,111 @@ footer {
    color: gold;
 }
 
-.rating span.rated {
-  color: gold;
-}
+
 .fa-heart {
   color:gray;
+  font-size: 12px;
 }
 
 .fa-heart.liked {
   color:red;
 }
 
-.fa-star.rated {
-     color: yellow;
+.average-rating {
+  font-size:10px;
+  margin-top:0;
 }
+
+.numberLikes {
+  font-size:0.8em;
+}
+
+.rating {
+  margin-top:0;
+}
+
+
   .icons {
     float:right;
 
+
+
   }
+  .creator-name {
+    font-size:0.5em; }
 }
 }
+
+
 
 // Modal when comment button on card article clicked
 .article-modal-1 {
      background-color: rgba(255, 255, 255, 0.95);
-     height: 1100px;
-     width: 1700px;
-     left: 20%;
-     margin-top:90px;
+     height: 600px;
+     width: 800px;
+    left:20%;
+     margin-top:30px;
+
+.col-sm .modal-right {
+  width:300px;
 }
+
+}
+
+
  .modal-title {
-     font-size:40px;
+     font-size:20px;
      weight:bold;
+
 }
- .modal-right {
-     float:right;
-}
+
  .modal-image {
-     width:900px;
-     height:100%
+     width:400px;
+     height:550px;
+
 }
  .modal-title {
-     font-size:40px;
+     font-size:22px;
      weight:bold;
 }
  .modal-description {
-     font-size:20px;
+     font-size:14px;
 }
  // Comments on modal populated by jquery
  //Form for submitting comment
 
  #commentSubmit {
-     width:700px;
+     width:200px;
      height:100px;
-     padding-top:12px;
-     padding-left:12px;
-     padding-right:12px;
-     padding-bottom:12px;
+
 }
+
+#commentText  {
+  width:300px;
+
+}
+
+
  // Comment Container for old comments
 .comments-container {
   overflow: scroll;
-  height:600px;
+  height:250px;
 }
 
 .posted-comment {
      border: 1px solid rgba(192, 192, 192, 0.6);
-     margin-top: 20px;
-     padding-left:12px;
-     padding-right:12px;
-     padding-top:12px;
-     padding-bottom:12px;
+     margin-top: 10px;
+     padding-left:5px;
+     padding-right:5px;
+     padding-top:5px;
+     padding-bottom:5px;
 }
  .posted-comment-body {
      color:black;
-     font-size: 20px;
+     font-size: 15px;
 }
 
-
-
 .posted-by-comment {
-  font-size:30px;
+  font-size:16px;
   weight:bold;
 }
