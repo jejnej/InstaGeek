@@ -177,8 +177,7 @@ jQuery(document).ready(function($) {
         });
       });
 
-      });
-
+ });
 
 // Creates article cards which have their own modal pop up when clicked
 function createArticleElement(article) {
@@ -210,8 +209,8 @@ function createArticleElement(article) {
         <span data-rating="5">☆</span><span data-rating="4">☆</span><span data-rating="3"> ☆</span><span data-rating="2">☆</span><span data-rating="1">☆</span>
     <p>Average: ${round(averageRating)}</p>
  </div>
-  <p>By: ${user}</p>
   </div>
+   <p class ="creator-name">By: ${user}</p>
  </footer>
 </div>
 <section class = "modal" id="articleModal_${article.id}"  tabindex="-1" role="dialog" aria-labelledby="articleModal_${article.id}" aria-hidden="true">
@@ -282,6 +281,7 @@ function renderComments(comments) {
   });
 }
 
+//Adds clickhandlers for comments as they disappear when modal is clicked
 function addClickHandlersForComments() {
   $(".commentModal").on("click", function(event) {
     event.preventDefault();
@@ -299,6 +299,7 @@ function addClickHandlersForComments() {
   });
 }
 
+//Function used to round average rating to two decimal places
 function round(number) {
   return Math.round(number * 100) / 100;
 }
