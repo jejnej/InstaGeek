@@ -1,14 +1,22 @@
-# Node Skeleton
+# InstaGeek LHL Midterm Project
 
-## Project Setup
+## InstaGeek is an instagram style app for posting educational resources. It allows users to post and save educational resources posted by other users. The purpose of the app is to be able to easily access resources in a way that is very visually attractive and social media friendly. 
+## The main page of the app displays resources posted by all users. 
+## Users can comment, like, and rate resources. 
+## Users can also  view comments by other users on each article and an average rating on posted articles
+## Resources liked by or posted by the user are displayed by clicking "My Board" on the nav bar
+## Users can also make search queries to receive articles with matching titles.
+## Become an InstaGeek now! 
 
-1. Create your own empty repo on GitHub
-2. Clone this repository (do not fork)
-  - Suggestion: When cloning, specify a different folder name that is relevant to your project
-3. Remove the git remote: `git remote rm origin`
-4. Add a remote for your origin: `git remote add origin <your github repo URL>`
-5. Push to the new origin: `git push -u origin master`
-6. Verify that the skeleton code now shows up in your repo on GitHub
+
+## Final Product
+!["Main Page/Regiser Login Page"]()
+![""]()
+![""]()
+![""]()
+
+
+
 
 ## Getting Started
 
