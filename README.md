@@ -10,10 +10,13 @@
 
 
 ## Final Product
-!["Main Page/Regiser Login Page"]()
-![""]()
-![""]()
-![""]()
+!["Main Page/Regiser Login Page"](https://github.com/josekhon/InstaGeek/blob/master/docs/loginpage.png?raw=true)
+!["Resources page with all articles"](https://github.com/josekhon/InstaGeek/blob/master/docs/main-board.png?raw=true)
+!["Resources page with all articles"](https://github.com/josekhon/InstaGeek/blob/master/docs/main-board1.png?raw=true)
+!["Resource pop up with comments"](https://github.com/josekhon/InstaGeek/blob/master/docs/main-board1.png?raw=true)
+!["Filter by subjects"](https://github.com/josekhon/InstaGeek/blob/master/docs/filter-by-subjects.png?raw=true)
+!["Search results"](https://github.com/josekhon/InstaGeek/blob/master/docs/search-result.png?raw=true)
+!["User Profile"](https://github.com/josekhon/InstaGeek/blob/master/docs/user-profile.png?raw=true)
 
 
 
