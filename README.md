@@ -2,7 +2,7 @@
 
 ## InstaGeek is the instagram for geeks intended for posting and displaying educational resources. It allows users to post and save educational resources posted by other users. The purpose of the app is to be able to easily access resources in a way that is very visually attractive and social media friendly. 
 ### The main page of the app displays resources posted by all users. 
-### When a user posts a new url into the new article form. Meta tags that have OG properties are grabbed. Such as title, image, description and an article card is rendered displaying these automatically
+### When a user posts a new url into the new article form. Meta tags that have OG properties are grabbed. Such as title, image, description and an article card is rendered displaying these
 ### Users can comment, like, and rate resources. 
 ### Users can also  view comments by other users on each article and an average rating on posted articles
 ### Resources liked by or posted by the user are displayed by clicking "My Board" on the nav bar
